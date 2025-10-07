@@ -1,12 +1,12 @@
 const categories = [
-  { id: 'todos', name: 'Todos', icon: 'icon-grid-3x3' },
-  { id: 'carnicos', name: 'Cárnicos', icon: 'icon-beef' },
-  { id: 'lacteos', name: 'Lácteos', icon: 'icon-milk' },
-  { id: 'liquidos', name: 'Líquidos', icon: 'icon-glass-water' },
-  { id: 'agro', name: 'Agro', icon: 'icon-wheat' },
-  { id: 'confiteria', name: 'Confitería', icon: 'icon-candy' },
-  { id: 'hogar', name: 'Hogar', icon: 'icon-home' },
-  { id: 'electrodomesticos', name: 'Electrodomésticos', icon: 'icon-zap' }
+  { id: 'todos', name: 'Todos', icon: 'icon-grid-3x3', backgroundImage: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=300&h=200&fit=crop' },
+  { id: 'carnicos', name: 'Cárnicos', icon: 'icon-beef', backgroundImage: 'https://images.unsplash.com/photo-1588347818431-13aa3d47f504?w=300&h=200&fit=crop' },
+  { id: 'lacteos', name: 'Lácteos', icon: 'icon-milk', backgroundImage: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=300&h=200&fit=crop' },
+  { id: 'liquidos', name: 'Líquidos', icon: 'icon-glass-water', backgroundImage: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&h=200&fit=crop' },
+  { id: 'agro', name: 'Agro', icon: 'icon-wheat', backgroundImage: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=300&h=200&fit=crop' },
+  { id: 'confiteria', name: 'Confitería', icon: 'icon-candy', backgroundImage: 'https://images.unsplash.com/photo-1549007994-cb92caebd54b?w=300&h=200&fit=crop' },
+  { id: 'hogar', name: 'Hogar', icon: 'icon-home', backgroundImage: 'https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=300&h=200&fit=crop' },
+  { id: 'electrodomesticos', name: 'Electrodomésticos', icon: 'icon-zap', backgroundImage: 'https://images.unsplash.com/photo-1570222094114-d054a817e56b?w=300&h=200&fit=crop' }
 ];
 
 const productData = [

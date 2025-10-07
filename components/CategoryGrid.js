@@ -9,17 +9,24 @@ function CategoryGrid({ selectedCategory, onCategorySelect }) {
             <button
               key={category.id}
               onClick={() => onCategorySelect(category.id)}
-              className={`category-card ${
+              className={`category-card relative overflow-hidden ${
                 selectedCategory === category.id 
-                  ? 'ring-2 ring-[var(--primary-color)] bg-[var(--primary-color)] bg-opacity-5' 
+                  ? 'ring-2 ring-[var(--primary-color)]' 
                   : ''
               }`}
+              style={{
+                backgroundImage: `url(${category.backgroundImage})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+              }}
             >
-              <div className={`w-12 h-12 rounded-full mx-auto mb-2 flex items-center justify-center ${
-                selectedCategory === category.id
-                  ? 'bg-[var(--primary-color)]'
-                  : 'bg-[var(--secondary-color)] bg-opacity-10'
-              }`}>
+              <div className="absolute inset-0 bg-white bg-opacity-85"></div>
+              <div className="relative z-10">
+                <div className={`w-12 h-12 rounded-full mx-auto mb-2 flex items-center justify-center ${
+                  selectedCategory === category.id
+                    ? 'bg-[var(--primary-color)]'
+                    : 'bg-[var(--secondary-color)] bg-opacity-20'
+                }`}>
                 <div className={`${category.icon} text-xl ${
                   selectedCategory === category.id
                     ? 'text-white'
@@ -27,13 +34,14 @@ function CategoryGrid({ selectedCategory, onCategorySelect }) {
                 }`}></div>
               </div>
               
-              <p className={`text-sm font-medium ${
-                selectedCategory === category.id
-                  ? 'text-[var(--primary-color)]'
-                  : 'text-[var(--text-secondary)]'
-              }`}>
-                {category.name}
-              </p>
+                <p className={`text-sm font-medium relative z-10 ${
+                  selectedCategory === category.id
+                    ? 'text-[var(--primary-color)]'
+                    : 'text-[var(--text-primary)]'
+                }`}>
+                  {category.name}
+                </p>
+              </div>
             </button>
           ))}
         </div>
