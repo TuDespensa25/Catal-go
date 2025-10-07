@@ -1,33 +1,66 @@
 // Data
 const categories = [
-  { id: 'todos', name: 'Todos', icon: 'icon-grid-3x3', backgroundImage: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=300&h=200&fit=crop' },
-  { id: 'carnicos', name: 'Cárnicos', icon: 'icon-beef', backgroundImage: 'https://images.unsplash.com/photo-1588347818431-13aa3d47f504?w=300&h=200&fit=crop' },
-  { id: 'lacteos', name: 'Lácteos', icon: 'icon-milk', backgroundImage: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=300&h=200&fit=crop' },
-  { id: 'liquidos', name: 'Líquidos', icon: 'icon-glass-water', backgroundImage: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&h=200&fit=crop' },
-  { id: 'agro', name: 'Agro', icon: 'icon-wheat', backgroundImage: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=300&h=200&fit=crop' },
-  { id: 'confiteria', name: 'Confitería', icon: 'icon-candy', backgroundImage: 'https://images.unsplash.com/photo-1549007994-cb92caebd54b?w=300&h=200&fit=crop' },
-  { id: 'hogar', name: 'Hogar', icon: 'icon-home', backgroundImage: 'https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=300&h=200&fit=crop' },
-  { id: 'electrodomesticos', name: 'Electrodomésticos', icon: 'icon-zap', backgroundImage: 'https://images.unsplash.com/photo-1570222094114-d054a817e56b?w=300&h=200&fit=crop' }
+  { id: 'carnicos', name: 'Cárnicos y embutidos', icon: 'icon-beef', backgroundImage: '/images/carnicos.png' },
+  { id: 'cereales', name: 'Cereales, pastas y granos', icon: 'icon-wheat', backgroundImage: '/images/cereales.png' },
+  { id: 'lacteos', name: 'Lácteos y huevos', icon: 'icon-milk', backgroundImage: '/images/lacteos.png' },
+  { id: 'conserva', name: 'Conserva y enlatados', icon: 'icon-can', backgroundImage: '/images/conserva.png' },
+  { id: 'mercado', name: 'Mercado', icon: 'icon-basket', backgroundImage: '/images/mercado.png' },
+  { id: 'aseo', name: 'Aseo', icon: 'icon-broom', backgroundImage: '/images/aseo.png' }
 ];
 
 const productData = [
-  { id: 1, name: 'Carne de Res Premium', category: 'carnicos', description: 'Corte selecto de alta calidad', image: 'https://images.unsplash.com/photo-1588347818431-13aa3d47f504?w=400&h=400&fit=crop' },
-  { id: 2, name: 'Pollo Entero Fresco', category: 'carnicos', description: 'Pollo fresco de granja', image: 'https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=400&h=400&fit=crop' },
-  { id: 3, name: 'Cerdo Magro', category: 'carnicos', description: 'Corte magro sin grasa', image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=400&fit=crop' },
-  { id: 4, name: 'Leche Entera 1L', category: 'lacteos', description: 'Leche fresca pasteurizada', image: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&h=400&fit=crop' },
-  { id: 5, name: 'Queso Fresco', category: 'lacteos', description: 'Queso artesanal cremoso', image: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=400&h=400&fit=crop' },
-  { id: 6, name: 'Yogurt Natural', category: 'lacteos', description: 'Yogurt sin azúcar añadida', image: 'https://images.unsplash.com/photo-1571212515416-ffa5dccf5f1a?w=400&h=400&fit=crop' },
-  { id: 7, name: 'Agua Mineral 500ml', category: 'liquidos', description: 'Agua purificada natural', image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=400&fit=crop' },
-  { id: 8, name: 'Jugo de Naranja', category: 'liquidos', description: 'Jugo natural 100%', image: 'https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?w=400&h=400&fit=crop' },
-  { id: 9, name: 'Arroz Blanco 1kg', category: 'agro', description: 'Grano largo premium', image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&h=400&fit=crop' },
-  { id: 10, name: 'Frijoles Negros', category: 'agro', description: 'Frijoles secos seleccionados', image: 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=400&h=400&fit=crop' },
-  { id: 11, name: 'Chocolate Artesanal', category: 'confiteria', description: 'Chocolate 70% cacao', image: 'https://images.unsplash.com/photo-1549007994-cb92caebd54b?w=400&h=400&fit=crop' },
-  { id: 12, name: 'Galletas de Avena', category: 'confiteria', description: 'Galletas caseras integrales', image: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=400&h=400&fit=crop' },
-  { id: 13, name: 'Detergente Líquido', category: 'hogar', description: 'Fórmula concentrada', image: 'https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=400&h=400&fit=crop' },
-  { id: 14, name: 'Papel Higiénico 4 rollos', category: 'hogar', description: 'Suave y resistente', image: 'https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=400&h=400&fit=crop' },
-  { id: 15, name: 'Licuadora 3 velocidades', category: 'electrodomesticos', description: 'Potente motor 600W', image: 'https://images.unsplash.com/photo-1570222094114-d054a817e56b?w=400&h=400&fit=crop' },
-  { id: 16, name: 'Tostadora 2 panes', category: 'electrodomesticos', description: 'Control de temperatura', image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=400&fit=crop' }
+  // Cárnicos y embutidos
+  { id: 1, name: 'Pollo caja de 40 lb 4 paquetes de 10 lb', category: 'carnicos', description: 'Caja de 40 lb de pollo', image: '/images/pollo_caja.png' },
+  { id: 2, name: 'Pollo paquete de 10 lb', category: 'carnicos', description: 'Paquete de 10 lb de pollo', image: '/images/pollo_caja.png' },
+  { id: 3, name: 'Pechuga paquete de 2 kg', category: 'carnicos', description: 'Pechuga de pollo 2 kg', image: '/images/pollo_caja.png' },
+  { id: 4, name: 'Bandeja de 2 lb de bistec pechuga', category: 'carnicos', description: 'Bistec de pechuga 2 lb', image: '/images/pollo_caja.png' },
+  { id: 5, name: 'Chuleta de lomo deshuesado 2 lb', category: 'carnicos', description: 'Chuleta de lomo deshuesado', image: '/images/pollo_caja.png' },
+  { id: 6, name: 'Masas de cerdo 2 lb', category: 'carnicos', description: 'Masas de cerdo 2 lb', image: '/images/pollo_caja.png' },
+  { id: 7, name: 'Bistec de cerdo 2 lb', category: 'carnicos', description: 'Bistec de cerdo 2 lb', image: '/images/pollo_caja.png' },
+  { id: 8, name: 'Lomo ahumado 2 lb lasqueado', category: 'carnicos', description: 'Lomo ahumado lasqueado', image: '/images/pollo_caja.png' },
+  { id: 9, name: 'Lomo ahumado importado 2 lb', category: 'carnicos', description: 'Lomo ahumado importado', image: '/images/pollo_caja.png' },
+  { id: 10, name: 'Picadillo 400 gr de pollo', category: 'carnicos', description: 'Picadillo de pollo 400 gr', image: '/images/pollo_caja.png' },
+  { id: 11, name: 'Hamburguesas mixtas de pollo y cerdo', category: 'carnicos', description: 'Hamburguesas mixtas de pollo y cerdo', image: '/images/pollo_caja.png' },
+  { id: 12, name: 'Croquetas de chorizo 10 uds', category: 'carnicos', description: 'Croquetas de chorizo 10 uds', image: '/images/pollo_caja.png' },
+  { id: 13, name: 'Mortadella clásica', category: 'carnicos', description: 'Mortadella clásica', image: '/images/pollo_caja.png' },
+  { id: 14, name: 'Mortadela de queso', category: 'carnicos', description: 'Mortadella de queso', image: '/images/pollo_caja.png' },
+  { id: 15, name: 'Mortadela de aceituna', category: 'carnicos', description: 'Mortadella con aceituna', image: '/images/pollo_caja.png' },
+  { id: 16, name: 'Mortadela de paprika', category: 'carnicos', description: 'Mortadella de paprika', image: '/images/pollo_caja.png' },
+  { id: 17, name: 'Hígado de pollo 1 kg', category: 'carnicos', description: 'Hígado de pollo 1 kg', image: '/images/pollo_caja.png' },
+  { id: 18, name: 'Salchichas', category: 'carnicos', description: 'Salchichas', image: '/images/pollo_caja.png' },
+
+  // Lácteos y Huevos
+  { id: 19, name: 'Leche entera 1 kg', category: 'lacteos', description: 'Leche entera 1 kg', image: '/images/pollo_caja.png' },
+  { id: 20, name: 'Cartón de huevos', category: 'lacteos', description: 'Cartón de huevos', image: '/images/pollo_caja.png' },
+  { id: 21, name: 'Yogurt de fresa 1 L', category: 'lacteos', description: 'Yogurt de fresa 1 L', image: '/images/pollo_caja.png' },
+  { id: 22, name: 'Leche condensada de cajita', category: 'lacteos', description: 'Leche condensada de cajita', image: '/images/pollo_caja.png' },
+  { id: 23, name: 'Leche condensada lata', category: 'lacteos', description: 'Leche condensada lata', image: '/images/pollo_caja.png' },
+
+  // Cereales, Pastas y Granos
+  { id: 24, name: 'Frijol negro 1 lb', category: 'cereales', description: 'Frijol negro 1 lb', image: '/images/pollo_caja.png' },
+  { id: 25, name: 'Arroz', category: 'cereales', description: 'Arroz', image: '/images/pollo_caja.png' },
+  { id: 26, name: 'Sal 1 lb', category: 'cereales', description: 'Sal 1 lb', image: '/images/pollo_caja.png' },
+  { id: 27, name: 'Azúcar 1 lb', category: 'cereales', description: 'Azúcar 1 lb', image: '/images/pollo_caja.png' },
+  { id: 28, name: 'Spaguetis', category: 'cereales', description: 'Spaguetis', image: '/images/pollo_caja.png' },
+  { id: 29, name: 'Fideos', category: 'cereales', description: 'Fideos', image: '/images/pollo_caja.png' },
+  { id: 30, name: 'Harina de trigo 1 kg', category: 'cereales', description: 'Harina de trigo 1 kg', image: '/images/pollo_caja.png' },
+
+  // Conserva y Enlatados
+  { id: 31, name: 'Pasta de tomate 400 gr', category: 'conserva', description: 'Pasta de tomate 400 gr', image: '/images/pollo_caja.png' },
+  { id: 32, name: 'Pasta de tomate 800 gr', category: 'conserva', description: 'Pasta de tomate 800 gr', image: '/images/pollo_caja.png' },
+  { id: 33, name: 'Leche condensada cocinada', category: 'conserva', description: 'Leche condensada cocinada', image: '/images/pollo_caja.png' },
+  { id: 34, name: 'Mayonesa celorio', category: 'conserva', description: 'Mayonesa Celorio', image: '/images/pollo_caja.png' },
+
+  // Mercado
+  { id: 35, name: 'Aceite 1 L', category: 'mercado', description: 'Aceite 1 L', image: '/images/pollo_caja.png' },
+  { id: 36, name: 'Chocolate en polvo 500 gr', category: 'mercado', description: 'Chocolate en polvo 500 gr', image: '/images/pollo_caja.png' },
+  { id: 37, name: 'Gelatina', category: 'mercado', description: 'Gelatina', image: '/images/pollo_caja.png' },
+
+  // Aseo
+  { id: 38, name: 'Papel higiénico', category: 'aseo', description: 'Papel higiénico', image: '/images/pollo_caja.png' },
+  { id: 39, name: 'Jabones 8 uds 100 gr', category: 'aseo', description: 'Jabones 8 uds 100 gr', image: '/images/pollo_caja.png' },
 ];
+
 
 // Components
 function Header({ searchTerm, setSearchTerm }) {
@@ -40,9 +73,7 @@ function Header({ searchTerm, setSearchTerm }) {
               <div className="icon-shopping-basket text-xl text-[var(--primary-color)]"></div>
             </div>
             <h1 className="text-xl font-bold">TuDespensa.25</h1>
-          </div>
-          <div className="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-            <div className="icon-menu text-xl text-white"></div>
+          
           </div>
         </div>
         <div className="relative">
@@ -78,7 +109,7 @@ function CategoryGrid({ selectedCategory, onCategorySelect }) {
               backgroundPosition: 'center'
             }}
           >
-            <div className="absolute inset-0 bg-white bg-opacity-85"></div>
+            <div className="absolute inset-0 bg-white bg-opacity-30"></div>
             <div className="relative z-10">
               <div className={`w-12 h-12 rounded-full mx-auto mb-2 flex items-center justify-center ${
                 selectedCategory === category.id ? 'bg-[var(--primary-color)]' : 'bg-[var(--secondary-color)] bg-opacity-20'
@@ -114,7 +145,7 @@ function ProductCard({ product }) {
           }}
         />
         <div className="absolute top-2 right-2">
-          <div className="w-6 h-6 bg-white bg-opacity-90 rounded-full flex items-center justify-center shadow-sm">
+          <div className="w-6 h-6 bg-white bg-opacity-30 rounded-full flex items-center justify-center shadow-sm">
             <div className="icon-heart text-sm text-gray-400"></div>
           </div>
         </div>
