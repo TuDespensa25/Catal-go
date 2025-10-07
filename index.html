@@ -21,60 +21,12 @@
     <script src="https://resource.trickle.so/vendor_lib/unpkg/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://resource.trickle.so/vendor_lib/unpkg/lucide-static@0.516.0/font/lucide.css" rel="stylesheet">
-
-    <style type="text/tailwindcss">
-    @layer theme {
-        :root {
-            --primary-color: #22c55e;
-            --secondary-color: #f97316;
-            --accent-color: #6b7280;
-            --text-primary: #1f2937;
-            --text-secondary: #6b7280;
-            --background: #ffffff;
-            --card-background: #f9fafb;
-        }
-    }
-
-    @layer base {
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--background);
-            color: var(--text-primary);
-        }
-    }
-
-    @layer components {
-        .category-card {
-            @apply bg-white rounded-xl shadow-sm border border-gray-100 p-4 text-center transition-all duration-200 active:scale-95;
-        }
-        
-        .category-card:hover {
-            @apply shadow-md border-[var(--primary-color)] border-opacity-30;
-        }
-        
-        .product-card {
-            @apply bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-200;
-        }
-        
-        .product-card:hover {
-            @apply shadow-md transform scale-105;
-        }
-        
-        .header-gradient {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-        }
-    }
-    </style>
+    <link href="style.css" rel="stylesheet">
 
 </head>
 <body>
     <div id="root"></div>
     
-    <script type="text/babel" src="components/Header.js"></script>
-    <script type="text/babel" src="components/CategoryGrid.js"></script>
-    <script type="text/babel" src="components/ProductGrid.js"></script>
-    <script type="text/babel" src="components/ProductCard.js"></script>
-    <script type="text/babel" src="utils/productData.js"></script>
     <script type="text/babel" src="app.js"></script>
 </body>
 </html>
