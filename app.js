@@ -11,17 +11,17 @@ const categories = [
 const productData = [
   // Cárnicos y embutidos
   { id: 1, name: 'Pollo caja de 40 lb 4 paquetes de 10 lb', category: 'carnicos', description: 'Caja de 40 lb de pollo', image: '/images/pollo_caja.png' },
-  { id: 2, name: 'Pollo paquete de 10 lb', category: 'carnicos', description: 'Paquete de 10 lb de pollo', image: '/images/pollo_caja.png' },
+  { id: 2, name: 'Pollo paquete de 10 lb', category: 'carnicos', description: 'Paquete de 10 lb de pollo', image: '/images/pollo10lb.png' },
   { id: 3, name: 'Pechuga paquete de 2 kg', category: 'carnicos', description: 'Pechuga de pollo 2 kg', image: '/images/pechuga2kg.png' },
   { id: 4, name: 'Bandeja de 2 lb de bistec pechuga', category: 'carnicos', description: 'Bistec de pechuga 2 lb', image: '/images/pollo_caja.png' },
-  { id: 5, name: 'Chuleta de lomo deshuesado 2 lb', category: 'carnicos', description: 'Chuleta de lomo deshuesado', image: '/images/pollo_caja.png' },
+  { id: 5, name: 'Chuleta de lomo deshuesado 2 lb', category: 'carnicos', description: 'Chuleta de lomo deshuesado', image: '/images/chuletalomo.png' },
   { id: 6, name: 'Masas de cerdo 2 lb', category: 'carnicos', description: 'Masas de cerdo 2 lb', image: '/images/masas.png' },
   { id: 7, name: 'Bistec de cerdo 2 lb', category: 'carnicos', description: 'Bistec de cerdo 2 lb', image: '/images/pollo_caja.png' },
-  { id: 8, name: 'Lomo ahumado 2 lb lasqueado', category: 'carnicos', description: 'Lomo ahumado lasqueado', image: '/images/pollo_caja.png' },
-  { id: 9, name: 'Lomo ahumado importado 2 lb', category: 'carnicos', description: 'Lomo ahumado importado', image: '/images/pollo_caja.png' },
+  { id: 8, name: 'Lomo ahumado 2 lb lasqueado', category: 'carnicos', description: 'Lomo ahumado lasqueado', image: '/images/ahumadolasqueado.png' },
+  { id: 9, name: 'Lomo ahumado importado 2 lb', category: 'carnicos', description: 'Lomo ahumado deshuesado', image: '/images/pollo_caja.png' },
   { id: 10, name: 'Picadillo 400 gr de pollo', category: 'carnicos', description: 'Picadillo de pollo 400 gr', image: '/images/picadillo.png' },
-  { id: 11, name: 'Hamburguesas mixtas de pollo y cerdo', category: 'carnicos', description: 'Hamburguesas mixtas de pollo y cerdo', image: '/images/pollo_caja.png' },
-  { id: 12, name: 'Croquetas de chorizo 10 uds', category: 'carnicos', description: 'Croquetas de chorizo 10 uds', image: '/images/pollo_caja.png' },
+  { id: 11, name: 'Hamburguesas mixtas de pollo y cerdo', category: 'carnicos', description: 'Hamburguesas mixtas de pollo y cerdo', image: '/images/hamburguesas.png' },
+ /* { id: 12, name: 'Croquetas de chorizo 10 uds', category: 'carnicos', description: 'Croquetas de chorizo 10 uds', image: '/images/pollo_caja.png' },*/
   { id: 13, name: 'Mortadella clásica', category: 'carnicos', description: 'Mortadella clásica', image: '/images/mortclasica.png' },
   { id: 14, name: 'Mortadela de queso', category: 'carnicos', description: 'Mortadella de queso', image: '/images/mortqueso.png' },
   { id: 15, name: 'Mortadela de aceituna', category: 'carnicos', description: 'Mortadella con aceituna', image: '/images/mortaceit.png' },
@@ -32,7 +32,7 @@ const productData = [
   // Lácteos y Huevos
   { id: 19, name: 'Leche entera 1 kg', category: 'lacteos', description: 'Leche entera 1 kg', image: '/images/pollo_caja.png' },
   { id: 20, name: 'Cartón de huevos', category: 'lacteos', description: 'Cartón de huevos', image: '/images/pollo_caja.png' },
-  { id: 21, name: 'Yogurt de fresa 1 L', category: 'lacteos', description: 'Yogurt de fresa 1 L', image: '/images/pollo_caja.png' },
+  { id: 21, name: 'Yogurt de fresa 1 L', category: 'lacteos', description: 'Yogurt de fresa 1 L', image: '/images/pollo_caja.png'   },
   { id: 22, name: 'Leche condensada de cajita', category: 'lacteos', description: 'Leche condensada de cajita', image: '/images/cajitaleche.png' },
   { id: 23, name: 'Leche condensada lata', category: 'lacteos', description: 'Leche condensada lata', image: '/images/nezkaleche.png' },
 
