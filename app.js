@@ -450,9 +450,7 @@ function ProductCard({ product, onAddToCart, likedProducts, onToggleLike }) {
           alt={product.name}
           className="w-full h-full object-cover"
           loading="lazy"
-          onError={(e) => {
-            e.target.src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=400&fit=crop';
-          }}
+         
         />
         <button 
           onClick={() => onToggleLike(product.id)}
