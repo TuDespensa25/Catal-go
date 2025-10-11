@@ -136,3 +136,11 @@ section {
   position: relative;
   z-index: 2;
 }
+/* ICONOS PARA CATEGORÍAS */
+.icon-beef::before { content: "🥩"; }
+.icon-milk::before { content: "🥛"; }
+.icon-wheat::before { content: "🌾"; }
+.icon-can::before { content: "🥫"; }
+.icon-broom::before { content: "🧹"; }
+.icon-basket::before { content: "🛒"; }
+.icon-shopping-basket::before { content: "🛒"; }

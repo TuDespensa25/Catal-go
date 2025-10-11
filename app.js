@@ -20,53 +20,53 @@ const productData = [
   // Cárnicos y embutidos
   { id: 1, name: 'Pollo caja de 40 lb 4 paquetes de 10 lb', category: 'carnicos', description: 'Caja de 40 lb de pollo', image: '/images/pollo_caja.png', price: 400, availableIn: [1,2] },
   { id: 2, name: 'Pollo paquete de 10 lb', category: 'carnicos', description: 'Paquete de 10 lb de pollo', image: '/images/pollo10lb.png', price: 120, availableIn: [1,2,3] },
-  { id: 3, name: 'Pechuga paquete de 2 kg', category: 'carnicos', description: 'Pechuga de pollo 2 kg', image: '/images/pechuga2kg.png', price: 60, availableIn: [1,3] },
-  { id: 4, name: 'Bandeja de 2 lb de bistec pechuga', category: 'carnicos', description: 'Bistec de pechuga 2 lb', image: '/images/bistecpechuga.png', price: 50, availableIn: [2,3] },
+  { id: 3, name: 'Pechuga paquete de 2 kg', category: 'carnicos', description: 'Pechuga de pollo 2 kg', image: '/images/pechuga2kg.png', price: 60, availableIn: [1,2] },
+  { id: 4, name: 'Bandeja de 2 lb de bistec pechuga', category: 'carnicos', description: 'Bistec de pechuga 2 lb', image: '/images/bistecpechuga.png', price: 50, availableIn: [2,1] },
   { id: 5, name: 'Chuleta de lomo deshuesado 2 lb', category: 'carnicos', description: 'Chuleta de lomo deshuesado', image: '/images/chuletalomo.png', price: 55, availableIn: [1,2] },
-  { id: 6, name: 'Masas de cerdo 2 lb', category: 'carnicos', description: 'Masas de cerdo 2 lb', image: '/images/masas.png', price: 40, availableIn: [1,3] },
-  { id: 7, name: 'Bistec de cerdo 2 lb', category: 'carnicos', description: 'Bistec de cerdo 2 lb', image: '/images/bisteclomo.png', price: 50, availableIn: [2,3] },
-  { id: 8, name: 'Lomo ahumado 2 lb lasqueado', category: 'carnicos', description: 'Lomo ahumado lasqueado', image: '/images/ahumadolasqueado.png', price: 70, availableIn: [1] },
+  { id: 6, name: 'Masas de cerdo 2 lb', category: 'carnicos', description: 'Masas de cerdo 2 lb', image: '/images/masas.png', price: 40, availableIn: [1,2] },
+  { id: 7, name: 'Bistec de cerdo 2 lb', category: 'carnicos', description: 'Bistec de cerdo 2 lb', image: '/images/bisteclomo.png', price: 50, availableIn: [2,1] },
+  { id: 8, name: 'Lomo ahumado 2 lb lasqueado', category: 'carnicos', description: 'Lomo ahumado lasqueado', image: '/images/ahumadolasqueado.png', price: 70, availableIn: [1,2] },
   { id: 9, name: 'Lomo ahumado importado 2 lb', category: 'carnicos', description: 'Lomo ahumado deshuesado', image: '/images/ahumado.png', price: 75, availableIn: [1,2] },
   { id: 10, name: 'Picadillo 400 gr de pollo', category: 'carnicos', description: 'Picadillo de pollo 400 gr', image: '/images/picadillo.png', price: 25, availableIn: [1,2,3] },
-  { id: 11, name: 'Hamburguesas mixtas de pollo y cerdo', category: 'carnicos', description: 'Hamburguesas mixtas de pollo y cerdo', image: '/images/hamburguesas.png', price: 35, availableIn: [2,3] },
+  { id: 11, name: 'Hamburguesas mixtas de pollo y cerdo', category: 'carnicos', description: 'Hamburguesas mixtas de pollo y cerdo', image: '/images/hamburguesas.png', price: 35, availableIn: [2,1] },
   /* { id: 12, name: 'Croquetas de chorizo 10 uds', category: 'carnicos', description: 'Croquetas de chorizo 10 uds', image: '/images/pollo_caja.png', price: 20, availableIn: [1], }, */
   { id: 13, name: 'Mortadella clásica', category: 'carnicos', description: 'Mortadella clásica', image: '/images/mortclasica.png', price: 30, availableIn: [1,2] },
-  { id: 14, name: 'Mortadela de queso', category: 'carnicos', description: 'Mortadella de queso', image: '/images/mortqueso.png', price: 32, availableIn: [2,3] },
-  { id: 15, name: 'Mortadela de aceituna', category: 'carnicos', description: 'Mortadella con aceituna', image: '/images/mortaceit.png', price: 35, availableIn: [1] },
+  { id: 14, name: 'Mortadela de queso', category: 'carnicos', description: 'Mortadella de queso', image: '/images/mortqueso.png', price: 32, availableIn: [2,1] },
+  { id: 15, name: 'Mortadela de aceituna', category: 'carnicos', description: 'Mortadella con aceituna', image: '/images/mortaceit.png', price: 35, availableIn: [1,2] },
   /* { id: 16, name: 'Mortadela de paprika', category: 'carnicos', description: 'Mortadella de paprika', image: '/images/pollo_caja.png', price: 36, availableIn: [1,2], }, */
-  { id: 17, name: 'Hígado de pollo 1 kg', category: 'carnicos', description: 'Hígado de pollo 1 kg', image: '/images/higado.png', price: 20, availableIn: [1,3] },
-  { id: 18, name: 'Salchichas', category: 'carnicos', description: 'Salchichas', image: '/images/salchichas.png', price: 25, availableIn: [2,3] },
+  { id: 17, name: 'Hígado de pollo 1 kg', category: 'carnicos', description: 'Hígado de pollo 1 kg', image: '/images/higado.png', price: 20, availableIn: [1,2] },
+  { id: 18, name: 'Salchichas', category: 'carnicos', description: 'Salchichas', image: '/images/salchichas.png', price: 25, availableIn: [2,1] },
 
   // Lácteos y Huevos
   { id: 19, name: 'Leche entera 1 kg', category: 'lacteos', description: 'Leche entera 1 kg', image: '/images/leche1kg.png', price: 10, availableIn: [1,2,3] },
-  { id: 20, name: 'Cartón de huevos', category: 'lacteos', description: 'Cartón de huevos', image: '/images/huevo30.png', price: 30, availableIn: [1,3] },
-  { id: 21, name: 'Yogurt de fresa 1 L', category: 'lacteos', description: 'Yogurt de fresa 1 L', image: '/images/yogurt1l.png', price: 15, availableIn: [2,3] },
-  { id: 22, name: 'Leche condensada de cajita', category: 'lacteos', description: 'Leche condensada de cajita', image: '/images/cajitaleche.png', price: 12, availableIn: [1] },
+  { id: 20, name: 'Cartón de huevos', category: 'lacteos', description: 'Cartón de huevos', image: '/images/huevo30.png', price: 30, availableIn: [1,2] },
+  { id: 21, name: 'Yogurt de fresa 1 L', category: 'lacteos', description: 'Yogurt de fresa 1 L', image: '/images/yogurt1l.png', price: 15, availableIn: [2,1] },
+  { id: 22, name: 'Leche condensada de cajita', category: 'lacteos', description: 'Leche condensada de cajita', image: '/images/cajitaleche.png', price: 12, availableIn: [1,2] },
   { id: 23, name: 'Leche condensada lata', category: 'lacteos', description: 'Leche condensada lata', image: '/images/nezkaleche.png', price: 14, availableIn: [1,2] },
 
   // Cereales, Pastas y Granos
-  { id: 24, name: 'Frijol negro 1 lb', category: 'cereales', description: 'Frijol negro 1 lb', image: '/images/frijol2lb.png', price: 8, availableIn: [1,2,3] },
+  { id: 24, name: 'Frijol negro 1 lb', category: 'cereales', description: 'Frijol negro 1 lb', image: '/images/frijol2lb.png', price: 8, availableIn: [1,2,] },
   { id: 25, name: 'Arroz', category: 'cereales', description: 'Arroz', image: '/images/arroz2lb.png', price: 10, availableIn: [1,2] },
-  { id: 26, name: 'Sal 1 lb', category: 'cereales', description: 'Sal 1 lb', image: '/images/sal.png', price: 5, availableIn: [1,3] },
-  { id: 27, name: 'Azúcar 1 lb', category: 'cereales', description: 'Azúcar 1 lb', image: '/images/azucar2lb.png', price: 6, availableIn: [2,3] },
+  { id: 26, name: 'Sal 1 lb', category: 'cereales', description: 'Sal 1 lb', image: '/images/sal.png', price: 5, availableIn: [1,2] },
+  { id: 27, name: 'Azúcar 1 lb', category: 'cereales', description: 'Azúcar 1 lb', image: '/images/azucar2lb.png', price: 6, availableIn: [1,2,] },
   { id: 28, name: 'Spaguetis', category: 'cereales', description: 'Spaguetis', image: '/images/spaguetis.png', price: 7, availableIn: [1,2] },
   /* { id: 29, name: 'Fideos', category: 'cereales', description: 'Fideos', image: '/images/pollo_caja.png', price: 6, availableIn: [1,3] }, */
   { id: 30, name: 'Harina de trigo 1 kg', category: 'cereales', description: 'Harina de trigo 1 kg', image: '/images/harinafresko.png', price: 9, availableIn: [1,2,3] },
 
   // Conserva y Enlatados
   { id: 31, name: 'Pasta de tomate 400 gr', category: 'conserva', description: 'Pasta de tomate 400 gr', image: '/images/pasta400.png', price: 5, availableIn: [1,2] },
-  { id: 32, name: 'Pasta de tomate 800 gr', category: 'conserva', description: 'Pasta de tomate 800 gr', image: '/images/800gr.png', price: 8, availableIn: [2,3] },
-  { id: 33, name: 'Leche condensada cocinada', category: 'conserva', description: 'Leche condensada cocinada', image: '/images/cocinada.png', price: 6, availableIn: [1] },
+  { id: 32, name: 'Pasta de tomate 800 gr', category: 'conserva', description: 'Pasta de tomate 800 gr', image: '/images/800gr.png', price: 8, availableIn: [2,1] },
+  { id: 33, name: 'Leche condensada cocinada', category: 'conserva', description: 'Leche condensada cocinada', image: '/images/cocinada.png', price: 6, availableIn: [1,2] },
   { id: 34, name: 'Mayonesa celorio', category: 'conserva', description: 'Mayonesa Celorio', image: '/images/celorio.png', price: 7, availableIn: [1,2] },
 
   // Mercado
   { id: 35, name: 'Aceite 1 L', category: 'mercado', description: 'Aceite 1 L', image: '/images/aceite1l.png', price: 12, availableIn: [1,2] },
-  { id: 36, name: 'Chocolate en polvo 500 gr', category: 'mercado', description: 'Chocolate en polvo 500 gr', image: '/images/chocopolvo.png', price: 15, availableIn: [2,3] },
-  { id: 37, name: 'Gelatina', category: 'mercado', description: 'Gelatina', image: '/images/gelafresa.png', price: 6, availableIn: [1,3] },
+  { id: 36, name: 'Chocolate en polvo 500 gr', category: 'mercado', description: 'Chocolate en polvo 500 gr', image: '/images/chocopolvo.png', price: 15, availableIn: [2,1] },
+  { id: 37, name: 'Gelatina', category: 'mercado', description: 'Gelatina', image: '/images/gelafresa.png', price: 6, availableIn: [1,2] },
 
   // Aseo
   { id: 38, name: 'Papel higiénico', category: 'aseo', description: 'Papel higiénico', image: '/images/papelhigi.png', price: 10, availableIn: [1,2,3] },
-  { id: 39, name: 'Jabones 8 uds 100 gr', category: 'aseo', description: 'Jabones 8 uds 100 gr', image: '/images/pollo_caja.png', price: 8, availableIn: [1,2] },
+  { id: 39, name: 'Jabones 8 uds 100 gr', category: 'aseo', description: 'Jabon de 100 gr', image: '/images/jabon.png', price: 8, availableIn: [1,2] },
 ];
 
 
@@ -163,7 +163,7 @@ function CartModal({ isOpen, onClose, cart, setCart, onProcessOrder }) {
                   <div className="flex-1">
                     <h3 className="text-sm font-medium text-[var(--text-secondary)]">{item.name}</h3>
                     <p className="text-xs text-[var(--text-secondary)]">{item.description}</p>
-                    <p className="text-sm font-semibold text-[var(--primary-color)]">${item.price.toFixed(2)} USD</p>
+                    <p className="text-sm font-semibold text-[var(--primary-color)]">${item.price.toFixed(2)} CUP</p>
                   </div>
                   <div className="flex flex-col items-center space-y-1">
                     <div className="flex items-center space-x-2">
@@ -183,7 +183,7 @@ function CartModal({ isOpen, onClose, cart, setCart, onProcessOrder }) {
               <div className="border-t pt-3 mt-4">
                 <div className="flex justify-between items-center bg-[var(--primary-color)] bg-opacity-10 rounded-lg p-3">
                   <span className="text-lg font-semibold text-[var(--text-primary)]">Total:</span>
-                  <span className="text-xl font-bold text-[var(--secondary-color)]">${getTotalPrice().toFixed(2)} USD</span>
+                  <span className="text-xl font-bold text-[var(--secondary-color)]">${getTotalPrice().toFixed(2)} CUP</span>
                 </div>
               </div>
             </div>
@@ -378,25 +378,22 @@ function CategoryGrid({ selectedCategory, onCategorySelect }) {
           <button
             key={category.id}
             onClick={() => onCategorySelect(category.id)}
-            className={`category-card ${selectedCategory === category.id ? 'ring-2 ring-[var(--primary-color)]' : ''}`}
+            className={`relative rounded-lg overflow-hidden flex flex-col items-center justify-center p-4 
+              ${selectedCategory === category.id ? 'ring-2 ring-[var(--primary-color)]' : ''}`}
             style={{
               backgroundImage: `url(${category.backgroundImage})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center'
             }}
           >
-            <div className="absolute inset-0 bg-white bg-opacity-85"></div>
-            <div className="relative z-10">
-              <div className={`category-icon w-12 h-12 rounded-full mx-auto mb-2 flex items-center justify-center ${
-                selectedCategory === category.id ? 'bg-[var(--primary-color)]' : 'bg-[var(--secondary-color)] bg-opacity-20'
-              }`}>
-                <div className={`${category.icon} text-xl sm:text-xl text-lg ${
-                  selectedCategory === category.id ? 'text-white' : 'text-[var(--secondary-color)]'
-                }`}></div>
+            <div className="bg-white bg-opacity-85 w-full h-full absolute inset-0"></div>
+            <div className="relative z-10 flex flex-col items-center">
+              <div className={`category-icon w-12 h-12 rounded-full flex items-center justify-center mb-2
+                ${selectedCategory === category.id ? 'bg-[var(--primary-color)]' : 'bg-[var(--secondary-color)] bg-opacity-20'}`}>
+                <div className={`${category.icon} text-xl ${selectedCategory === category.id ? 'text-white' : 'text-[var(--secondary-color)]'}`}></div>
               </div>
-              <p className={`category-name text-sm font-medium ${
-                selectedCategory === category.id ? 'text-[var(--primary-color)]' : 'text-[var(--text-primary)]'
-              }`}>
+              <p className={`text-sm font-medium text-center 
+                ${selectedCategory === category.id ? 'text-[var(--primary-color)]' : 'text-[var(--text-primary)]'}`}>
                 {category.name}
               </p>
             </div>
@@ -406,6 +403,7 @@ function CategoryGrid({ selectedCategory, onCategorySelect }) {
     </section>
   );
 }
+
 
 function FloatingWhatsAppButton() {
   const handleWhatsAppClick = () => {
@@ -690,12 +688,12 @@ function App() {
       const subtotal = item.price * item.quantity;
       total += subtotal;
       orderMessage += `${index + 1}. ${item.name}\n`;
-      orderMessage += `   💰 Precio: $${item.price.toFixed(2)} USD\n`;
+      orderMessage += `   💰 Precio: $${item.price.toFixed(2)} CUP\n`;
       orderMessage += `   📦 Cantidad: ${item.quantity}\n`;
-      orderMessage += `   💵 Subtotal: $${subtotal.toFixed(2)} USD\n\n`;
+      orderMessage += `   💵 Subtotal: $${subtotal.toFixed(2)} CUP\n\n`;
     });
     
-    orderMessage += `*TOTAL DEL PEDIDO: $${total.toFixed(2)} USD*\n`;
+    orderMessage += `*TOTAL DEL PEDIDO: $${total.toFixed(2)} CUP*\n`;
     
     orderMessage += `\n*DATOS DEL VENDEDOR:*\n`;
     orderMessage += `🏪 Tienda: TuDespensa.25\n`;
