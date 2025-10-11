@@ -19,7 +19,21 @@ body {
 }
 
 .category-card {
-    @apply bg-white rounded-xl shadow-sm border border-gray-100 p-4 text-center transition-all duration-200 active:scale-95 relative overflow-hidden;
+    @apply bg-white rounded-xl shadow-sm border border-gray-100 p-3 sm:p-4 text-center transition-all duration-200 active:scale-95 relative overflow-hidden;
+}
+
+@media (max-width: 640px) {
+    .category-card {
+        @apply p-2;
+    }
+    
+    .category-card .category-icon {
+        @apply w-8 h-8 mb-1;
+    }
+    
+    .category-card .category-name {
+        @apply text-xs;
+    }
 }
 
 .category-card:hover {
