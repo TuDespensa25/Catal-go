@@ -86,3 +86,14 @@ body {
         padding: 5px;
     }
 }
+/* Añadir al style.css */
+@media (max-width: 640px) {
+  .grid.grid-cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+  
+  .product-card {
+    margin: 0.25rem;
+  }
+}

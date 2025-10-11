@@ -161,7 +161,7 @@ function CartModal({ isOpen, onClose, cart, setCart, onProcessOrder }) {
                 <div key={item.id} className="flex items-center space-x-3 bg-gray-50 rounded-lg p-3">
                   <img src={item.image} alt={item.name} className="w-12 h-12 object-cover rounded-lg" />
                   <div className="flex-1">
-                    <h3 className="text-sm font-medium text-[var(--text-primary)]">{item.name}</h3>
+                    <h3 className="text-sm font-medium text-[var(--text-secondary)]">{item.name}</h3>
                     <p className="text-xs text-[var(--text-secondary)]">{item.description}</p>
                     <p className="text-sm font-semibold text-[var(--primary-color)]">${item.price.toFixed(2)} USD</p>
                   </div>
@@ -181,7 +181,7 @@ function CartModal({ isOpen, onClose, cart, setCart, onProcessOrder }) {
               ))}
               
               <div className="border-t pt-3 mt-4">
-                <div className="flex justify-between items-center bg-[var(--secondary-color)] bg-opacity-10 rounded-lg p-3">
+                <div className="flex justify-between items-center bg-[var(--primary-color)] bg-opacity-10 rounded-lg p-3">
                   <span className="text-lg font-semibold text-[var(--text-primary)]">Total:</span>
                   <span className="text-xl font-bold text-[var(--secondary-color)]">${getTotalPrice().toFixed(2)} USD</span>
                 </div>
@@ -706,7 +706,7 @@ function App() {
     orderMessage += `⏰ Tiempo estimado: 2-4 horas\n`;
     orderMessage += `💳 Pago: Efectivo o transferencia\n`;
 
-    const whatsappUrl = `https://wa.me5354066204?text=${encodeURIComponent(orderMessage)}`;
+    const whatsappUrl = `https://wa.me/5354066204?text=${encodeURIComponent(orderMessage)}`;
     window.open(whatsappUrl, '_blank');
     
     setCart([]);
