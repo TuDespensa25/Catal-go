@@ -263,7 +263,7 @@ function SocialMediaLinks() {
     <div className="flex items-center justify-center space-x-4 px-4 py-3 bg-white border-b">
       <span className="text-xs text-[var(--text-secondary)]">Síguenos:</span>
       <a 
-        href="https://wa.me/5354066204" 
+        href="https://whatsapp.com/channel/0029Vb89B2bBfxo2tGL8Fk0G" 
         target="_blank" 
         rel="noopener noreferrer"
         className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center"
@@ -271,7 +271,7 @@ function SocialMediaLinks() {
         <div className="icon-message-circle text-sm text-white"></div>
       </a>
       <a 
-        href="https://instagram.com/tudespensa25" 
+        href="https://www.instagram.com/tudespensa.25?igsh=MWt5dzZjcWh0NnF0MA==" 
         target="_blank" 
         rel="noopener noreferrer"
         className="w-8 h-8 rounded-full bg-pink-500 flex items-center justify-center"
@@ -279,7 +279,7 @@ function SocialMediaLinks() {
         <div className="icon-instagram text-sm text-white"></div>
       </a>
       <a 
-        href="https://facebook.com/tudespensa25" 
+        href="https://www.facebook.com/share/16cchoNUTo/" 
         target="_blank" 
         rel="noopener noreferrer"
         className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center"
