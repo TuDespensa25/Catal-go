@@ -58,3 +58,31 @@ body {
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
+/* === Ajustes mejorados de imágenes de productos === */
+.product-card img {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    max-height: 500px;
+    object-fit: contain; /* muestra toda la imagen sin recortarla */
+    display: block;
+    margin: 0 auto;
+    background-color: #fff; /* fondo blanco limpio por si la imagen no llena todo */
+    padding: 8px; /* espacio interior para que no se pegue al borde */
+    transition: transform 0.3s ease;
+}
+
+/* Suave efecto de zoom al pasar el cursor */
+.product-card:hover img {
+    transform: scale(1.03);
+}
+
+/* Adaptación para pantallas pequeñas */
+@media (max-width: 640px) {
+    .product-card img {
+        max-width: 100%;
+        height: auto;
+        max-height: 350px;
+        padding: 5px;
+    }
+}
