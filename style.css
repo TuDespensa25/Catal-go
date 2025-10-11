@@ -97,3 +97,42 @@ body {
     margin: 0.25rem;
   }
 }
+/* === Corrección para superposición de imágenes sobre el texto === */
+.product-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  padding-bottom: 0.5rem; /* espacio entre imagen y texto */
+}
+
+.product-card img {
+  width: 100%;
+  height: 200px; /* altura controlada */
+  object-fit: contain; /* muestra completa sin recorte */
+  margin-bottom: 0.5rem; /* separa del texto */
+}
+
+@media (min-width: 768px) {
+  .product-card img {
+    height: 220px; /* un poco más grande en pantallas grandes */
+  }
+}
+/* === Separación clara entre categorías y productos === */
+section {
+  position: relative;
+  z-index: 1;
+}
+
+/* Espaciado general entre secciones */
+.categories-section {
+  margin-bottom: 2rem; /* separa de productos */
+}
+
+.products-section {
+  clear: both;
+  margin-top: 2rem; /* asegura que quede debajo */
+  position: relative;
+  z-index: 2;
+}
