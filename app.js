@@ -40,7 +40,7 @@ const productData = [
   // Lácteos y Huevos
   { id: 19, name: 'Leche entera 1 kg', category: 'lacteos', description: 'Leche entera 1 kg', image: '/images/leche1kg.png', price: 10, availableIn: [1,2,3] },
   { id: 20, name: 'Cartón de huevos', category: 'lacteos', description: 'Cartón de huevos', image: '/images/huevo30.png', price: 30, availableIn: [1,2] },
-  { id: 21, name: 'Yogurt de fresa 1 L', category: 'lacteos', description: 'Yogurt de fresa 1 L', image: '/images/yogurt1l.png', price: 15, availableIn: [2,1] },
+  { id: 21, name: 'Yogurt de fresa 1 L', category: 'lacteos', description: 'Yogurt de fresa 1 L', image: '/images/yogurt1L.png', price: 15, availableIn: [2,1] },
   { id: 22, name: 'Leche condensada de cajita', category: 'lacteos', description: 'Leche condensada de cajita', image: '/images/cajitaleche.png', price: 12, availableIn: [1,2] },
   { id: 23, name: 'Leche condensada lata', category: 'lacteos', description: 'Leche condensada lata', image: '/images/nezkaleche.png', price: 14, availableIn: [1,2] },
 
