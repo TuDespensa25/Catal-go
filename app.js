@@ -473,9 +473,10 @@ function ProductCard({ product, onAddToCart, likedProducts, onToggleLike }) {
           {product.description}
         </p>
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xs px-2 py-1 bg-[var(--primary-color)] bg-opacity-10 text-[var(--primary-color)] rounded-full">
-            {categories.find(c => c.id === product.category)?.name}
-          </span>
+  <span className="text-xs px-2 py-1 bg-gray-100 text-gray-900 rounded-full">
+    {categories.find(c => c.id === product.category)?.name}
+  </span>
+
           <span className="text-sm font-bold text-[var(--secondary-color)]">${product.price.toFixed(2)}</span>
         </div>
         <button 
