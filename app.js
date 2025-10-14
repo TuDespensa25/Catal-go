@@ -439,21 +439,36 @@ function FloatingWishlistButton() {
   );
 }
 
-function ProductCard({ product, onAddToCart, likedProducts, onToggleLike }) {
+function ProductCard({ product, onAddToCart, likedProducts, onToggleLike, onProductClick }) {
   const isLiked = likedProducts.includes(product.id);
 
+  const handleCardClick = (e) => {
+    // Evita que se abra el modal cuando se hace clic en botones secundarios
+    if (e.target.closest('button')) return;
+    onProductClick(product);
+  };
+
+  const handleLikeClick = (e) => {
+    e.stopPropagation(); // Previene que se abra el modal
+    onToggleLike(product.id);
+  };
+
+  const handleAddToCart = (e) => {
+    e.stopPropagation(); // Previene que se abra el modal
+    onAddToCart(product);
+  };
+
   return (
-    <div className="product-card">
+    <div className="product-card" onClick={handleCardClick}>
       <div className="aspect-square bg-gray-100 relative overflow-hidden">
         <img
           src={product.image}
           alt={product.name}
           className="w-full h-full object-cover"
           loading="lazy"
-         
         />
         <button 
-          onClick={() => onToggleLike(product.id)}
+          onClick={handleLikeClick}
           className="absolute top-2 right-2"
         >
           <div className="w-8 h-8 bg-white bg-opacity-90 rounded-full flex items-center justify-center shadow-sm">
@@ -469,19 +484,91 @@ function ProductCard({ product, onAddToCart, likedProducts, onToggleLike }) {
           {product.description}
         </p>
         <div className="flex items-center justify-between mb-2">
-  <span className="text-xs px-2 py-1 bg-gray-100 text-gray-900 rounded-full">
-    {categories.find(c => c.id === product.category)?.name}
-  </span>
-
+          <span className="text-xs px-2 py-1 bg-gray-100 text-gray-900 rounded-full">
+            {categories.find(c => c.id === product.category)?.name}
+          </span>
           <span className="text-sm font-bold text-[var(--secondary-color)]">${product.price.toFixed(2)}</span>
         </div>
         <button 
-          onClick={() => onAddToCart(product)}
+          onClick={handleAddToCart}
           className="w-full bg-[var(--secondary-color)] text-white py-2 px-3 rounded-lg text-sm font-medium flex items-center justify-center space-x-1 hover:bg-opacity-90 transition-all"
         >
           <div className="icon-shopping-cart text-sm"></div>
           <span>Añadir al carrito</span>
         </button>
+      </div>
+    </div>
+  );
+}
+
+function ProductDetailModal({ isOpen, onClose, product, onAddToCart, likedProducts, onToggleLike }) {
+  if (!isOpen || !product) return null;
+
+  const isLiked = likedProducts.includes(product.id);
+  const categoryName = categories.find(c => c.id === product.category)?.name || 'Sin categoría';
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end sm:items-center sm:justify-center">
+      <div className="bg-white w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-t-xl sm:rounded-xl">
+        <div className="relative">
+          <img
+            src={product.image}
+            alt={product.name}
+            className="w-full h-64 sm:h-80 object-cover"
+          />
+          <button 
+            onClick={onClose}
+            className="absolute top-4 right-4 w-10 h-10 bg-white bg-opacity-90 rounded-full flex items-center justify-center shadow-sm"
+          >
+            <div className="icon-x text-lg text-gray-600"></div>
+          </button>
+          <button 
+            onClick={() => onToggleLike(product.id)}
+            className="absolute top-4 left-4 w-10 h-10 bg-white bg-opacity-90 rounded-full flex items-center justify-center shadow-sm"
+          >
+            <div className={`icon-heart text-lg ${isLiked ? 'text-red-500' : 'text-gray-400'}`}></div>
+          </button>
+        </div>
+        
+        <div className="p-6">
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex-1">
+              <h2 className="text-xl font-bold text-[var(--text-primary)] mb-2">{product.name}</h2>
+              <span className="inline-block px-3 py-1 bg-gray-100 text-[var(--text-primary)] rounded-full text-sm font-medium">
+                {categoryName}
+              </span>
+            </div>
+            <div className="text-right ml-4">
+              <span className="text-2xl font-bold text-[var(--secondary-color)]">${product.price.toFixed(2)}</span>
+              <span className="block text-xs text-[var(--text-secondary)]">USD</span>
+            </div>
+          </div>
+          
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">Descripción</h3>
+            <p className="text-[var(--text-secondary)] leading-relaxed">{product.description}</p>
+          </div>
+
+          <div className="space-y-3">
+            <button
+              onClick={() => {
+                onAddToCart(product);
+                onClose();
+              }}
+              className="w-full bg-[var(--secondary-color)] text-white py-3 rounded-lg font-medium flex items-center justify-center space-x-2 hover:bg-opacity-90 transition-all"
+            >
+              <div className="icon-shopping-cart text-lg"></div>
+              <span>Añadir al carrito</span>
+            </button>
+            
+            <button
+              onClick={onClose}
+              className="w-full bg-gray-200 text-[var(--text-primary)] py-3 rounded-lg font-medium"
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -539,7 +626,7 @@ function Footer() {
   );
 }
 
-function ProductGrid({ products, onAddToCart, likedProducts, onToggleLike }) {
+function ProductGrid({ products, onAddToCart, likedProducts, onToggleLike, onProductClick }) {
   if (products.length === 0) {
     return (
       <div className="text-center py-12">
@@ -561,6 +648,7 @@ function ProductGrid({ products, onAddToCart, likedProducts, onToggleLike }) {
           onAddToCart={onAddToCart}
           likedProducts={likedProducts}
           onToggleLike={onToggleLike}
+          onProductClick={onProductClick}
         />
       ))}
     </div>
@@ -612,6 +700,7 @@ function App() {
   const [isCartOpen, setIsCartOpen] = React.useState(false);
   const [likedProducts, setLikedProducts] = React.useState([]);
   const [notification, setNotification] = React.useState({ message: '', isVisible: false });
+  const [selectedProduct, setSelectedProduct] = React.useState(null);
 
   const filteredProducts = React.useMemo(() => {
     let products = selectedCategory === 'todos' 
@@ -659,6 +748,14 @@ function App() {
       }
       return [...prevLiked, productId];
     });
+  };
+
+  const handleProductClick = (product) => {
+    setSelectedProduct(product);
+  };
+
+  const handleCloseProductModal = () => {
+    setSelectedProduct(null);
   };
 
   const handleProcessOrder = (customerData) => {
@@ -739,6 +836,7 @@ function App() {
             onAddToCart={handleAddToCart}
             likedProducts={likedProducts}
             onToggleLike={handleToggleLike}
+            onProductClick={handleProductClick}
           />
         </div>
       </main>
@@ -759,6 +857,15 @@ function App() {
         cart={cart}
         setCart={setCart}
         onProcessOrder={handleProcessOrder}
+      />
+      
+      <ProductDetailModal
+        isOpen={!!selectedProduct}
+        onClose={handleCloseProductModal}
+        product={selectedProduct}
+        onAddToCart={handleAddToCart}
+        likedProducts={likedProducts}
+        onToggleLike={handleToggleLike}
       />
     </div>
   );

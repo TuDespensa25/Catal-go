@@ -41,7 +41,7 @@ body {
 }
 
 .product-card {
-    @apply bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-200;
+    @apply bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-200 cursor-pointer;
 }
 
 .product-card:hover {
