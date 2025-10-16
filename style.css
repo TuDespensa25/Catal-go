@@ -136,6 +136,70 @@ section {
   position: relative;
   z-index: 2;
 }
+
+/* === Banner para vista móvil === */
+.mobile-banner {
+  width: 100%;
+  max-width: 423px;
+  height: 470px;
+  aspect-ratio: 9/10;
+  margin: 0 auto;
+  display: block;
+}
+
+.mobile-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+/* Ocultar banner en desktop */
+@media (min-width: 768px) {
+  .mobile-banner {
+    display: none;
+  }
+}
+
+/* Mostrar banner solo en móvil */
+@media (max-width: 767px) {
+  .mobile-banner {
+    display: block;
+  }
+}
+
+/* === IMAGEN DEL MODAL DE PRODUCTO - MOSTRAR COMPLETA === */
+/* Contenedor de imagen en modal */
+.product-detail-modal img {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  max-height: 500px;
+  object-fit: contain !important; /* Fuerza mostrar imagen completa sin recortar */
+  display: block;
+  margin: 0 auto;
+  background-color: #f8f9fa; /* Fondo claro para imágenes con transparencia */
+  padding: 10px;
+}
+
+/* Asegurar que en móvil también se vea completa */
+@media (max-width: 640px) {
+  .product-detail-modal img {
+    max-height: 400px;
+    max-width: 100%;
+    object-fit: contain !important;
+  }
+}
+
+/* Para pantallas más grandes */
+@media (min-width: 1024px) {
+  .product-detail-modal img {
+    max-height: 500px;
+    max-width: 500px;
+    object-fit: contain !important;
+  }
+}
+
 /* ICONOS PARA CATEGORÍAS */
 .icon-beef::before { content: "🥩"; }
 .icon-milk::before { content: "🥛"; }

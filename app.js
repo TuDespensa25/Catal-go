@@ -69,8 +69,34 @@ const productData = [
   { id: 39, name: 'Jabones 8 uds 100 gr', category: 'aseo', description: 'Jabon de 100 gr', image: '/images/jabon.png', price: 8, availableIn: [1,2] },
 ];
 
-
 // Components
+function MobileBanner() {
+  return (
+    <div className="mobile-banner px-4 mb-6">
+      <img 
+        src="/images/mobile-banner.jpg" 
+        alt="TuDespensa.25 - Ofertas Especiales"
+        className="w-full h-full object-cover rounded-xl shadow-md"
+        onError={(e) => {
+          // Si la imagen no existe, mostrar un banner de placeholder
+          e.target.style.display = 'none';
+          e.target.nextSibling.style.display = 'flex';
+        }}
+      />
+      {/* Banner de placeholder si la imagen no carga */}
+      <div 
+        className="w-full h-full bg-gradient-to-br from-[var(--primary-color)] to-[var(--secondary-color)] rounded-xl flex flex-col items-center justify-center text-white p-4 text-center shadow-md"
+        style={{display: 'none'}}
+      >
+        <div className="icon-shopping-basket text-4xl mb-3"></div>
+        <h3 className="text-xl font-bold mb-2">TuDespensa.25</h3>
+        <p className="text-sm opacity-90">¡Ofertas especiales solo en móvil!</p>
+        <p className="text-xs opacity-80 mt-2">Descuentos hasta 30%</p>
+      </div>
+    </div>
+  );
+}
+
 function NotificationToast({ message, isVisible, onClose }) {
   React.useEffect(() => {
     if (isVisible) {
@@ -509,12 +535,12 @@ function ProductDetailModal({ isOpen, onClose, product, onAddToCart, likedProduc
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end sm:items-center sm:justify-center">
-      <div className="bg-white w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-t-xl sm:rounded-xl">
+      <div className="bg-white w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-t-xl sm:rounded-xl product-detail-modal">
         <div className="relative">
           <img
             src={product.image}
             alt={product.name}
-            className="w-full h-64 sm:h-80 object-cover"
+            className="w-full h-auto max-h-[500px] object-contain bg-gray-50"
           />
           <button 
             onClick={onClose}
@@ -573,7 +599,6 @@ function ProductDetailModal({ isOpen, onClose, product, onAddToCart, likedProduc
     </div>
   );
 }
-
 function Footer() {
   return (
     <footer className="bg-[var(--text-primary)] text-white mt-12">
@@ -822,6 +847,10 @@ function App() {
         onCartClick={() => setIsCartOpen(true)}
       />
       <SocialMediaLinks />
+      
+      {/* Banner para móvil */}
+      <MobileBanner />
+      
       <main className="pb-20">
         <CategoryGrid 
           selectedCategory={selectedCategory}
