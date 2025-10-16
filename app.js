@@ -74,7 +74,7 @@ function MobileBanner() {
   return (
     <div className="mobile-banner px-4 mb-6">
       <img 
-        src="/images/mobile-banner.jpg" 
+        src="/images/mobile-banner.png" 
         alt="TuDespensa.25 - Ofertas Especiales"
         className="w-full h-full object-cover rounded-xl shadow-md"
         onError={(e) => {
