@@ -200,14 +200,50 @@ section {
   }
 }
 
-/* ICONOS PARA CATEGORÍAS */
-.icon-beef::before { content: "🥩"; }
-.icon-milk::before { content: "🥛"; }
-.icon-wheat::before { content: "🌾"; }
-.icon-can::before { content: "🥫"; }
-.icon-broom::before { content: "🧼"; }
-.icon-basket::before { content: "🛒"; }
-.icon-shopping-basket::before { content: "🛒"; }
+/* === MODAL DE OFERTA ESPECIAL - ESTILOS ESPECÍFICOS PARA MÓVIL === */
+@media (max-width: 640px) {
+  .special-offer-modal {
+    padding: 0.5rem !important;
+  }
+  
+  .special-offer-modal .modal-content {
+    max-height: 90vh !important;
+    overflow-y: auto !important;
+    margin: 0 auto !important;
+    width: 95% !important;
+  }
+  
+  .special-offer-modal .product-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0.5rem !important;
+  }
+  
+  .special-offer-modal .product-item {
+    padding: 0.75rem !important;
+    margin: 0.25rem 0 !important;
+  }
+  
+  .special-offer-modal h2 {
+    font-size: 1.25rem !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  .special-offer-modal p {
+    font-size: 0.875rem !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  .special-offer-modal .action-buttons {
+    padding: 0.5rem 0 !important;
+  }
+  
+  .special-offer-modal button {
+    padding: 0.75rem !important;
+    margin: 0.5rem 0 !important;
+    font-size: 0.875rem !important;
+  }
+}
+
 /* Animación para el modal de oferta */
 @keyframes scale-in {
   0% {
@@ -224,7 +260,102 @@ section {
   animation: scale-in 0.3s ease-out;
 }
 
-/* Icono adicional para el modal */
+/* Estilos específicos para el modal de oferta en móvil */
+@media (max-width: 640px) {
+  .special-offer-modal-container {
+    align-items: flex-start !important;
+    padding-top: 2rem !important;
+  }
+  
+  .special-offer-modal-content {
+    max-height: 85vh !important;
+    overflow-y: auto !important;
+    margin: 1rem !important;
+    border-radius: 1rem !important;
+  }
+  
+  .special-offer-image {
+    height: 180px !important;
+  }
+  
+  .special-offer-badge {
+    top: 0.5rem !important;
+    right: 0.5rem !important;
+    font-size: 0.75rem !important;
+    padding: 0.25rem 0.5rem !important;
+  }
+  
+  .special-offer-title {
+    font-size: 1.25rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+  
+  .special-offer-description {
+    font-size: 0.875rem !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  .special-offer-products-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0.5rem !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  .special-offer-product-item {
+    padding: 0.75rem !important;
+    margin: 0.25rem 0 !important;
+  }
+  
+  .special-offer-product-image {
+    width: 2rem !important;
+    height: 2rem !important;
+  }
+  
+  .special-offer-product-name {
+    font-size: 0.75rem !important;
+  }
+  
+  .special-offer-product-price {
+    font-size: 0.75rem !important;
+  }
+  
+  .special-offer-buttons {
+    gap: 0.5rem !important;
+  }
+  
+  .special-offer-primary-button,
+  .special-offer-secondary-button {
+    padding: 0.875rem !important;
+    font-size: 0.875rem !important;
+    margin: 0.25rem 0 !important;
+  }
+  
+  .special-offer-terms {
+    margin-top: 1rem !important;
+    font-size: 0.75rem !important;
+  }
+}
+
+/* Para tablets */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .special-offer-modal-content {
+    max-width: 90% !important;
+    margin: 2rem auto !important;
+  }
+  
+  .special-offer-products-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* ICONOS PARA CATEGORÍAS */
+.icon-beef::before { content: "🥩"; }
+.icon-milk::before { content: "🥛"; }
+.icon-wheat::before { content: "🌾"; }
+.icon-can::before { content: "🥫"; }
+.icon-broom::before { content: "🧼"; }
+.icon-basket::before { content: "🛒"; }
+.icon-shopping-basket::before { content: "🛒"; }
 .icon-tag::before { content: "🏷️"; }
 .icon-package::before { content: "📦"; }
 .icon-arrow-right::before { content: "➡️"; }

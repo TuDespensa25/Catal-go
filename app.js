@@ -125,14 +125,14 @@ function SpecialOfferModal({ isOpen, onClose, onNavigateToProduct }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl max-w-md w-full overflow-hidden animate-scale-in">
+    <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4 special-offer-modal-container">
+      <div className="bg-white rounded-2xl max-w-md w-full overflow-hidden animate-scale-in special-offer-modal-content">
         {/* Header con imagen de oferta */}
         <div className="relative">
           <img
             src="/images/oferta-especial.jpg"
             alt="Oferta Especial"
-            className="w-full h-48 object-cover"
+            className="w-full h-48 object-cover special-offer-image"
             onError={(e) => {
               e.target.style.display = 'none';
               e.target.nextSibling.style.display = 'flex';
@@ -140,7 +140,7 @@ function SpecialOfferModal({ isOpen, onClose, onNavigateToProduct }) {
           />
           {/* Placeholder si la imagen no carga */}
           <div 
-            className="w-full h-48 bg-gradient-to-br from-[var(--primary-color)] to-[var(--secondary-color)] flex flex-col items-center justify-center text-white p-4 text-center"
+            className="w-full h-48 bg-gradient-to-br from-[var(--primary-color)] to-[var(--secondary-color)] flex flex-col items-center justify-center text-white p-4 text-center special-offer-image"
             style={{display: 'none'}}
           >
             <div className="icon-tag text-4xl mb-3"></div>
@@ -150,18 +150,18 @@ function SpecialOfferModal({ isOpen, onClose, onNavigateToProduct }) {
           </div>
           
           {/* Badge de oferta */}
-          <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold animate-pulse">
+          <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold animate-pulse special-offer-badge">
             ¡NUEVO!
           </div>
         </div>
 
         {/* Contenido */}
-        <div className="p-6">
-          <h2 className="text-2xl font-bold text-center text-[var(--text-primary)] mb-4">
+        <div className="p-4 sm:p-6">
+          <h2 className="text-2xl font-bold text-center text-[var(--text-primary)] mb-4 special-offer-title">
             Oferta Especial de la Semana
           </h2>
           
-          <p className="text-[var(--text-secondary)] text-center mb-6">
+          <p className="text-[var(--text-secondary)] text-center mb-6 special-offer-description">
             Descubre nuestros productos en promoción con descuentos exclusivos. 
             ¡Aprovecha estas ofertas por tiempo limitado!
           </p>
@@ -171,14 +171,14 @@ function SpecialOfferModal({ isOpen, onClose, onNavigateToProduct }) {
             <label className="block text-sm font-medium text-[var(--text-primary)] mb-3 text-center">
               Selecciona un producto destacado:
             </label>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-2 special-offer-products-grid">
               {productData
                 .filter(product => [1, 2, 19, 20].includes(product.id)) // Productos destacados
                 .map(product => (
                   <button
                     key={product.id}
                     onClick={() => handleProductSelect(product)}
-                    className={`p-3 border rounded-lg text-left transition-all ${
+                    className={`p-3 border rounded-lg text-left transition-all special-offer-product-item ${
                       selectedProduct?.id === product.id 
                         ? 'border-[var(--primary-color)] bg-green-50 ring-2 ring-[var(--primary-color)] ring-opacity-30' 
                         : 'border-gray-200 hover:border-[var(--primary-color)]'
@@ -188,20 +188,20 @@ function SpecialOfferModal({ isOpen, onClose, onNavigateToProduct }) {
                       <img 
                         src={product.image} 
                         alt={product.name}
-                        className="w-8 h-8 object-cover rounded"
+                        className="w-8 h-8 object-cover rounded special-offer-product-image"
                         onError={(e) => {
                           e.target.style.display = 'none';
                           e.target.nextSibling.style.display = 'flex';
                         }}
                       />
-                      <div className="w-8 h-8 bg-gray-100 rounded flex items-center justify-center" style={{display: 'none'}}>
+                      <div className="w-8 h-8 bg-gray-100 rounded flex items-center justify-center special-offer-product-image" style={{display: 'none'}}>
                         <div className="icon-package text-sm text-gray-400"></div>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-xs font-medium text-[var(--text-primary)] truncate">
+                        <p className="text-xs font-medium text-[var(--text-primary)] truncate special-offer-product-name">
                           {product.name}
                         </p>
-                        <p className="text-xs text-[var(--secondary-color)] font-bold">
+                        <p className="text-xs text-[var(--secondary-color)] font-bold special-offer-product-price">
                           ${product.price}
                         </p>
                       </div>
@@ -212,11 +212,11 @@ function SpecialOfferModal({ isOpen, onClose, onNavigateToProduct }) {
           </div>
 
           {/* Botones de acción */}
-          <div className="space-y-3">
+          <div className="space-y-3 special-offer-buttons">
             <button
               onClick={handleNavigate}
               disabled={!selectedProduct}
-              className={`w-full py-3 rounded-lg font-semibold flex items-center justify-center space-x-2 transition-all ${
+              className={`w-full py-3 rounded-lg font-semibold flex items-center justify-center space-x-2 transition-all special-offer-primary-button ${
                 selectedProduct 
                   ? 'bg-[var(--secondary-color)] text-white hover:bg-opacity-90 transform hover:scale-105' 
                   : 'bg-gray-200 text-gray-400 cursor-not-allowed'
@@ -230,14 +230,14 @@ function SpecialOfferModal({ isOpen, onClose, onNavigateToProduct }) {
             
             <button
               onClick={onClose}
-              className="w-full py-3 bg-gray-100 text-[var(--text-primary)] rounded-lg font-medium hover:bg-gray-200 transition-all"
+              className="w-full py-3 bg-gray-100 text-[var(--text-primary)] rounded-lg font-medium hover:bg-gray-200 transition-all special-offer-secondary-button"
             >
               Seguir Explorando
             </button>
           </div>
 
           {/* Términos de la oferta */}
-          <div className="mt-4 text-center">
+          <div className="mt-4 text-center special-offer-terms">
             <p className="text-xs text-gray-500">
               * Oferta válida por tiempo limitado
             </p>
