@@ -1,11 +1,19 @@
 // Data
 const municipalities = [
-  { id: 1, name: 'San Cristóbal' },
-  { id: 2, name: 'Guanajay' },
-  /*{ id: 3, name: 'Municipio Sur' },
-  { id: 4, name: 'Municipio Este' },
-  { id: 5, name: 'Municipio Oeste' }*/
+  { id: 1, name: 'Artemisa, San Cristóbal' },
+  { id: 2, name: 'Artemisa, Candelaria' },
+  { id: 3, name: 'Artemisa, Bahía Honda' },
+  { id: 4, name: 'Artemisa, Mariel' },
+  { id: 5, name: 'Artemisa, Guanajay' },
+  { id: 6, name: 'Artemisa, Caimito' },
+  { id: 7, name: 'Artemisa, Bauta' },
+  { id: 8, name: 'Artemisa, Artemisa' },
+  { id: 9, name: 'Artemisa, Alquízar' },
+  { id: 10, name: 'Artemisa, Güira de Melena' },
+  { id: 11, name: 'Artemisa, San Antonio de los Baños' },
+  
 ];
+
 
 const categories = [
   { id: 'carnicos', name: 'Cárnicos y embutidos', icon: 'icon-beef', backgroundImage: '/images/carnicos.png' },
@@ -19,9 +27,12 @@ const categories = [
 const productData = [
   // Cárnicos y embutidos
   { id: 1, name: 'Pollo caja de 40 lb 4 paquetes de 10 lb', category: 'carnicos', description: 'Caja de 40 lb de pollo', image: '/images/pollo_caja.png', price: 400, availableIn: [1,2] },
+  { id: 40, name: 'Pollo caja de 33 lb de postas', category: 'carnicos', description: 'Caja de 33 lb de pollo', image: '/images/pollo_caja33.png', price: 40, availableIn: [1,2] },
+
   { id: 2, name: 'Pollo paquete de 10 lb', category: 'carnicos', description: 'Paquete de 10 lb de pollo', image: '/images/pollo10lb.png', price: 120, availableIn: [1,2,3] },
   { id: 3, name: 'Pechuga paquete de 2 kg', category: 'carnicos', description: 'Pechuga de pollo 2 kg', image: '/images/pechuga2kg.png', price: 60, availableIn: [1,2] },
   { id: 4, name: 'Bandeja de 2 lb de bistec pechuga', category: 'carnicos', description: 'Bistec de pechuga 2 lb', image: '/images/bistecpechuga.png', price: 50, availableIn: [2,1] },
+  { id: 41, name: 'Caja de pollo de 40 Lb Postas', category: 'carnicos', description: 'Caja de 40 lb de pollo', image: '/images/pollo_caja40agranel.png', price: 42, availableIn: [1,2] },
   { id: 5, name: 'Chuleta de lomo deshuesado 2 lb', category: 'carnicos', description: 'Chuleta de lomo deshuesado', image: '/images/chuletalomo.png', price: 55, availableIn: [1,2] },
   { id: 6, name: 'Masas de cerdo 2 lb', category: 'carnicos', description: 'Masas de cerdo 2 lb', image: '/images/masas.png', price: 40, availableIn: [1,2] },
   { id: 7, name: 'Bistec de cerdo 2 lb', category: 'carnicos', description: 'Bistec de cerdo 2 lb', image: '/images/bisteclomo.png', price: 50, availableIn: [2,1] },
@@ -92,6 +103,149 @@ function MobileBanner() {
         <h3 className="text-xl font-bold mb-2">TuDespensa.25</h3>
         <p className="text-sm opacity-90">¡Ofertas especiales solo en móvil!</p>
         <p className="text-xs opacity-80 mt-2">Descuentos hasta 30%</p>
+      </div>
+    </div>
+  );
+}
+
+function SpecialOfferModal({ isOpen, onClose, onNavigateToProduct }) {
+  const [selectedProduct, setSelectedProduct] = React.useState(null);
+
+  if (!isOpen) return null;
+
+  const handleProductSelect = (product) => {
+    setSelectedProduct(product);
+  };
+
+  const handleNavigate = () => {
+    if (selectedProduct) {
+      onNavigateToProduct(selectedProduct);
+      onClose();
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl max-w-md w-full overflow-hidden animate-scale-in">
+        {/* Header con imagen de oferta */}
+        <div className="relative">
+          <img
+            src="/images/oferta-especial.jpg"
+            alt="Oferta Especial"
+            className="w-full h-48 object-cover"
+            onError={(e) => {
+              e.target.style.display = 'none';
+              e.target.nextSibling.style.display = 'flex';
+            }}
+          />
+          {/* Placeholder si la imagen no carga */}
+          <div 
+            className="w-full h-48 bg-gradient-to-br from-[var(--primary-color)] to-[var(--secondary-color)] flex flex-col items-center justify-center text-white p-4 text-center"
+            style={{display: 'none'}}
+          >
+            <div className="icon-tag text-4xl mb-3"></div>
+            <h3 className="text-2xl font-bold mb-2">¡OFERTA ESPECIAL!</h3>
+            <p className="text-lg opacity-90">Descuentos exclusivos</p>
+            <p className="text-sm opacity-80 mt-1">Hasta 30% de descuento</p>
+          </div>
+          
+          {/* Badge de oferta */}
+          <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold animate-pulse">
+            ¡NUEVO!
+          </div>
+        </div>
+
+        {/* Contenido */}
+        <div className="p-6">
+          <h2 className="text-2xl font-bold text-center text-[var(--text-primary)] mb-4">
+            Oferta Especial de la Semana
+          </h2>
+          
+          <p className="text-[var(--text-secondary)] text-center mb-6">
+            Descubre nuestros productos en promoción con descuentos exclusivos. 
+            ¡Aprovecha estas ofertas por tiempo limitado!
+          </p>
+
+          {/* Selector de producto destacado */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-[var(--text-primary)] mb-3 text-center">
+              Selecciona un producto destacado:
+            </label>
+            <div className="grid grid-cols-2 gap-2">
+              {productData
+                .filter(product => [1, 2, 19, 20].includes(product.id)) // Productos destacados
+                .map(product => (
+                  <button
+                    key={product.id}
+                    onClick={() => handleProductSelect(product)}
+                    className={`p-3 border rounded-lg text-left transition-all ${
+                      selectedProduct?.id === product.id 
+                        ? 'border-[var(--primary-color)] bg-green-50 ring-2 ring-[var(--primary-color)] ring-opacity-30' 
+                        : 'border-gray-200 hover:border-[var(--primary-color)]'
+                    }`}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <img 
+                        src={product.image} 
+                        alt={product.name}
+                        className="w-8 h-8 object-cover rounded"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                          e.target.nextSibling.style.display = 'flex';
+                        }}
+                      />
+                      <div className="w-8 h-8 bg-gray-100 rounded flex items-center justify-center" style={{display: 'none'}}>
+                        <div className="icon-package text-sm text-gray-400"></div>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-medium text-[var(--text-primary)] truncate">
+                          {product.name}
+                        </p>
+                        <p className="text-xs text-[var(--secondary-color)] font-bold">
+                          ${product.price}
+                        </p>
+                      </div>
+                    </div>
+                  </button>
+                ))}
+            </div>
+          </div>
+
+          {/* Botones de acción */}
+          <div className="space-y-3">
+            <button
+              onClick={handleNavigate}
+              disabled={!selectedProduct}
+              className={`w-full py-3 rounded-lg font-semibold flex items-center justify-center space-x-2 transition-all ${
+                selectedProduct 
+                  ? 'bg-[var(--secondary-color)] text-white hover:bg-opacity-90 transform hover:scale-105' 
+                  : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+              }`}
+            >
+              <div className="icon-arrow-right text-lg"></div>
+              <span>
+                {selectedProduct ? 'Ver Oferta Seleccionada' : 'Selecciona un Producto'}
+              </span>
+            </button>
+            
+            <button
+              onClick={onClose}
+              className="w-full py-3 bg-gray-100 text-[var(--text-primary)] rounded-lg font-medium hover:bg-gray-200 transition-all"
+            >
+              Seguir Explorando
+            </button>
+          </div>
+
+          {/* Términos de la oferta */}
+          <div className="mt-4 text-center">
+            <p className="text-xs text-gray-500">
+              * Oferta válida por tiempo limitado
+            </p>
+            <p className="text-xs text-gray-500">
+              * Precios sujetos a disponibilidad
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -726,6 +880,8 @@ function App() {
   const [likedProducts, setLikedProducts] = React.useState([]);
   const [notification, setNotification] = React.useState({ message: '', isVisible: false });
   const [selectedProduct, setSelectedProduct] = React.useState(null);
+  // Añade este estado para el modal de oferta
+  const [showSpecialOffer, setShowSpecialOffer] = React.useState(true);
 
   const filteredProducts = React.useMemo(() => {
     let products = selectedCategory === 'todos' 
@@ -782,6 +938,22 @@ function App() {
   const handleCloseProductModal = () => {
     setSelectedProduct(null);
   };
+
+  const handleNavigateToProduct = (product) => {
+    setSelectedProduct(product);
+    // También puedes filtrar por la categoría del producto si lo deseas
+    // setSelectedCategory(product.category);
+  };
+
+  // Cierra el modal automáticamente después de 15 segundos
+  React.useEffect(() => {
+    if (showSpecialOffer) {
+      const timer = setTimeout(() => {
+        setShowSpecialOffer(false);
+      }, 15000); // 15 segundos
+      return () => clearTimeout(timer);
+    }
+  }, [showSpecialOffer]);
 
   const handleProcessOrder = (customerData) => {
     const selectedMunicipalityName = municipalities.find(m => m.id === selectedMunicipality)?.name || '';
@@ -895,6 +1067,13 @@ function App() {
         onAddToCart={handleAddToCart}
         likedProducts={likedProducts}
         onToggleLike={handleToggleLike}
+      />
+      
+      {/* Añade el modal de oferta especial */}
+      <SpecialOfferModal
+        isOpen={showSpecialOffer}
+        onClose={() => setShowSpecialOffer(false)}
+        onNavigateToProduct={handleNavigateToProduct}
       />
     </div>
   );
