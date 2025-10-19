@@ -786,15 +786,15 @@ function Footer() {
         <div className="space-y-4 text-center text-sm">
           <div>
             <h4 className="font-semibold text-[var(--primary-color)] mb-2">Contacto</h4>
-            <p className="text-gray-300">📱 +57 300 123 4567</p>
+            <p className="text-gray-300">📱 +</p>
             <p className="text-gray-300">📧 ventas@tudespensa25.com</p>
-            <p className="text-gray-300">📍 Disponible en 5 municipios</p>
+            <p className="text-gray-300">📍 Disponible en todos los municipios de Artemisa</p>
           </div>
           
           <div>
             <h4 className="font-semibold text-[var(--primary-color)] mb-2">Horarios</h4>
-            <p className="text-gray-300">Lunes a Sábado: 7:00 AM - 7:00 PM</p>
-            <p className="text-gray-300">Domingos: 8:00 AM - 5:00 PM</p>
+            <p className="text-gray-300">Las 24 h del día</p>
+            <p className="text-gray-300">Los 7 días de la semana</p>
           </div>
           
           <div>
