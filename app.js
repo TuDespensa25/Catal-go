@@ -91,7 +91,7 @@ const productData = [
 
  // Aseo
   { id: 38, name: 'Papel higiénico', category: 'aseo', description: 'Papel higiénico', image: '/images/papelhigi.png', price: 2.2, availableIn: [1,2,3,4,5,6,7,8,9,10,11,] },
-  { id: 39, name: 'Jabones 8 uds 100 gr', category: 'aseo', description: 'Jabon de 100 gr', image: '/images/jabon.png', price: 0.45 , availableIn: [1,2,3,4,5,6,7,8,9,10,11,] },
+  { id: 39, name: 'Jabón  100 gr', category: 'aseo', description: 'Jabón de 100 gr', image: '/images/jabon.png', price: 0.45 , availableIn: [1,2,3,4,5,6,7,8,9,10,11,] },
 { id: 56, name: 'Detergente polvo Multiuso', category: 'aseo', description: 'Bolsa de 1 Kg', image: '/images/detergente.png', price: 2.4, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
 
 ];
@@ -359,7 +359,7 @@ function CartModal({ isOpen, onClose, cart, setCart, onProcessOrder }) {
                   <div className="flex-1">
                     <h3 className="text-sm font-medium text-[var(--text-secondary)]">{item.name}</h3>
                     <p className="text-xs text-[var(--text-secondary)]">{item.description}</p>
-                    <p className="text-sm font-semibold text-[var(--primary-color)]">${item.price.toFixed(2)} CUP</p>
+                    <p className="text-sm font-semibold text-[var(--primary-color)]">${item.price.toFixed(2)} USD</p>
                   </div>
                   <div className="flex flex-col items-center space-y-1">
                     <div className="flex items-center space-x-2">
@@ -379,7 +379,7 @@ function CartModal({ isOpen, onClose, cart, setCart, onProcessOrder }) {
               <div className="border-t pt-3 mt-4">
                 <div className="flex justify-between items-center bg-[var(--primary-color)] bg-opacity-10 rounded-lg p-3">
                   <span className="text-lg font-semibold text-[var(--text-primary)]">Total:</span>
-                  <span className="text-xl font-bold text-[var(--secondary-color)]">${getTotalPrice().toFixed(2)} CUP</span>
+                  <span className="text-xl font-bold text-[var(--secondary-color)]">${getTotalPrice().toFixed(2)} USD</span>
                 </div>
               </div>
             </div>
@@ -786,7 +786,7 @@ function Footer() {
         <div className="space-y-4 text-center text-sm">
           <div>
             <h4 className="font-semibold text-[var(--primary-color)] mb-2">Contacto</h4>
-            <p className="text-gray-300">📱 +</p>
+            <p className="text-gray-300">📱 +1 (914) 621-8369</p>
             <p className="text-gray-300">📧 ventas@tudespensa25.com</p>
             <p className="text-gray-300">📍 Disponible en todos los municipios de Artemisa</p>
           </div>
@@ -996,12 +996,12 @@ function App() {
       const subtotal = item.price * item.quantity;
       total += subtotal;
       orderMessage += `${index + 1}. ${item.name}\n`;
-      orderMessage += `   💰 Precio: $${item.price.toFixed(2)} CUP\n`;
+      orderMessage += `   💰 Precio: $${item.price.toFixed(2)} USD\n`;
       orderMessage += `   📦 Cantidad: ${item.quantity}\n`;
-      orderMessage += `   💵 Subtotal: $${subtotal.toFixed(2)} CUP\n\n`;
+      orderMessage += `   💵 Subtotal: $${subtotal.toFixed(2)} USD\n\n`;
     });
     
-    orderMessage += `*TOTAL DEL PEDIDO: $${total.toFixed(2)} CUP*\n`;
+    orderMessage += `*TOTAL DEL PEDIDO: $${total.toFixed(2)} USD*\n`;
     
     orderMessage += `\n*DATOS DEL VENDEDOR:*\n`;
     orderMessage += `🏪 Tienda: TuDespensa.25\n`;
