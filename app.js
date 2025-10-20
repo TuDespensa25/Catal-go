@@ -11,9 +11,7 @@ const municipalities = [
   { id: 9, name: 'Artemisa, Alquízar' },
   { id: 10, name: 'Artemisa, Güira de Melena' },
   { id: 11, name: 'Artemisa, San Antonio de los Baños' },
-  
 ];
-
 
 const categories = [
   { id: 'carnicos', name: 'Cárnicos y embutidos', icon: 'icon-beef', backgroundImage: '/images/carnicos.png' },
@@ -41,14 +39,14 @@ const productData = [
   { id: 9, name: 'Lomo ahumado importado 2 lb', category: 'carnicos', description: 'Lomo ahumado deshuesado 1 lb', image: '/images/ahumado.png', price: 4.6, availableIn: [4, 5, 6, 7, 8, 9, 10, 11] },
   { id: 10, name: 'Picadillo 400 gr de pollo', category: 'carnicos', description: 'Picadillo de pollo 400 gr', image: '/images/picadillo.png', price: 1.75, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
   { id: 11, name: 'Hamburguesas mixtas de pollo y cerdo', category: 'carnicos', description: 'Hamburguesas mixtas de pollo y cerdo', image: '/images/hamburguesas.png', price: 2.2, availableIn: [4, 5, 6, 7, 8, 9, 10, 11] },
- { id: 12, name: 'Mortadella Seara de Pollo ', category: 'carnicos', description: 'Mortadella de 500 gr', image: '/images/seara500.png', price: 2.2, availableIn: [1, 2, 3], }, 
+  { id: 12, name: 'Mortadella Seara de Pollo ', category: 'carnicos', description: 'Mortadella de 500 gr', image: '/images/seara500.png', price: 2.2, availableIn: [1, 2, 3] },
   { id: 13, name: 'Mortadella clásica', category: 'carnicos', description: 'Mortadella clásica', image: '/images/mortclasica.png', price:2.2, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
   { id: 14, name: 'Mortadela de queso', category: 'carnicos', description: 'Mortadella de queso', image: '/images/mortqueso.png', price: 2.2, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
   { id: 15, name: 'Mortadela de aceituna', category: 'carnicos', description: 'Mortadella con aceituna', image: '/images/mortaceit.png', price: 2.2, availableIn: [4, 5, 6, 7, 8, 9, 10, 11] },
-   { id: 45, name: 'Carne de Res troceada', category: 'carnicos', description: 'Bolsa de 1 Kg', image: '/images/restroceada.png', price: 14.4, availableIn: [4, 5, 6, 7, 8, 9, 10, 11], }, 
+  { id: 45, name: 'Carne de Res troceada', category: 'carnicos', description: 'Bolsa de 1 Kg', image: '/images/restroceada.png', price: 14.4, availableIn: [4, 5, 6, 7, 8, 9, 10, 11] },
   { id: 17, name: 'Hígado de pollo 1 kg', category: 'carnicos', description: 'Hígado de pollo 1 kg', image: '/images/higado.png', price: 2.40, availableIn: [4, 5, 6, 7, 8, 9, 10, 11] },
   { id: 18, name: 'Salchichas', category: 'carnicos', description: 'Salchichas', image: '/images/salchichas.png', price:1.5, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
-{ id: 50, name: 'Muslo de pollo ahumado', category: 'carnicos', description: 'Bolsa de 3 Lb', image: '/images/polloahumado.png', price: 7, availableIn: [] },
+  { id: 50, name: 'Muslo de pollo ahumado', category: 'carnicos', description: 'Bolsa de 3 Lb', image: '/images/polloahumado.png', price: 7, availableIn: [] },
 
   // Lácteos y Huevos
   { id: 19, name: 'Leche entera 1 kg', category: 'lacteos', description: 'Leche entera 1 kg', image: '/images/leche1kg.png', price: 10, availableIn: [1,2,3] },
@@ -56,9 +54,9 @@ const productData = [
   { id: 21, name: 'Yogurt de fresa 1 L', category: 'lacteos', description: 'Yogurt de fresa 1 L', image: '/images/yogurt1L.png', price: 3.2, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
   { id: 22, name: 'Leche condensada de cajita', category: 'lacteos', description: 'Leche condensada de cajita', image: '/images/cajitaleche.png', price: 1.45, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
   { id: 23, name: 'Leche condensada lata', category: 'lacteos', description: 'Leche condensada lata', image: '/images/nezkaleche.png', price: 1.6, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
-{ id: 55, name: 'Helado', category: 'lacteos', description: 'Caja de 4L', image: '/images/helado.png', price: 9, availableIn: [,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
-{ id: 57, name: 'Leche en Polvo', category: 'lacteos', description: 'Bolsa de 1 kg', image: '/images/lechepolvomu.png', price: 8.5, availableIn: [,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
-{ id: 58, name: 'Cartón de huevos', category: 'lacteos', description: '30 uds frescos 100% orgánicos', image: '/images/huevo30.png', price: 9.4, availableIn: [1,2,3,,19,20,21,22,23,24,25,26,27] },
+  { id: 55, name: 'Helado', category: 'lacteos', description: 'Caja de 4L', image: '/images/helado.png', price: 9, availableIn: [,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
+  { id: 57, name: 'Leche en Polvo', category: 'lacteos', description: 'Bolsa de 1 kg', image: '/images/lechepolvomu.png', price: 8.5, availableIn: [,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
+  { id: 58, name: 'Cartón de huevos', category: 'lacteos', description: '30 uds frescos 100% orgánicos', image: '/images/huevo30.png', price: 9.4, availableIn: [1,2,3,,19,20,21,22,23,24,25,26,27] },
 
   // Cereales, Pastas y Granos
   { id: 24, name: 'Frijol negro 1 lb', category: 'cereales', description: 'Frijol negro 1 lb', image: '/images/frijol2lb.png', price: 1.2, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
@@ -66,14 +64,14 @@ const productData = [
   { id: 26, name: 'Sal 1 lb', category: 'cereales', description: 'Sal 1 lb', image: '/images/sal.png', price: 0.5, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
   { id: 27, name: 'Azúcar 2 lb', category: 'cereales', description: 'Azúcar 2 lb', image: '/images/azucar2lb.png', price: 1.85, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
   { id: 28, name: 'Spaguetis', category: 'cereales', description: 'Spaguetis', image: '/images/spaguetis.png', price:1.2, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
-   { id: 29, name: 'Arroz Grano Largo 25 kg (55 lb)', category: 'cereales', description: 'Saco de arroz  25 kg (55 lb)', image: '/images/arroz25kgsur.png', price: 45, availableIn: [1,3,2] }, 
- { id: 44, name: 'Arroz Grano Largo 25 kg (55 lb)', category: 'cereales', description: 'Saco de arroz  25 kg (55 lb)', image: '/images/Arroz55lbguy.png', price: 45, availableIn: [4,5,6,7,8,9,10,11] }, 
-   { id: 30, name: 'Harina de trigo 1 kg', category: 'cereales', description: 'Harina de trigo 1 kg', image: '/images/harinafresko.png', price: 2.2, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
-{ id: 53, name: 'Frijoles Blanco Del Campo ', category: 'cereales', description: 'Bolsa de 16 OZ', image: '/images/alubiasdelcampo.png', price: 2.4, availableIn: [4,5,6,7,8,9,10,11,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
+  { id: 29, name: 'Arroz Grano Largo 25 kg (55 lb)', category: 'cereales', description: 'Saco de arroz  25 kg (55 lb)', image: '/images/arroz25kgsur.png', price: 45, availableIn: [1,3,2] },
+  { id: 44, name: 'Arroz Grano Largo 25 kg (55 lb)', category: 'cereales', description: 'Saco de arroz  25 kg (55 lb)', image: '/images/Arroz55lbguy.png', price: 45, availableIn: [4,5,6,7,8,9,10,11] },
+  { id: 30, name: 'Harina de trigo 1 kg', category: 'cereales', description: 'Harina de trigo 1 kg', image: '/images/harinafresko.png', price: 2.2, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
+  { id: 53, name: 'Frijoles Blanco Del Campo ', category: 'cereales', description: 'Bolsa de 16 OZ', image: '/images/alubiasdelcampo.png', price: 2.4, availableIn: [4,5,6,7,8,9,10,11,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
 
   // Conserva y Enlatados
   { id: 31, name: 'Pasta de tomate 400 gr', category: 'conserva', description: 'Pasta de tomate 400 gr', image: '/images/pasta400.png', price: 1.6, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
-   { id: 43, name: 'Pasta de tomate Vima 3 Kg', category: 'conserva', description: 'Pasta de tomate 3 Kg', image: '/images/vima3kg.png', price: 9.4, availableIn: [4,5,6,7,8,9,10,11] },
+  { id: 43, name: 'Pasta de tomate Vima 3 Kg', category: 'conserva', description: 'Pasta de tomate 3 Kg', image: '/images/vima3kg.png', price: 9.4, availableIn: [4,5,6,7,8,9,10,11] },
   { id: 32, name: 'Pasta de tomate 800 gr', category: 'conserva', description: 'Pasta de tomate 800 gr', image: '/images/800gr.png', price: 3.5, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
   { id: 33, name: 'Leche condensada cocinada', category: 'conserva', description: 'Leche condensada cocinada', image: '/images/cocinada.png', price: 2, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
   { id: 34, name: 'Mayonesa celorio', category: 'conserva', description: 'Mayonesa Celorio', image: '/images/celorio.png', price: 3.8, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
@@ -82,41 +80,83 @@ const productData = [
   { id: 35, name: 'Aceite 1 L', category: 'mercado', description: 'Aceite 1 L', image: '/images/aceite1l.png', price: 2.9, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
   { id: 36, name: 'Chocolate en polvo 500 gr', category: 'mercado', description: 'Chocolate en polvo 500 gr', image: '/images/chocopolvo.png', price: 2.8, availableIn: [3,2,1] },
   { id: 37, name: 'Gelatina', category: 'mercado', description: 'Gelatina', image: '/images/gelafresa.png', price: 0.9, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
-    { id: 46, name: 'Café La LLave ', category: 'mercado', description: 'Café La Llave 10 oz', image: '/images/cafelallave.png', price: 6, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
+  { id: 46, name: 'Café La LLave ', category: 'mercado', description: 'Café La Llave 10 oz', image: '/images/cafelallave.png', price: 6, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
   { id: 47, name: 'Café La Carreta', category: 'mercado', description: 'Café Prensado 10 oz', image: '/images/cafelacarreta.png', price: 6, availableIn: [4,5,6,7,8,9,10,11] },
-   { id: 48, name: 'Café Sello Rojo', category: 'mercado', description: 'Café Prensado 10 oz', image: '/images/cafesellorojo.png', price: 6, availableIn: [4,5,6,7,8,9,10,11] },
- { id: 49, name: 'Café Dufiltro', category: 'mercado', description: 'Café Prensado 250 gr', image: '/images/cafedufiltro.png', price: 4.2, availableIn: [1,2,3,4,5,6,7,8,9,10,11,] },
-   { id: 51, name: 'Refresco Zuko', category: 'mercado', description: 'Caja de 8 sobres', image: '/images/zuko.png', price: 2.95, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
-{ id: 52, name: 'Maíz dulce en granos', category: 'mercado', description: 'Lata de 445 gr', image: '/images/maizdulce.png', price: 1.7, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
-{ id: 54, name: 'Ketchup Kurtz', category: 'mercado', description: 'Pomo de 10 OZ', image: '/images/ketchupkurtz.png', price: 2.95, availableIn: [4,5,6,7,8,9,10,11,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
+  { id: 48, name: 'Café Sello Rojo', category: 'mercado', description: 'Café Prensado 10 oz', image: '/images/cafesellorojo.png', price: 6, availableIn: [4,5,6,7,8,9,10,11] },
+  { id: 49, name: 'Café Dufiltro', category: 'mercado', description: 'Café Prensado 250 gr', image: '/images/cafedufiltro.png', price: 4.2, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
+  { id: 51, name: 'Refresco Zuko', category: 'mercado', description: 'Caja de 8 sobres', image: '/images/zuko.png', price: 2.95, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
+  { id: 52, name: 'Maíz dulce en granos', category: 'mercado', description: 'Lata de 445 gr', image: '/images/maizdulce.png', price: 1.7, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
+  { id: 54, name: 'Ketchup Kurtz', category: 'mercado', description: 'Pomo de 10 OZ', image: '/images/ketchupkurtz.png', price: 2.95, availableIn: [4,5,6,7,8,9,10,11,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
 
- // Aseo
-  { id: 38, name: 'Papel higiénico', category: 'aseo', description: 'Papel higiénico', image: '/images/papelhigi.png', price: 2.2, availableIn: [1,2,3,4,5,6,7,8,9,10,11,] },
-  { id: 39, name: 'Jabón  100 gr', category: 'aseo', description: 'Jabón de 100 gr', image: '/images/jabon.png', price: 0.45 , availableIn: [1,2,3,4,5,6,7,8,9,10,11,] },
-{ id: 56, name: 'Detergente polvo Multiuso', category: 'aseo', description: 'Bolsa de 1 Kg', image: '/images/detergente.png', price: 2.4, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
- 
-// Agrito
-{ id: 59, name: 'Boniato', category: 'agro', description: 'Bolsa de 5 lb', image: '/images/boniato.png', price: 2.4, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
-{ id: 60, name: 'Malanga', category: 'agro', description: 'Bolsa de 5 lb', image: '/images/malanga.png', price: 1.5, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
-{ id: 61, name: 'Ajo', category: 'agro', description: 'Bolsa de 10 cabezas Importados', image: '/images/ajo.png', price: 2.7, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
+  // Aseo
+  { id: 38, name: 'Papel higiénico', category: 'aseo', description: 'Papel higiénico', image: '/images/papelhigi.png', price: 2.2, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
+  { id: 39, name: 'Jabón  100 gr', category: 'aseo', description: 'Jabón de 100 gr', image: '/images/jabon.png', price: 0.45 , availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
+  { id: 56, name: 'Detergente polvo Multiuso', category: 'aseo', description: 'Bolsa de 1 Kg', image: '/images/detergente.png', price: 2.4, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
 
+  // Agrito
+  { id: 59, name: 'Boniato', category: 'agro', description: 'Bolsa de 5 lb', image: '/images/boniato.png', price: 2.4, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
+  { id: 60, name: 'Malanga', category: 'agro', description: 'Bolsa de 5 lb', image: '/images/malanga.png', price: 1.5, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
+  { id: 61, name: 'Ajo', category: 'agro', description: 'Bolsa de 10 cabezas Importados', image: '/images/ajo.png', price: 2.7, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
 ];
+
+// Hook de debounce optimizado
+function useDebounce(value, delay) {
+  const [debouncedValue, setDebouncedValue] = React.useState(value);
+
+  React.useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+}
+
+// Componente de imagen optimizado
+const OptimizedImage = React.memo(({ src, alt, className, ...props }) => {
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [hasError, setHasError] = React.useState(false);
+
+  return (
+    <div className={`relative ${className}`}>
+      {isLoading && (
+        <div className="absolute inset-0 image-loading rounded" />
+      )}
+      <img
+        src={src}
+        alt={alt}
+        className={`${className} ${isLoading ? 'opacity-0' : 'opacity-100 fade-in'} transition-opacity duration-300`}
+        onLoad={() => setIsLoading(false)}
+        onError={(e) => {
+          setIsLoading(false);
+          setHasError(true);
+          e.target.style.display = 'none';
+        }}
+        loading="lazy"
+        {...props}
+      />
+      {hasError && (
+        <div className="absolute inset-0 bg-gray-100 flex items-center justify-center rounded">
+          <div className="icon-package text-gray-400 text-xl"></div>
+        </div>
+      )}
+    </div>
+  );
+});
 
 // Components
 function MobileBanner() {
   return (
     <div className="mobile-banner px-4 mb-6">
-      <img 
+      <OptimizedImage 
         src="/images/banner17.m.png" 
         alt="TuDespensa.25 - Ofertas Especiales"
         className="w-full h-full object-cover rounded-xl shadow-md"
-        onError={(e) => {
-          // Si la imagen no existe, mostrar un banner de placeholder
-          e.target.style.display = 'none';
-          e.target.nextSibling.style.display = 'flex';
-        }}
       />
-      {/* Banner de placeholder si la imagen no carga */}
       <div 
         className="w-full h-full bg-gradient-to-br from-[var(--primary-color)] to-[var(--secondary-color)] rounded-xl flex flex-col items-center justify-center text-white p-4 text-center shadow-md"
         style={{display: 'none'}}
@@ -130,8 +170,13 @@ function MobileBanner() {
   );
 }
 
-function SpecialOfferModal({ isOpen, onClose, onNavigateToProduct }) {
+const SpecialOfferModal = React.memo(({ isOpen, onClose, onNavigateToProduct }) => {
   const [selectedProduct, setSelectedProduct] = React.useState(null);
+
+  // Productos destacados memoizados
+  const featuredProducts = React.useMemo(() => 
+    productData.filter(product => [42, 49, 39, 27].includes(product.id)),
+  []);
 
   if (!isOpen) return null;
 
@@ -149,18 +194,12 @@ function SpecialOfferModal({ isOpen, onClose, onNavigateToProduct }) {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4 special-offer-modal-container">
       <div className="bg-white rounded-2xl max-w-md w-full overflow-hidden animate-scale-in special-offer-modal-content">
-        {/* Header con imagen de oferta */}
         <div className="relative">
-          <img
+          <OptimizedImage
             src="/images/oferta-especial.jpg"
             alt="Oferta Especial"
             className="w-full h-48 object-cover special-offer-image"
-            onError={(e) => {
-              e.target.style.display = 'none';
-              e.target.nextSibling.style.display = 'flex';
-            }}
           />
-          {/* Placeholder si la imagen no carga */}
           <div 
             className="w-full h-48 bg-gradient-to-br from-[var(--primary-color)] to-[var(--secondary-color)] flex flex-col items-center justify-center text-white p-4 text-center special-offer-image"
             style={{display: 'none'}}
@@ -171,13 +210,11 @@ function SpecialOfferModal({ isOpen, onClose, onNavigateToProduct }) {
             <p className="text-sm opacity-80 mt-1">Hasta 30% de descuento</p>
           </div>
           
-          {/* Badge de oferta */}
           <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold animate-pulse special-offer-badge">
             ¡NUEVO!
           </div>
         </div>
 
-        {/* Contenido */}
         <div className="p-4 sm:p-6">
           <h2 className="text-2xl font-bold text-center text-[var(--text-primary)] mb-4 special-offer-title">
             Oferta Especial de la Semana
@@ -188,52 +225,41 @@ function SpecialOfferModal({ isOpen, onClose, onNavigateToProduct }) {
             ¡Aprovecha estas ofertas por tiempo limitado!
           </p>
 
-          {/* Selector de producto destacado */}
           <div className="mb-6">
             <label className="block text-sm font-medium text-[var(--text-primary)] mb-3 text-center">
               Selecciona un producto destacado:
             </label>
             <div className="grid grid-cols-2 gap-2 special-offer-products-grid">
-              {productData
-                .filter(product => [42,49,39,27].includes(product.id)) // Productos destacados
-                .map(product => (
-                  <button
-                    key={product.id}
-                    onClick={() => handleProductSelect(product)}
-                    className={`p-3 border rounded-lg text-left transition-all special-offer-product-item ${
-                      selectedProduct?.id === product.id 
-                        ? 'border-[var(--primary-color)] bg-green-50 ring-2 ring-[var(--primary-color)] ring-opacity-30' 
-                        : 'border-gray-200 hover:border-[var(--primary-color)]'
-                    }`}
-                  >
-                    <div className="flex items-center space-x-2">
-                      <img 
-                        src={product.image} 
-                        alt={product.name}
-                        className="w-8 h-8 object-cover rounded special-offer-product-image"
-                        onError={(e) => {
-                          e.target.style.display = 'none';
-                          e.target.nextSibling.style.display = 'flex';
-                        }}
-                      />
-                      <div className="w-8 h-8 bg-gray-100 rounded flex items-center justify-center special-offer-product-image" style={{display: 'none'}}>
-                        <div className="icon-package text-sm text-gray-400"></div>
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs font-medium text-[var(--text-primary)] truncate special-offer-product-name">
-                          {product.name}
-                        </p>
-                        <p className="text-xs text-[var(--secondary-color)] font-bold special-offer-product-price">
-                          ${product.price}
-                        </p>
-                      </div>
+              {featuredProducts.map(product => (
+                <button
+                  key={product.id}
+                  onClick={() => handleProductSelect(product)}
+                  className={`p-3 border rounded-lg text-left transition-all special-offer-product-item ${
+                    selectedProduct?.id === product.id 
+                      ? 'border-[var(--primary-color)] bg-green-50 ring-2 ring-[var(--primary-color)] ring-opacity-30' 
+                      : 'border-gray-200 hover:border-[var(--primary-color)]'
+                  }`}
+                >
+                  <div className="flex items-center space-x-2">
+                    <OptimizedImage 
+                      src={product.image} 
+                      alt={product.name}
+                      className="w-8 h-8 object-cover rounded special-offer-product-image"
+                    />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-medium text-[var(--text-primary)] truncate special-offer-product-name">
+                        {product.name}
+                      </p>
+                      <p className="text-xs text-[var(--secondary-color)] font-bold special-offer-product-price">
+                        ${product.price}
+                      </p>
                     </div>
-                  </button>
-                ))}
+                  </div>
+                </button>
+              ))}
             </div>
           </div>
 
-          {/* Botones de acción */}
           <div className="space-y-3 special-offer-buttons">
             <button
               onClick={handleNavigate}
@@ -258,7 +284,6 @@ function SpecialOfferModal({ isOpen, onClose, onNavigateToProduct }) {
             </button>
           </div>
 
-          {/* Términos de la oferta */}
           <div className="mt-4 text-center special-offer-terms">
             <p className="text-xs text-gray-500">
               * Oferta válida por tiempo limitado
@@ -271,9 +296,9 @@ function SpecialOfferModal({ isOpen, onClose, onNavigateToProduct }) {
       </div>
     </div>
   );
-}
+});
 
-function NotificationToast({ message, isVisible, onClose }) {
+const NotificationToast = React.memo(({ message, isVisible, onClose }) => {
   React.useEffect(() => {
     if (isVisible) {
       const timer = setTimeout(() => {
@@ -293,9 +318,9 @@ function NotificationToast({ message, isVisible, onClose }) {
       </div>
     </div>
   );
-}
+});
 
-function CartModal({ isOpen, onClose, cart, setCart, onProcessOrder }) {
+const CartModal = React.memo(({ isOpen, onClose, cart, setCart, onProcessOrder }) => {
   const [customerData, setCustomerData] = React.useState({
     name: '',
     phone: '',
@@ -361,7 +386,7 @@ function CartModal({ isOpen, onClose, cart, setCart, onProcessOrder }) {
             <div className="p-4 space-y-3">
               {cart.map(item => (
                 <div key={item.id} className="flex items-center space-x-3 bg-gray-50 rounded-lg p-3">
-                  <img src={item.image} alt={item.name} className="w-12 h-12 object-cover rounded-lg" />
+                  <OptimizedImage src={item.image} alt={item.name} className="w-12 h-12 object-cover rounded-lg" />
                   <div className="flex-1">
                     <h3 className="text-sm font-medium text-[var(--text-secondary)]">{item.name}</h3>
                     <p className="text-xs text-[var(--text-secondary)]">{item.description}</p>
@@ -458,9 +483,9 @@ function CartModal({ isOpen, onClose, cart, setCart, onProcessOrder }) {
       </div>
     </div>
   );
-}
+});
 
-function SocialMediaLinks() {
+const SocialMediaLinks = React.memo(() => {
   return (
     <div className="flex items-center justify-center space-x-4 px-4 py-3 bg-white border-b">
       <span className="text-xs text-[var(--text-secondary)]">Síguenos:</span>
@@ -490,9 +515,9 @@ function SocialMediaLinks() {
       </a>
     </div>
   );
-}
+});
 
-function Header({ searchTerm, setSearchTerm, selectedMunicipality, setSelectedMunicipality, cartItems, onCartClick }) {
+const Header = React.memo(({ searchTerm, setSearchTerm, selectedMunicipality, setSelectedMunicipality, cartItems, onCartClick }) => {
   const [showMunicipalityDropdown, setShowMunicipalityDropdown] = React.useState(false);
 
   return (
@@ -500,14 +525,10 @@ function Header({ searchTerm, setSearchTerm, selectedMunicipality, setSelectedMu
       <div className="px-4 py-4">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-2">
-            <img 
+            <OptimizedImage 
               src="https://app.trickle.so/storage/public/images/usr_0b2efdb2f0000001/2fc53855-ded6-40ff-959b-7a5c6077e0e3.svg" 
               alt="TuDespensa25 Logo" 
               className="w-10 h-10 bg-white rounded-full p-2"
-              onError={(e) => {
-                e.target.style.display = 'none';
-                e.target.nextSibling.style.display = 'flex';
-              }}
             />
             <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center" style={{display: 'none'}}>
               <div className="icon-shopping-basket text-xl text-[var(--primary-color)]"></div>
@@ -569,11 +590,11 @@ function Header({ searchTerm, setSearchTerm, selectedMunicipality, setSelectedMu
       </div>
     </header>
   );
-}
+});
 
-function CategoryGrid({ selectedCategory, onCategorySelect }) {
+const CategoryGrid = React.memo(({ selectedCategory, onCategorySelect }) => {
   return (
-    <section className="px-4 py-4 sm:py-6 bg-white">
+    <section className="px-4 py-4 sm:py-6 bg-white categories-section">
       <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-3 sm:mb-4">Categorías</h2>
       <div className="grid grid-cols-2 gap-2 sm:gap-3 sm:grid-cols-3 md:grid-cols-4">
         {categories.map((category) => (
@@ -604,10 +625,9 @@ function CategoryGrid({ selectedCategory, onCategorySelect }) {
       </div>
     </section>
   );
-}
+});
 
-
-function FloatingWhatsAppButton() {
+const FloatingWhatsAppButton = React.memo(() => {
   const handleWhatsAppClick = () => {
     const message = "¡Hola! Me interesa conocer más sobre los productos de TuDespensa.25";
     const whatsappUrl = `https://wa.me/5354066204?text=${encodeURIComponent(message)}`;
@@ -622,9 +642,9 @@ function FloatingWhatsAppButton() {
       <div className="icon-message-circle text-xl"></div>
     </button>
   );
-}
+});
 
-function FloatingWishlistButton() {
+const FloatingWishlistButton = React.memo(() => {
   const handleWishlistClick = () => {
     const message = "¡Hola! Tengo un deseo especial para mi despensa:\n\n[Describe aquí el producto que deseas que TuDespensa.25 tenga disponible]\n\n¡Gracias por considerar mis sugerencias!";
     const whatsappUrl = `https://wa.me/5354066204?text=${encodeURIComponent(message)}`;
@@ -639,35 +659,33 @@ function FloatingWishlistButton() {
       <div className="icon-heart text-xl"></div>
     </button>
   );
-}
+});
 
-function ProductCard({ product, onAddToCart, likedProducts, onToggleLike, onProductClick }) {
+const ProductCard = React.memo(({ product, onAddToCart, likedProducts, onToggleLike, onProductClick }) => {
   const isLiked = likedProducts.includes(product.id);
 
   const handleCardClick = (e) => {
-    // Evita que se abra el modal cuando se hace clic en botones secundarios
     if (e.target.closest('button')) return;
     onProductClick(product);
   };
 
   const handleLikeClick = (e) => {
-    e.stopPropagation(); // Previene que se abra el modal
+    e.stopPropagation();
     onToggleLike(product.id);
   };
 
   const handleAddToCart = (e) => {
-    e.stopPropagation(); // Previene que se abra el modal
+    e.stopPropagation();
     onAddToCart(product);
   };
 
   return (
     <div className="product-card" onClick={handleCardClick}>
       <div className="aspect-square bg-gray-100 relative overflow-hidden">
-        <img
+        <OptimizedImage
           src={product.image}
           alt={product.name}
           className="w-full h-full object-cover"
-          loading="lazy"
         />
         <button 
           onClick={handleLikeClick}
@@ -701,9 +719,9 @@ function ProductCard({ product, onAddToCart, likedProducts, onToggleLike, onProd
       </div>
     </div>
   );
-}
+});
 
-function ProductDetailModal({ isOpen, onClose, product, onAddToCart, likedProducts, onToggleLike }) {
+const ProductDetailModal = React.memo(({ isOpen, onClose, product, onAddToCart, likedProducts, onToggleLike }) => {
   if (!isOpen || !product) return null;
 
   const isLiked = likedProducts.includes(product.id);
@@ -713,7 +731,7 @@ function ProductDetailModal({ isOpen, onClose, product, onAddToCart, likedProduc
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end sm:items-center sm:justify-center">
       <div className="bg-white w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-t-xl sm:rounded-xl product-detail-modal">
         <div className="relative">
-          <img
+          <OptimizedImage
             src={product.image}
             alt={product.name}
             className="w-full h-auto max-h-[500px] object-contain bg-gray-50"
@@ -774,8 +792,9 @@ function ProductDetailModal({ isOpen, onClose, product, onAddToCart, likedProduc
       </div>
     </div>
   );
-}
-function Footer() {
+});
+
+const Footer = React.memo(() => {
   return (
     <footer className="bg-[var(--text-primary)] text-white mt-12">
       <div className="px-4 py-8">
@@ -825,9 +844,9 @@ function Footer() {
       </div>
     </footer>
   );
-}
+});
 
-function ProductGrid({ products, onAddToCart, likedProducts, onToggleLike, onProductClick }) {
+const ProductGrid = React.memo(({ products, onAddToCart, likedProducts, onToggleLike, onProductClick }) => {
   if (products.length === 0) {
     return (
       <div className="text-center py-12">
@@ -854,7 +873,7 @@ function ProductGrid({ products, onAddToCart, likedProducts, onToggleLike, onPro
       ))}
     </div>
   );
-}
+});
 
 // Error Boundary
 class ErrorBoundary extends React.Component {
@@ -902,28 +921,38 @@ function App() {
   const [likedProducts, setLikedProducts] = React.useState([]);
   const [notification, setNotification] = React.useState({ message: '', isVisible: false });
   const [selectedProduct, setSelectedProduct] = React.useState(null);
-  // Añade este estado para el modal de oferta
   const [showSpecialOffer, setShowSpecialOffer] = React.useState(true);
 
+  // Debounce para búsqueda
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+
+  // Filtrado optimizado de productos
   const filteredProducts = React.useMemo(() => {
-    let products = selectedCategory === 'todos' 
-      ? productData 
-      : productData.filter(product => product.category === selectedCategory);
+    if (!selectedMunicipality) return [];
     
-    // Filter by municipality availability
-    if (selectedMunicipality) {
-      products = products.filter(product => product.availableIn.includes(selectedMunicipality));
+    let filtered = productData;
+    
+    // Filtrar por municipio primero (más restrictivo)
+    filtered = filtered.filter(product => 
+      product.availableIn.includes(selectedMunicipality)
+    );
+    
+    // Luego por categoría
+    if (selectedCategory !== 'todos') {
+      filtered = filtered.filter(product => product.category === selectedCategory);
     }
     
-    if (searchTerm) {
-      products = products.filter(product =>
-        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.description.toLowerCase().includes(searchTerm.toLowerCase())
+    // Finalmente por búsqueda
+    if (debouncedSearchTerm.trim()) {
+      const term = debouncedSearchTerm.toLowerCase().trim();
+      filtered = filtered.filter(product =>
+        product.name.toLowerCase().includes(term) ||
+        product.description.toLowerCase().includes(term)
       );
     }
     
-    return products;
-  }, [selectedCategory, searchTerm, selectedMunicipality]);
+    return filtered;
+  }, [selectedCategory, debouncedSearchTerm, selectedMunicipality]);
 
   const handleAddToCart = (product) => {
     setCart(prevCart => {
@@ -963,8 +992,6 @@ function App() {
 
   const handleNavigateToProduct = (product) => {
     setSelectedProduct(product);
-    // También puedes filtrar por la categoría del producto si lo deseas
-    // setSelectedCategory(product.category);
   };
 
   // Cierra el modal automáticamente después de 15 segundos
@@ -972,7 +999,7 @@ function App() {
     if (showSpecialOffer) {
       const timer = setTimeout(() => {
         setShowSpecialOffer(false);
-      }, 15000); // 15 segundos
+      }, 15000);
       return () => clearTimeout(timer);
     }
   }, [showSpecialOffer]);
@@ -1050,7 +1077,7 @@ function App() {
           selectedCategory={selectedCategory}
           onCategorySelect={setSelectedCategory}
         />
-        <div className="px-4 mt-6">
+        <div className="px-4 mt-6 products-section">
           <h2 className="text-xl font-semibold text-[var(--text-primary)] mb-4">
             {selectedCategory === 'todos' ? 'Todos los Productos' : categories.find(c => c.id === selectedCategory)?.name}
           </h2>
@@ -1091,7 +1118,6 @@ function App() {
         onToggleLike={handleToggleLike}
       />
       
-      {/* Añade el modal de oferta especial */}
       <SpecialOfferModal
         isOpen={showSpecialOffer}
         onClose={() => setShowSpecialOffer(false)}

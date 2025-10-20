@@ -8,6 +8,16 @@
     <meta name="description" content="Catálogo online de TuDespensa.25 con productos de cárnicos, lácteos, líquidos, agro, confitería, hogar y electrodomésticos">
     <meta name="keywords" content="despensa, productos, cárnicos, lácteos, confitería, hogar, electrodomésticos">
     
+    <!-- Preloads y optimizaciones de rendimiento -->
+    <link rel="preconnect" href="https://resource.trickle.so">
+    <link rel="dns-prefetch" href="https://resource.trickle.so">
+    <link rel="preload" href="https://resource.trickle.so/vendor_lib/unpkg/lucide-static@0.516.0/font/lucide.css" as="style">
+
+    <!-- Meta tags para performance -->
+    <meta name="theme-color" content="#22c55e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
     <!-- Open Graph -->
     <meta property="og:title" content="TuDespensa.25 - Catálogo Online">
     <meta property="og:description" content="Descubre nuestro catálogo completo de productos organizados por categorías">
@@ -23,6 +33,20 @@
     <link href="https://resource.trickle.so/vendor_lib/unpkg/lucide-static@0.516.0/font/lucide.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
 
+    <!-- CSS Crítico Inline -->
+    <style>
+        .header-gradient { background: linear-gradient(135deg, #22c55e 0%, #f97316 100%); }
+        .product-card { background: white; border-radius: 0.75rem; overflow: hidden; }
+        .image-placeholder { 
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    </style>
 </head>
 <body>
     <div id="root"></div>
