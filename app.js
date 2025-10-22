@@ -20,13 +20,14 @@ const categories = [
   { id: 'conserva', name: 'Conserva y enlatados', icon: 'icon-can', backgroundImage: '/images/conserva.png' },
   { id: 'mercado', name: 'Mercado', icon: 'icon-basket', backgroundImage: '/images/mercado.png' },
   { id: 'aseo', name: 'Aseo', icon: 'icon-broom', backgroundImage: '/images/aseo.png' },
-  { id: 'agro', name: 'Agrito', icon: 'icon-basket', backgroundImage: '/images/aseo.png' }
+  { id: 'agro', name: 'Agrito', icon: 'icon-basket', backgroundImage: '/images/aseo.png' },
+  { id: 'liquido', name: 'Líquidos', icon: 'icon-basket', backgroundImage: '/images/aseo.png' }
 ];
 
 const productData = [
   // Cárnicos y embutidos
   { id: 1, name: 'Pollo caja de 40 lb 4 paquetes de 10 lb', category: 'carnicos', description: 'Caja de 40 lb de pollo', image: '/images/pollo_caja.png', price: 43, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
-  { id: 40, name: 'Pollo caja de 33 lb de postas', category: 'carnicos', description: 'Caja de 33 lb de pollo', image: '/images/pollo_caja33.png', price: 38, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
+  { id: 40, name: 'Pollo caja de 33 lb de postas', category: 'carnicos', description: 'Caja de 33 lb de pollo', image: '/images/pollo_caja33.png', price: 38, availableIn: [] },
   { id: 42, name: 'Lomo de Cerdo Importado ', category: 'carnicos', description: 'Porción de 3 Lb', image: '/images/lomo.png', price: 10.4, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
   { id: 2, name: 'Pollo paquete de 10 lb', category: 'carnicos', description: 'Paquete de 10 lb de pollo', image: '/images/pollo10lb.png', price: 11.2, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
   { id: 3, name: 'Pechuga paquete de 2 kg', category: 'carnicos', description: 'Pechuga de pollo 2 kg', image: '/images/pechuga2kg.png', price: 14, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
@@ -97,6 +98,11 @@ const productData = [
   { id: 59, name: 'Boniato', category: 'agro', description: 'Bolsa de 5 lb', image: '/images/boniato.png', price: 2.4, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
   { id: 60, name: 'Malanga', category: 'agro', description: 'Bolsa de 5 lb', image: '/images/malanga.png', price: 3.5, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
   { id: 61, name: 'Ajo', category: 'agro', description: 'Bolsa de 10 cabezas Importados', image: '/images/ajo.png', price: 2.7, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
+
+  { id: 62, name: 'Whisky Old Star', category: 'liquido', description: 'Botella de 1 Lts', image: '/images/old.png', price: 7, recent: 1, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
+{ id: 63, name: 'Cerveza Cristal', category: 'liquido', description: 'Caja de 24 uds', image: '/images/cristal.png', price: 24, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
+{ id: 64, name: 'Cerveza Económica', category: 'liquido', description: 'Caja de 24 uds', image: '/images/timber.png', price: 16, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
+
 ];
 
 // Hook de debounce optimizado
@@ -1042,9 +1048,9 @@ function App() {
     orderMessage += `📧 Email: ventas@tudespensa25.com\n`;
     
     orderMessage += `\n*DATOS DE ENTREGA:*\n`;
-    orderMessage += `🚚 Entrega a domicilio disponible\n`;
-    orderMessage += `⏰ Tiempo estimado: 2-4 horas\n`;
-    orderMessage += `💳 Pago: Efectivo o transferencia\n`;
+    orderMessage += `🚚 Entrega a domicilio \n`;
+    orderMessage += `⏰ Tiempo estimado: 24 a 48 horas\n`;
+    orderMessage += `💳 Pago: Efectivo o transferencia Zelle\n`;
 
     const whatsappUrl = `https://wa.me/5354066204?text=${encodeURIComponent(orderMessage)}`;
     window.open(whatsappUrl, '_blank');
