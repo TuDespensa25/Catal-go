@@ -2,7 +2,7 @@
 const municipalities = [
   { id: 1, name: 'Artemisa, San Cristóbal' },
   { id: 2, name: 'Artemisa, Candelaria' },
-  { id: 3, name: 'Artemisa, Bahía Honda' },
+  
   { id: 4, name: 'Artemisa, Mariel' },
   { id: 5, name: 'Artemisa, Guanajay' },
   { id: 6, name: 'Artemisa, Caimito' },
