@@ -185,7 +185,7 @@ const SpecialOfferModal = React.memo(({ isOpen, onClose, onNavigateToProduct }) 
 
   // Productos destacados memoizados
   const featuredProducts = React.useMemo(() => 
-    productData.filter(product => [42, 49, 39, 27].includes(product.id)),
+    productData.filter(product => [, , 65, 66].includes(product.id)),
   []);
 
   if (!isOpen) return null;
