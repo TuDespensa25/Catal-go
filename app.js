@@ -339,6 +339,44 @@ const CartModal = React.memo(({ isOpen, onClose, cart, setCart, onProcessOrder }
     address: '',
     notes: ''
   });
+  
+  const [discountCode, setDiscountCode] = React.useState('');
+  const [discountApplied, setDiscountApplied] = React.useState(false);
+  const [discountError, setDiscountError] = React.useState('');
+  const [discountPercentage, setDiscountPercentage] = React.useState(0);
+
+  // Códigos de descuento válidos (puedes agregar más)
+  const validDiscountCodes = {
+    'TUESPECIAL5': 5,   // 5% de descuento
+    'BIENVENIDO10': 10, // 10% de descuento
+    'PRIMERACOMPRA': 15 // 15% de descuento
+  };
+
+  const applyDiscount = () => {
+    const code = discountCode.toUpperCase().trim();
+    
+    if (!code) {
+      setDiscountError('Por favor ingresa un código');
+      return;
+    }
+
+    if (validDiscountCodes[code]) {
+      setDiscountPercentage(validDiscountCodes[code]);
+      setDiscountApplied(true);
+      setDiscountError('');
+    } else {
+      setDiscountError('Código inválido o expirado');
+      setDiscountApplied(false);
+      setDiscountPercentage(0);
+    }
+  };
+
+  const removeDiscount = () => {
+    setDiscountCode('');
+    setDiscountApplied(false);
+    setDiscountPercentage(0);
+    setDiscountError('');
+  };
 
   const updateQuantity = (productId, change) => {
     setCart(prevCart => {
@@ -360,8 +398,19 @@ const CartModal = React.memo(({ isOpen, onClose, cart, setCart, onProcessOrder }
     return cart.reduce((sum, item) => sum + item.quantity, 0);
   };
 
-  const getTotalPrice = () => {
+  const getSubtotalPrice = () => {
     return cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  };
+
+  const getDiscountAmount = () => {
+    const subtotal = getSubtotalPrice();
+    return (subtotal * discountPercentage) / 100;
+  };
+
+  const getTotalPrice = () => {
+    const subtotal = getSubtotalPrice();
+    const discount = getDiscountAmount();
+    return subtotal - discount;
   };
 
   const handleProcessOrder = () => {
@@ -369,7 +418,7 @@ const CartModal = React.memo(({ isOpen, onClose, cart, setCart, onProcessOrder }
       alert('Por favor completa todos los campos requeridos del comprador, beneficiario y dirección');
       return;
     }
-    onProcessOrder(customerData);
+    onProcessOrder(customerData, discountCode, discountPercentage, getDiscountAmount());
   };
 
   if (!isOpen) return null;
@@ -417,10 +466,77 @@ const CartModal = React.memo(({ isOpen, onClose, cart, setCart, onProcessOrder }
                 </div>
               ))}
               
-              <div className="border-t pt-3 mt-4">
-                <div className="flex justify-between items-center bg-[var(--primary-color)] bg-opacity-10 rounded-lg p-3">
-                  <span className="text-lg font-semibold text-[var(--text-primary)]">Total:</span>
-                  <span className="text-xl font-bold text-[var(--secondary-color)]">${getTotalPrice().toFixed(2)} USD</span>
+              {/* Sección de Código de Descuento */}
+              <div className="border-t pt-4 mt-4">
+                <div className="mb-3">
+                  <h3 className="text-sm font-medium text-[var(--text-primary)] mb-2">Código de Descuento</h3>
+                  <div className="flex space-x-2">
+                    <input
+                      type="text"
+                      placeholder="Ingresa tu código"
+                      value={discountCode}
+                      onChange={(e) => setDiscountCode(e.target.value)}
+                      disabled={discountApplied}
+                      className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] disabled:bg-gray-100"
+                    />
+                    {!discountApplied ? (
+                      <button
+                        onClick={applyDiscount}
+                        className="bg-[var(--primary-color)] text-white px-4 py-2 rounded-lg font-medium hover:bg-opacity-90 transition-all"
+                      >
+                        Aplicar
+                      </button>
+                    ) : (
+                      <button
+                        onClick={removeDiscount}
+                        className="bg-red-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-600 transition-all"
+                      >
+                        Quitar
+                      </button>
+                    )}
+                  </div>
+                  {discountError && (
+                    <p className="text-red-500 text-xs mt-1">{discountError}</p>
+                  )}
+                  {discountApplied && (
+                    <p className="text-green-600 text-xs mt-1">
+                      ✅ Descuento del {discountPercentage}% aplicado correctamente
+                    </p>
+                  )}
+                </div>
+
+                {/* Resumen de Precios */}
+                <div className="space-y-2 bg-gray-50 rounded-lg p-3">
+                  <div className="flex justify-between text-sm">
+                    <span>Subtotal:</span>
+                    <span>${getSubtotalPrice().toFixed(2)} USD</span>
+                  </div>
+                  
+                  {discountApplied && (
+                    <>
+                      <div className="flex justify-between text-sm text-green-600">
+                        <span>Descuento ({discountPercentage}%):</span>
+                        <span>-${getDiscountAmount().toFixed(2)} USD</span>
+                      </div>
+                      <div className="border-t border-gray-200 pt-2 mt-2">
+                        <div className="flex justify-between items-center">
+                          <span className="text-lg font-semibold text-[var(--text-primary)]">Total:</span>
+                          <span className="text-xl font-bold text-[var(--secondary-color)]">
+                            ${getTotalPrice().toFixed(2)} USD
+                          </span>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                  
+                  {!discountApplied && (
+                    <div className="flex justify-between items-center">
+                      <span className="text-lg font-semibold text-[var(--text-primary)]">Total:</span>
+                      <span className="text-xl font-bold text-[var(--secondary-color)]">
+                        ${getSubtotalPrice().toFixed(2)} USD
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -1014,7 +1130,7 @@ function App() {
     }
   }, [showSpecialOffer]);
 
-  const handleProcessOrder = (customerData) => {
+  const handleProcessOrder = (customerData, discountCode = '', discountPercentage = 0, discountAmount = 0) => {
     const selectedMunicipalityName = municipalities.find(m => m.id === selectedMunicipality)?.name || '';
     
     let orderMessage = `*NUEVO PEDIDO - TuDespensa.25*\n\n`;
@@ -1033,18 +1149,35 @@ function App() {
       orderMessage += `📝 Notas: ${customerData.notes}\n`;
     }
     
+    // Información de descuento si aplica
+    if (discountCode && discountPercentage > 0) {
+      orderMessage += `\n*INFORMACIÓN DE DESCUENTO:*\n`;
+      orderMessage += `🎫 Código: ${discountCode}\n`;
+      orderMessage += `📉 Descuento: ${discountPercentage}%\n`;
+      orderMessage += `💵 Ahorro: $${discountAmount.toFixed(2)} USD\n\n`;
+    }
+    
     orderMessage += `\n*PRODUCTOS SOLICITADOS:*\n`;
-    let total = 0;
+    let subtotal = 0;
     cart.forEach((item, index) => {
-      const subtotal = item.price * item.quantity;
-      total += subtotal;
+      const itemSubtotal = item.price * item.quantity;
+      subtotal += itemSubtotal;
       orderMessage += `${index + 1}. ${item.name}\n`;
       orderMessage += `   💰 Precio: $${item.price.toFixed(2)} USD\n`;
       orderMessage += `   📦 Cantidad: ${item.quantity}\n`;
-      orderMessage += `   💵 Subtotal: $${subtotal.toFixed(2)} USD\n\n`;
+      orderMessage += `   💵 Subtotal: $${itemSubtotal.toFixed(2)} USD\n\n`;
     });
     
-    orderMessage += `*TOTAL DEL PEDIDO: $${total.toFixed(2)} USD*\n`;
+    // Resumen de precios
+    orderMessage += `*RESUMEN DE PAGO:*\n`;
+    orderMessage += `🛒 Subtotal: $${subtotal.toFixed(2)} USD\n`;
+    
+    if (discountPercentage > 0) {
+      orderMessage += `🎫 Descuento (${discountPercentage}%): -$${discountAmount.toFixed(2)} USD\n`;
+    }
+    
+    const total = discountPercentage > 0 ? subtotal - discountAmount : subtotal;
+    orderMessage += `💰 *TOTAL DEL PEDIDO: $${total.toFixed(2)} USD*\n`;
     
     orderMessage += `\n*DATOS DEL VENDEDOR:*\n`;
     orderMessage += `🏪 Tienda: TuDespensa.25\n`;
@@ -1116,7 +1249,9 @@ function App() {
         onClose={() => setIsCartOpen(false)}
         cart={cart}
         setCart={setCart}
-        onProcessOrder={handleProcessOrder}
+        onProcessOrder={(customerData, discountCode, discountPercentage, discountAmount) => 
+          handleProcessOrder(customerData, discountCode, discountPercentage, discountAmount)
+        }
       />
       
       <ProductDetailModal
