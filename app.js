@@ -347,7 +347,7 @@ const CartModal = React.memo(({ isOpen, onClose, cart, setCart, onProcessOrder }
 
   // Códigos de descuento válidos (puedes agregar más)
   const validDiscountCodes = {
-    'clientef': 5,   // 5% de descuento
+    'CLIENTEF': 5,   // 5% de descuento
     'BIENVENIDOhoy': 10, // 10% de descuento
     'PRIMERACOMPRAtd25.': 15 // 15% de descuento
   };
