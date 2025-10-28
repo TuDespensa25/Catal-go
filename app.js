@@ -352,24 +352,25 @@ const CartModal = React.memo(({ isOpen, onClose, cart, setCart, onProcessOrder }
     'PRIMERACOMPRAtd25.': 15 // 15% de descuento
   };
 
-  const applyDiscount = () => {
-    const code = discountCode.toUpperCase().trim();
-    
-    if (!code) {
-      setDiscountError('Por favor ingresa un código');
-      return;
-    }
+ const applyDiscount = () => {
+  const code = discountCode.trim(); // Quita el .toUpperCase()
+  
+  if (!code) {
+    setDiscountError('Por favor ingresa un código');
+    return;
+  }
 
-    if (validDiscountCodes[code]) {
-      setDiscountPercentage(validDiscountCodes[code]);
-      setDiscountApplied(true);
-      setDiscountError('');
-    } else {
-      setDiscountError('Código inválido o expirado');
-      setDiscountApplied(false);
-      setDiscountPercentage(0);
-    }
-  };
+  // Verifica el código exacto (case-sensitive)
+  if (validDiscountCodes[code]) {
+    setDiscountPercentage(validDiscountCodes[code]);
+    setDiscountApplied(true);
+    setDiscountError('');
+  } else {
+    setDiscountError('Código inválido o expirado');
+    setDiscountApplied(false);
+    setDiscountPercentage(0);
+  }
+};
 
   const removeDiscount = () => {
     setDiscountCode('');
