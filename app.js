@@ -2,7 +2,6 @@
 const municipalities = [
   { id: 1, name: 'Artemisa, San Cristóbal' },
   { id: 2, name: 'Artemisa, Candelaria' },
-  
   { id: 4, name: 'Artemisa, Mariel' },
   { id: 5, name: 'Artemisa, Guanajay' },
   { id: 6, name: 'Artemisa, Caimito' },
@@ -107,9 +106,24 @@ const productData = [
 { id: 65, name: 'Combo 1', category: 'combo', description: '1 Lomo de cerdo importado 3 lb, 1 paquete de pollo 10 lb, 1 chuleta de lomo deshuesado 2 lb, 1 masas de cerdo 2 lb, 1 picadillo de pollo 400 g, 1 paquete de salchichas, 1 mortadela de queso, 1 yogurt de fresa probiótico 1 L, 2 leches condensadas de cajita, 2 libras de frijol negro, 10 libras de arroz blanco importado, 1 bolsa de azúcar 2 lb, 1 bolsa de sal 1 lb, 2 paquetes de espaguetis 500 g, 1 pasta de tomate 400 g, 2 botellas de aceite 1 L, 1 café Dufiltro 250 g, 4 jabones de 100 g, 1 malanga 5 lb.', image: '/images/combo1.png', price: 81.45, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
 { id: 66, name: 'Combo 2', category: 'combo', description: '1 paquete de pollo de 10 lb, 2 picadillos de pollo de 400 g, 2 paquetes de salchichas, 1 cartón de huevos (30 unidades), 1 yogurt de fresa de 1 L y 2 leches condensadas de cajita..', image: '/images/combo2.png', price: 31.30, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
 { id: 67, name: 'Combo 3', category: 'combo', description: '10 lb de Arroz grano largo importado, 2 lb de frijol negro importado, 2 lb de azucar blanca importada ', image: '/images/combo3.jpg', price:15.35, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
-{ id: 68, name: 'Combo 4', category: 'combo', description: 'Chuleta de lomo deshuesado 2 lb (1 unidad), Masas de cerdo 2 lb (1 unidad), Mortadela de queso 500 gr (2 unidades), Mortadela clásica 500gr (2 unidades), Aceite 1 L (2 unidades), Gelatina  (2 unidades), Jabón 100 g (5 unidades) + 5 LB de Malanga GRATIS ', image: '/images/combo4.png', price:33.65, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
 
 ];
+
+// Función para obtener producto desde URL
+function getProductFromURL() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const productId = urlParams.get('product');
+  if (productId) {
+    return productData.find(p => p.id === parseInt(productId));
+  }
+  return null;
+}
+
+// Función para generar enlace compartible
+function generateShareableLink(productId) {
+  const baseUrl = window.location.origin + window.location.pathname;
+  return `${baseUrl}?product=${productId}`;
+}
 
 // Hook de debounce optimizado
 function useDebounce(value, delay) {
@@ -808,6 +822,26 @@ const ProductCard = React.memo(({ product, onAddToCart, likedProducts, onToggleL
     onAddToCart(product);
   };
 
+  const handleShare = (e) => {
+    e.stopPropagation();
+    const shareUrl = generateShareableLink(product.id);
+    
+    // Copiar al portapapeles
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      // Mostrar notificación de éxito
+      alert('¡Enlace copiado! Comparte este producto.');
+    }).catch(() => {
+      // Fallback
+      const tempInput = document.createElement('input');
+      tempInput.value = shareUrl;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
+      alert('¡Enlace copiado! Comparte este producto.');
+    });
+  };
+
   return (
     <div className="product-card" onClick={handleCardClick}>
       <div className="aspect-square bg-gray-100 relative overflow-hidden">
@@ -816,14 +850,23 @@ const ProductCard = React.memo(({ product, onAddToCart, likedProducts, onToggleL
           alt={product.name}
           className="w-full h-full object-cover"
         />
-        <button 
-          onClick={handleLikeClick}
-          className="absolute top-2 right-2"
-        >
-          <div className="w-8 h-8 bg-white bg-opacity-90 rounded-full flex items-center justify-center shadow-sm">
-            <div className={`icon-heart text-lg ${isLiked ? 'text-red-500' : 'text-gray-400'}`}></div>
-          </div>
-        </button>
+        <div className="absolute top-2 right-2 flex flex-col space-y-1">
+          <button 
+            onClick={handleLikeClick}
+          >
+            <div className="w-8 h-8 bg-white bg-opacity-90 rounded-full flex items-center justify-center shadow-sm">
+              <div className={`icon-heart text-lg ${isLiked ? 'text-red-500' : 'text-gray-400'}`}></div>
+            </div>
+          </button>
+          {/* NUEVO BOTÓN DE COMPARTIR */}
+          <button 
+            onClick={handleShare}
+          >
+            <div className="w-8 h-8 bg-white bg-opacity-90 rounded-full flex items-center justify-center shadow-sm">
+              <div className="icon-share-2 text-lg text-gray-600"></div>
+            </div>
+          </button>
+        </div>
       </div>
       <div className="p-3">
         <h3 className="font-medium text-[var(--text-primary)] text-sm mb-1 line-clamp-2">
@@ -855,6 +898,36 @@ const ProductDetailModal = React.memo(({ isOpen, onClose, product, onAddToCart, 
 
   const isLiked = likedProducts.includes(product.id);
   const categoryName = categories.find(c => c.id === product.category)?.name || 'Sin categoría';
+
+  const handleShare = () => {
+    if (product) {
+      const shareUrl = generateShareableLink(product.id);
+      
+      // Intentar usar la Web Share API si está disponible
+      if (navigator.share) {
+        navigator.share({
+          title: product.name,
+          text: product.description,
+          url: shareUrl,
+        })
+        .catch(console.error);
+      } else {
+        // Fallback: copiar al portapapeles
+        navigator.clipboard.writeText(shareUrl).then(() => {
+          alert('¡Enlace copiado al portapapeles! Compártelo con quien quieras.');
+        }).catch(() => {
+          // Fallback para navegadores más antiguos
+          const tempInput = document.createElement('input');
+          tempInput.value = shareUrl;
+          document.body.appendChild(tempInput);
+          tempInput.select();
+          document.execCommand('copy');
+          document.body.removeChild(tempInput);
+          alert('¡Enlace copiado al portapapeles! Compártelo con quien quieras.');
+        });
+      }
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end sm:items-center sm:justify-center">
@@ -908,6 +981,15 @@ const ProductDetailModal = React.memo(({ isOpen, onClose, product, onAddToCart, 
             >
               <div className="icon-shopping-cart text-lg"></div>
               <span>Añadir al carrito</span>
+            </button>
+            
+            {/* NUEVO BOTÓN DE COMPARTIR */}
+            <button
+              onClick={handleShare}
+              className="w-full bg-[var(--primary-color)] text-white py-3 rounded-lg font-medium flex items-center justify-center space-x-2 hover:bg-opacity-90 transition-all"
+            >
+              <div className="icon-share-2 text-lg"></div>
+              <span>Compartir Producto</span>
             </button>
             
             <button
@@ -1054,6 +1136,16 @@ function App() {
 
   // Debounce para búsqueda
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
+
+  // Agregar este useEffect para manejar productos desde URL
+  React.useEffect(() => {
+    const productFromURL = getProductFromURL();
+    if (productFromURL) {
+      setSelectedProduct(productFromURL);
+      // También podemos navegar a la categoría del producto
+      setSelectedCategory(productFromURL.category);
+    }
+  }, []);
 
   // Filtrado optimizado de productos
   const filteredProducts = React.useMemo(() => {
