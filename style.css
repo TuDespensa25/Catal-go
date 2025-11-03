@@ -383,3 +383,80 @@ section {
 .share-button {
     @apply bg-[var(--primary-color)] text-white px-4 py-2 rounded-lg font-medium flex items-center justify-center space-x-2 hover:bg-opacity-90 transition-all;
 }
+
+/* === SECCIÓN FAQ - NUEVA === */
+
+/* Animaciones mejoradas para FAQ */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out;
+}
+
+/* Iconos adicionales para FAQ */
+.icon-help-circle::before { content: "❓"; }
+.icon-phone::before { content: "📞"; }
+.icon-chevron-down::before { content: "⬇️"; }
+.icon-truck::before { content: "🚚"; }
+.icon-shield::before { content: "🛡️"; }
+.icon-star::before { content: "⭐"; }
+
+/* Estilos responsivos mejorados para FAQ */
+@media (max-width: 640px) {
+  #faq {
+    padding: 2rem 1rem !important;
+  }
+  
+  #faq h2 {
+    font-size: 1.75rem !important;
+  }
+  
+  .faq-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .faq-item button {
+    padding: 1rem 1.25rem !important;
+    font-size: 0.9rem !important;
+  }
+  
+  .faq-answer {
+    padding: 1rem 1.25rem !important;
+    font-size: 0.875rem !important;
+  }
+  
+  .cta-buttons {
+    flex-direction: column !important;
+  }
+  
+  .info-cards {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Mejoras de hover y transiciones para FAQ */
+.faq-item {
+  transition: all 0.3s ease;
+}
+
+.faq-item:hover {
+  transform: translateY(-2px);
+}
+
+.cta-button {
+  transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}

@@ -1091,6 +1091,161 @@ const ProductGrid = React.memo(({ products, onAddToCart, likedProducts, onToggle
   );
 });
 
+// NUEVO COMPONENTE FAQ
+const FAQSection = React.memo(() => {
+  const [openItems, setOpenItems] = React.useState([]);
+
+  const toggleItem = (index) => {
+    setOpenItems(prev => 
+      prev.includes(index) 
+        ? prev.filter(item => item !== index)
+        : [...prev, index]
+    );
+  };
+
+  const faqItems = [
+    {
+      question: "¿Qué métodos de pago aceptan?",
+      answer: "💳 **Solo Zelle** para clientes desde el exterior. El pago se verifica al instante, sin impuestos adicionales. Pagas seguro y al momento, desde donde estés."
+    },
+    {
+      question: "¿Cuál es el tiempo de entrega?",
+      answer: "🚚 **Entregas en menos de 48 horas**, y la mayoría de los pedidos llegan el mismo día. Esto aplica en toda la provincia Artemisa. Es como si un vecino llevara la compra a tu casa."
+    },
+    {
+      question: "¿Cuánto cuesta el envío?",
+      answer: `📦 **Tarifa de Envíos:**\n\n✅ **Municipios Gratis** (a partir de 30 USD, menos → 1.99 USD):\n• San Cristóbal\n• Candelaria\n• Guanajay\n\n✅ **Envío 3.99 USD fijo:**\n• Artemisa (cabecera)\n• Caimito\n• Mariel\n\n✅ **Envío 5 USD fijo:**\n• Bauta\n• Güira de Melena\n• San Antonio de los Baños\n• Bahía Honda\n• Alquízar`
+    },
+    {
+      question: "¿En qué municipios realizan entregas?",
+      answer: "📍 Cubrimos **toda la provincia Artemisa**: San Cristóbal, Candelaria, Mariel, Guanajay, Caimito, Bauta, Artemisa, Alquízar, Güira de Melena, San Antonio de los Baños y Bahía Honda."
+    },
+    {
+      question: "¿Qué categorías de productos ofrecen?",
+      answer: `🛍️ **Nuestras Categorías:**\n\n🥫 **Alimentos:** arroz, granos, carnes, lácteos, dulces, conservas\n🧼 **Productos de Aseo y Limpieza:** detergentes, jabones, higiene personal\n⚡ **Electrodomésticos:** lavadoras, batidoras, fogones, freezers\n🎁 **Combos especiales** con descuentos exclusivos`
+    },
+    {
+      question: "¿Tienen promociones especiales?",
+      answer: "🎯 **Promociones Activas:**\n\n🔥 **Combos Especiales:** 3 días a la semana mostramos combos con descuentos\n💥 **Zona Roja:** Productos con descuentos mayores para aprovechar\n📦 **Envío Gratis:** En municipios seleccionados a partir de 30 USD\n🎁 **Ofertas de Temporada:** Siempre tenemos promociones vigentes"
+    },
+    {
+      question: "¿Puedo hacer pedidos personalizados?",
+      answer: "✅ **¡Sí!** Ofrecemos la posibilidad de crear pedidos personalizados y combos especiales según tus necesidades. Contáctanos por WhatsApp para coordinar tu pedido a medida."
+    },
+    {
+      question: "¿Qué hago si un producto no está disponible?",
+      answer: "🔄 Si un producto no está disponible, te contactaremos inmediatamente para ofrecerte alternativas similares de igual o mejor calidad, o programar la entrega una vez que tengamos stock."
+    },
+    {
+      question: "¿Proveen comprobante de compra?",
+      answer: "🧾 **Sí, absolutamente.** Proveemos comprobante de venta por todos nuestros pedidos. Solo debes solicitarlo al momento de hacer tu pedido y te lo entregaremos con tu compra."
+    },
+    {
+      question: "¿Qué es TuDespensa.25?",
+      answer: "🏪 **TuDespensa.25** es tu tienda online de confianza en Artemisa, especializada en la venta y distribución de productos de primera necesidad con entrega a domicilio rápida y precios competitivos."
+    }
+  ];
+
+  return (
+    <section id="faq" className="px-4 py-12 bg-gradient-to-b from-gray-50 to-white">
+      <div className="max-w-4xl mx-auto">
+        {/* Header Mejorado */}
+        <div className="text-center mb-12">
+          <div className="flex items-center justify-center space-x-3 mb-4">
+            <div className="w-16 h-16 bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)] rounded-full flex items-center justify-center shadow-lg">
+              <div className="icon-help-circle text-2xl text-white"></div>
+            </div>
+            <div>
+              <h2 className="text-3xl font-bold text-[var(--text-primary)]">Preguntas Frecuentes</h2>
+              <p className="text-[var(--text-secondary)] mt-1">Todo lo que necesitas saber sobre TuDespensa.25</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Grid de FAQ Mejorado */}
+        <div className="grid gap-4 md:grid-cols-2">
+          {faqItems.map((item, index) => (
+            <div 
+              key={index} 
+              className="border border-gray-200 rounded-xl overflow-hidden transition-all duration-300 hover:shadow-md bg-white"
+            >
+              <button
+                onClick={() => toggleItem(index)}
+                className="w-full px-6 py-5 text-left flex items-center justify-between bg-white hover:bg-gray-50 transition-colors group"
+              >
+                <span className="font-semibold text-[var(--text-primary)] text-sm sm:text-base pr-4 group-hover:text-[var(--primary-color)] transition-colors">
+                  {item.question}
+                </span>
+                <div className={`transform transition-transform duration-300 flex-shrink-0 ${
+                  openItems.includes(index) ? 'rotate-180' : ''
+                }`}>
+                  <div className="icon-chevron-down text-[var(--primary-color)] text-lg"></div>
+                </div>
+              </button>
+              
+              {openItems.includes(index) && (
+                <div className="px-6 py-5 bg-gradient-to-r from-gray-50 to-white border-t border-gray-100 animate-fade-in">
+                  <div className="text-[var(--text-secondary)] text-sm sm:text-base leading-relaxed whitespace-pre-line">
+                    {item.answer}
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* CTA Mejorado */}
+        <div className="mt-12 text-center bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)] rounded-2xl p-8 text-white shadow-xl">
+          <h3 className="text-2xl font-bold mb-3">¿No encontraste tu respuesta?</h3>
+          <p className="text-white text-opacity-90 mb-6 text-lg">
+            Estamos aquí para ayudarte personalmente
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a 
+              href="https://wa.me/5354066204"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-white text-[var(--primary-color)] px-8 py-4 rounded-xl font-bold flex items-center justify-center space-x-3 hover:scale-105 transition-transform shadow-lg"
+            >
+              <div className="icon-message-circle text-xl"></div>
+              <span className="text-lg">WhatsApp Directo</span>
+            </a>
+            <a 
+              href="tel:+5354066204"
+              className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-xl font-bold flex items-center justify-center space-x-3 hover:bg-white hover:text-[var(--primary-color)] transition-all"
+            >
+              <div className="icon-phone text-xl"></div>
+              <span className="text-lg">Llamar Ahora</span>
+            </a>
+          </div>
+          <p className="text-white text-opacity-80 mt-4 text-sm">
+            Horario de atención: 24/7 • Respuesta inmediata
+          </p>
+        </div>
+
+        {/* Información Adicional */}
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+          <div className="bg-white p-4 rounded-xl border border-gray-200">
+            <div className="icon-truck text-2xl text-[var(--primary-color)] mb-2"></div>
+            <h4 className="font-semibold text-[var(--text-primary)]">Entrega Rápida</h4>
+            <p className="text-sm text-[var(--text-secondary)]">Menos de 48 horas</p>
+          </div>
+          <div className="bg-white p-4 rounded-xl border border-gray-200">
+            <div className="icon-shield text-2xl text-[var(--primary-color)] mb-2"></div>
+            <h4 className="font-semibold text-[var(--text-primary)]">Pago Seguro</h4>
+            <p className="text-sm text-[var(--text-secondary)]">Verificación instantánea</p>
+          </div>
+          <div className="bg-white p-4 rounded-xl border border-gray-200">
+            <div className="icon-star text-2xl text-[var(--primary-color)] mb-2"></div>
+            <h4 className="font-semibold text-[var(--text-primary)]">Calidad Garantizada</h4>
+            <p className="text-sm text-[var(--text-secondary)]">Productos frescos</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+});
+
 // Error Boundary
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -1332,6 +1487,9 @@ function App() {
             onProductClick={handleProductClick}
           />
         </div>
+
+        {/* NUEVA SECCIÓN FAQ */}
+        <FAQSection />
       </main>
       
       <Footer />
