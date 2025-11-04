@@ -227,10 +227,10 @@ const SpecialOfferModal = React.memo(({ isOpen, onClose, onNavigateToProduct }) 
       <div className="bg-white rounded-2xl max-w-md w-full overflow-hidden animate-scale-in special-offer-modal-content">
         <div className="relative">
           <OptimizedImage
-            src="/images/oferta-especial.jpg"
-            alt="Oferta Especial"
-            className="w-full h-48 object-cover special-offer-image"
-          />
+  src="/images/oferta-especial.png"  // Tu imagen 1080x1080
+  alt="Oferta Especial"
+  className="w-full h-auto object-contain special-offer-image"  // Cambiado a object-contain
+/>
           <div 
             className="w-full h-48 bg-gradient-to-br from-[var(--primary-color)] to-[var(--secondary-color)] flex flex-col items-center justify-center text-white p-4 text-center special-offer-image"
             style={{display: 'none'}}
