@@ -13,6 +13,7 @@ const municipalities = [
 ];
 
 const categories = [
+  { id: 'combo', name: 'Combos', icon: 'icon-basket', backgroundImage: '/images/aseo.png' },
   { id: 'carnicos', name: 'Cárnicos y embutidos', icon: 'icon-beef', backgroundImage: '/images/carnicos.png' },
   { id: 'cereales', name: 'Cereales, pastas y granos', icon: 'icon-wheat', backgroundImage: '/images/cereales.png' },
   { id: 'lacteos', name: 'Lácteos y huevos', icon: 'icon-milk', backgroundImage: '/images/lacteos.png' },
@@ -21,7 +22,7 @@ const categories = [
   { id: 'aseo', name: 'Aseo', icon: 'icon-broom', backgroundImage: '/images/aseo.png' },
   { id: 'agro', name: 'Agrito', icon: 'icon-basket', backgroundImage: '/images/aseo.png' },
   { id: 'liquido', name: 'Líquidos', icon: 'icon-basket', backgroundImage: '/images/aseo.png' },
-  { id: 'combo', name: 'Combos', icon: 'icon-basket', backgroundImage: '/images/aseo.png' }
+  
 ];
 
 const productData = [
@@ -57,7 +58,7 @@ const productData = [
   { id: 23, name: 'Leche condensada lata', category: 'lacteos', description: 'Leche condensada lata', image: '/images/nezkaleche.png', price: 1.8, availableIn: [] },
   { id: 55, name: 'Helado', category: 'lacteos', description: 'Caja de 4L', image: '/images/helado.png', price: 9, availableIn: [,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
   { id: 57, name: 'Leche en Polvo', category: 'lacteos', description: 'Bolsa de 1 kg', image: '/images/lechepolvomu.png', price: 8.5, availableIn: [,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
-  { id: 58, name: 'Cartón de huevos', category: 'lacteos', description: '30 uds frescos 100% orgánicos', image: '/images/huevo30.png', price: 9.4, availableIn: [1,2,3,,19,20,21,22,23,24,25,26,27] },
+  { id: 58, name: 'CaRRRRn de huevos', category: 'lacteos', description: '30 uds frescos 100% orgánicos', image: '/images/huevo30.png', price: 9.4, availableIn: [1,2,3,,19,20,21,22,23,24,25,26,27] },
 
   // Cereales, Pastas y Granos
   { id: 24, name: 'Frijol negro 1 lb', category: 'cereales', description: 'Frijol negro 1 lb', image: '/images/frijol2lb.png', price: 1.2, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
@@ -112,6 +113,7 @@ const productData = [
 { id: 71, name: 'Combo 5 ', category: 'combo', description: '12 maltas guajiras, 6 leche condensada', image: '/images/combo5.png', price: 22.6, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
 { id: 72, name: 'Combo 6', category: 'combo', description: '1 lomo de cerdo importado (3 lb) + 10 lb de arroz grano largo + 2 paquetes de espagueti (500 g c/u) + 1 paquete de harina de trigo (500 g) + 1 yogurt probiótico de fresa (1 L) + 1 cartón de huevos (30 u) + 2 pastas de tomate (400 g c/u) + 1 chocolate en polvo (500 g) + 2 gelatinas + 1 caja de refresco Zuko (8 sobres) + 1 café Dufiltro (250 g) + 1 paquete de papel higiénico (4 unidades) + 4 jabones (100 g c/u) + 1 bolsa de malanga (5 lb) + 1 bolsa de 10 cabezas de ajo', image: '/images/combo6.png', price: 65.99, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
 { id: 73, name: 'Combo 7 descuento 10 % ', category: 'combo', description: 'Arroz Grano Largo importado (10 lb), Frijol Negro Importado (4 lb), Azúcar Blanca Importada (4 lb), Aceite de Girasol 1 L (6 uds)', image: '/images/combo7.png', price: 30.99, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
+{ id: 74, name: 'Combo 8 ', category: 'combo', description: ' Chuleta de lomo deshuesado 2 lb (1 unid), Masas de cerdo 2 lb (1 unid), Yogurt de fresa 1 L (1 unid), Arroz Grano Largo 10 , Azúcar blanca 4 lb , Frijol negro 2 lb , Spaguetis 500 gr (2 unid), Pasta de tomate 400 g (1 unid), Café Dufiltro 250 gr (1 unid), Jabón 100 g (4 unid), Malta Guajira (6 unid), Leche condensada en cajita (2 unid), Aceite 1 L (2 unid)', image: '/images/combo8.png', price: 60.99, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
 ];
 
 // Función para obtener producto desde URL
@@ -206,7 +208,7 @@ const SpecialOfferModal = React.memo(({ isOpen, onClose, onNavigateToProduct }) 
 
   // Productos destacados memoizados
   const featuredProducts = React.useMemo(() => 
-    productData.filter(product => [, 65,72, 73,,].includes(product.id)),
+    productData.filter(product => [,74, 65,72, 73,,].includes(product.id)),
   []);
 
   if (!isOpen) return null;
