@@ -181,6 +181,94 @@ const OptimizedImage = React.memo(({ src, alt, className, ...props }) => {
   );
 });
 
+// NUEVO COMPONENTE: Modal de Selección de Municipio
+const MunicipalityModal = React.memo(({ isOpen, onClose, selectedMunicipality, setSelectedMunicipality }) => {
+  if (!isOpen) return null;
+
+  const handleMunicipalitySelect = (municipalityId) => {
+    setSelectedMunicipality(municipalityId);
+    onClose();
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4 municipality-modal-container">
+      <div className="bg-white rounded-2xl max-w-md w-full overflow-hidden animate-scale-in municipality-modal-content">
+        <div className="bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)] p-6 text-white text-center">
+          <div className="w-16 h-16 mx-auto mb-4 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+            <div className="icon-map-pin text-2xl"></div>
+          </div>
+          <h2 className="text-2xl font-bold mb-2">Selecciona tu Municipio</h2>
+          <p className="text-white text-opacity-90">
+            Elige tu ubicación para ver los productos disponibles en tu área
+          </p>
+        </div>
+
+        <div className="p-6 max-h-96 overflow-y-auto">
+          <div className="space-y-3">
+            {municipalities.map(municipality => (
+              <button
+                key={municipality.id}
+                onClick={() => handleMunicipalitySelect(municipality.id)}
+                className={`w-full p-4 border-2 rounded-xl text-left transition-all flex items-center space-x-4 ${
+                  selectedMunicipality === municipality.id
+                    ? 'border-[var(--primary-color)] bg-green-50 ring-2 ring-[var(--primary-color)] ring-opacity-30'
+                    : 'border-gray-200 hover:border-[var(--primary-color)] hover:bg-gray-50'
+                }`}
+              >
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                  selectedMunicipality === municipality.id
+                    ? 'bg-[var(--primary-color)] text-white'
+                    : 'bg-gray-100 text-gray-600'
+                }`}>
+                  <div className="icon-map-pin text-lg"></div>
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-[var(--text-primary)] text-lg">
+                    {municipality.name.split(', ')[1]}
+                  </h3>
+                  <p className="text-sm text-[var(--text-secondary)]">
+                    {municipality.name.split(', ')[0]}
+                  </p>
+                </div>
+                {selectedMunicipality === municipality.id && (
+                  <div className="w-6 h-6 bg-[var(--primary-color)] rounded-full flex items-center justify-center">
+                    <div className="icon-check text-xs text-white"></div>
+                  </div>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="border-t p-6">
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+            <div className="flex items-start space-x-3">
+              <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                <div className="icon-info text-xs text-white"></div>
+              </div>
+              <div>
+                <p className="text-sm text-blue-800 font-medium">
+                  Información importante
+                </p>
+                <p className="text-xs text-blue-700 mt-1">
+                  Los productos disponibles y precios pueden variar según tu municipio seleccionado.
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <button
+            onClick={onClose}
+            className="w-full bg-gray-100 text-[var(--text-primary)] py-3 rounded-lg font-medium hover:bg-gray-200 transition-all"
+          >
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+});
+
 // Components
 function MobileBanner() {
   return (
@@ -202,134 +290,6 @@ function MobileBanner() {
     </div>
   );
 }
-
-const SpecialOfferModal = React.memo(({ isOpen, onClose, onNavigateToProduct }) => {
-  const [selectedProduct, setSelectedProduct] = React.useState(null);
-
-  // Productos destacados memoizados
-  const featuredProducts = React.useMemo(() => 
-    productData.filter(product => [,74, 65,72, 73,,].includes(product.id)),
-  []);
-
-  if (!isOpen) return null;
-
-  const handleProductSelect = (product) => {
-    setSelectedProduct(product);
-  };
-
-  const handleNavigate = () => {
-    if (selectedProduct) {
-      onNavigateToProduct(selectedProduct);
-      onClose();
-    }
-  };
-
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4 special-offer-modal-container">
-      <div className="bg-white rounded-2xl max-w-md w-full overflow-hidden animate-scale-in special-offer-modal-content">
-        <div className="relative">
-          <OptimizedImage
-  src="/images/oferta-especial.png"  // Tu imagen 1080x1080
-  alt="Oferta Especial"
-  className="w-full h-auto object-contain special-offer-image"  // Cambiado a object-contain
-/>
-          <div 
-            className="w-full h-48 bg-gradient-to-br from-[var(--primary-color)] to-[var(--secondary-color)] flex flex-col items-center justify-center text-white p-4 text-center special-offer-image"
-            style={{display: 'none'}}
-          >
-            <div className="icon-tag text-4xl mb-3"></div>
-            <h3 className="text-2xl font-bold mb-2">¡OFERTA ESPECIAL!</h3>
-            <p className="text-lg opacity-90">Descuentos exclusivos</p>
-            <p className="text-sm opacity-80 mt-1">Hasta 30% de descuento</p>
-          </div>
-          
-          <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold animate-pulse special-offer-badge">
-            ¡NUEVO!
-          </div>
-        </div>
-
-        <div className="p-4 sm:p-6">
-          <h2 className="text-2xl font-bold text-center text-[var(--text-primary)] mb-4 special-offer-title">
-            Oferta Especial de la Semana
-          </h2>
-          
-          <p className="text-[var(--text-secondary)] text-center mb-6 special-offer-description">
-            Descubre nuestros productos en promoción con descuentos exclusivos. 
-            ¡Aprovecha estas ofertas por tiempo limitado!
-          </p>
-
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-[var(--text-primary)] mb-3 text-center">
-              Selecciona un producto destacado:
-            </label>
-            <div className="grid grid-cols-2 gap-2 special-offer-products-grid">
-              {featuredProducts.map(product => (
-                <button
-                  key={product.id}
-                  onClick={() => handleProductSelect(product)}
-                  className={`p-3 border rounded-lg text-left transition-all special-offer-product-item ${
-                    selectedProduct?.id === product.id 
-                      ? 'border-[var(--primary-color)] bg-green-50 ring-2 ring-[var(--primary-color)] ring-opacity-30' 
-                      : 'border-gray-200 hover:border-[var(--primary-color)]'
-                  }`}
-                >
-                  <div className="flex items-center space-x-2">
-                    <OptimizedImage 
-                      src={product.image} 
-                      alt={product.name}
-                      className="w-8 h-8 object-cover rounded special-offer-product-image"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-xs font-medium text-[var(--text-primary)] truncate special-offer-product-name">
-                        {product.name}
-                      </p>
-                      <p className="text-xs text-[var(--secondary-color)] font-bold special-offer-product-price">
-                        ${product.price}
-                      </p>
-                    </div>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="space-y-3 special-offer-buttons">
-            <button
-              onClick={handleNavigate}
-              disabled={!selectedProduct}
-              className={`w-full py-3 rounded-lg font-semibold flex items-center justify-center space-x-2 transition-all special-offer-primary-button ${
-                selectedProduct 
-                  ? 'bg-[var(--secondary-color)] text-white hover:bg-opacity-90 transform hover:scale-105' 
-                  : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-              }`}
-            >
-              <div className="icon-arrow-right text-lg"></div>
-              <span>
-                {selectedProduct ? 'Ver Oferta Seleccionada' : 'Selecciona un Producto'}
-              </span>
-            </button>
-            
-            <button
-              onClick={onClose}
-              className="w-full py-3 bg-gray-100 text-[var(--text-primary)] rounded-lg font-medium hover:bg-gray-200 transition-all special-offer-secondary-button"
-            >
-              Seguir Explorando
-            </button>
-          </div>
-
-          <div className="mt-4 text-center special-offer-terms">
-            <p className="text-xs text-gray-500">
-              * Oferta válida por tiempo limitado
-            </p>
-            <p className="text-xs text-gray-500">
-              * Precios sujetos a disponibilidad
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-});
 
 const NotificationToast = React.memo(({ message, isVisible, onClose }) => {
   React.useEffect(() => {
@@ -667,9 +627,7 @@ const SocialMediaLinks = React.memo(() => {
   );
 });
 
-const Header = React.memo(({ searchTerm, setSearchTerm, selectedMunicipality, setSelectedMunicipality, cartItems, onCartClick }) => {
-  const [showMunicipalityDropdown, setShowMunicipalityDropdown] = React.useState(false);
-
+const Header = React.memo(({ searchTerm, setSearchTerm, selectedMunicipality, setSelectedMunicipality, cartItems, onCartClick, onMunicipalityClick }) => {
   return (
     <header className="header-gradient text-white sticky top-0 z-50 shadow-lg">
       <div className="px-4 py-4">
@@ -680,41 +638,22 @@ const Header = React.memo(({ searchTerm, setSearchTerm, selectedMunicipality, se
               alt="TuDespensa25 Logo" 
               className="w-10 h-10 bg-white rounded-full p-2"
             />
-            <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center" style={{display: 'none'}}>
-              <div className="icon-shopping-basket text-xl text-[var(--primary-color)]"></div>
-            </div>
             <h1 className="text-lg font-bold">TuDespensa25</h1>
           </div>
           <div className="flex items-center space-x-3">
-            <div className="relative">
-              <button 
-                onClick={() => setShowMunicipalityDropdown(!showMunicipalityDropdown)}
-                className="flex items-center space-x-1 bg-white bg-opacity-20 rounded-lg px-3 py-2"
-              >
-                <div className="icon-map-pin text-sm text-white"></div>
-                <span className="text-sm">{municipalities.find(m => m.id === selectedMunicipality)?.name || 'Seleccionar'}</span>
-                <div className="icon-chevron-down text-sm text-white"></div>
-              </button>
-              {showMunicipalityDropdown && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-50">
-                  {municipalities.map(municipality => (
-                    <button
-                      key={municipality.id}
-                      onClick={() => {
-                        setSelectedMunicipality(municipality.id);
-                        setShowMunicipalityDropdown(false);
-                      }}
-                      className="w-full text-left px-4 py-2 text-[var(--text-primary)] hover:bg-gray-50 first:rounded-t-lg last:rounded-b-lg"
-                    >
-                      {municipality.name}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
+            <button 
+              onClick={onMunicipalityClick}
+              className="flex items-center space-x-2 bg-white bg-opacity-20 rounded-lg px-3 py-2 hover:bg-opacity-30 transition-all"
+            >
+              <div className="icon-map-pin text-sm text-white"></div>
+              <span className="text-sm max-w-24 truncate">
+                {municipalities.find(m => m.id === selectedMunicipality)?.name.split(', ')[1] || 'Municipio'}
+              </span>
+              <div className="icon-chevron-down text-sm text-white"></div>
+            </button>
             <button
               onClick={onCartClick}
-              className="relative w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center"
+              className="relative w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center hover:bg-opacity-30 transition-all"
             >
               <div className="icon-shopping-cart text-lg text-white"></div>
               {cartItems > 0 && (
@@ -1294,7 +1233,9 @@ function App() {
   const [likedProducts, setLikedProducts] = React.useState([]);
   const [notification, setNotification] = React.useState({ message: '', isVisible: false });
   const [selectedProduct, setSelectedProduct] = React.useState(null);
-  const [showSpecialOffer, setShowSpecialOffer] = React.useState(true);
+  
+  // NUEVO ESTADO: Modal de municipio
+  const [showMunicipalityModal, setShowMunicipalityModal] = React.useState(true); // Cambiado a true para que aparezca al inicio
 
   // Debounce para búsqueda
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
@@ -1372,20 +1313,6 @@ function App() {
   const handleCloseProductModal = () => {
     setSelectedProduct(null);
   };
-
-  const handleNavigateToProduct = (product) => {
-    setSelectedProduct(product);
-  };
-
-  // Cierra el modal automáticamente después de 15 segundos
-  React.useEffect(() => {
-    if (showSpecialOffer) {
-      const timer = setTimeout(() => {
-        setShowSpecialOffer(false);
-      }, 15000);
-      return () => clearTimeout(timer);
-    }
-  }, [showSpecialOffer]);
 
   const handleProcessOrder = (customerData, discountCode = '', discountPercentage = 0, discountAmount = 0) => {
     const selectedMunicipalityName = municipalities.find(m => m.id === selectedMunicipality)?.name || '';
@@ -1466,6 +1393,7 @@ function App() {
         setSelectedMunicipality={setSelectedMunicipality}
         cartItems={getTotalCartItems()}
         onCartClick={() => setIsCartOpen(true)}
+        onMunicipalityClick={() => setShowMunicipalityModal(true)} // NUEVA PROPS
       />
       <SocialMediaLinks />
       
@@ -1490,7 +1418,7 @@ function App() {
           />
         </div>
 
-        {/* NUEVA SECCIÓN FAQ */}
+        {/* SECCIÓN FAQ */}
         <FAQSection />
       </main>
       
@@ -1523,10 +1451,12 @@ function App() {
         onToggleLike={handleToggleLike}
       />
       
-      <SpecialOfferModal
-        isOpen={showSpecialOffer}
-        onClose={() => setShowSpecialOffer(false)}
-        onNavigateToProduct={handleNavigateToProduct}
+      {/* NUEVO MODAL DE MUNICIPIO - REEMPLAZA AL DE OFERTAS ESPECIALES */}
+      <MunicipalityModal
+        isOpen={showMunicipalityModal}
+        onClose={() => setShowMunicipalityModal(false)}
+        selectedMunicipality={selectedMunicipality}
+        setSelectedMunicipality={setSelectedMunicipality}
       />
     </div>
   );
