@@ -651,15 +651,6 @@ const Header = React.memo(({ searchTerm, setSearchTerm, selectedMunicipality, se
               </span>
               <div className="icon-chevron-down text-sm text-white"></div>
             </button>
-            
-            {/* NUEVO: Botón de FAQ en el Header */}
-            <a 
-              href="#faq"
-              className="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center hover:bg-opacity-30 transition-all"
-            >
-              <div className="icon-help-circle text-lg text-white"></div>
-            </a>
-            
             <button
               onClick={onCartClick}
               className="relative w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center hover:bg-opacity-30 transition-all"
@@ -756,18 +747,6 @@ const FloatingWishlistButton = React.memo(() => {
     >
       <div className="icon-heart text-xl"></div>
     </button>
-  );
-});
-
-// NUEVO: Botón flotante para FAQ
-const FloatingFAQButton = React.memo(() => {
-  return (
-    <a
-      href="#faq"
-      className="fixed bottom-40 right-6 w-14 h-14 bg-blue-500 text-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-200 z-40 flex items-center justify-center"
-    >
-      <div className="icon-help-circle text-xl"></div>
-    </a>
   );
 });
 
@@ -998,25 +977,6 @@ const Footer = React.memo(() => {
             <h4 className="font-semibold text-[var(--primary-color)] mb-2">Horarios</h4>
             <p className="text-gray-300">Las 24 h del día</p>
             <p className="text-gray-300">Los 7 días de la semana</p>
-          </div>
-          
-          {/* NUEVA SECCIÓN: Enlaces de Ayuda */}
-          <div>
-            <h4 className="font-semibold text-[var(--primary-color)] mb-2">Ayuda</h4>
-            <a 
-              href="#faq" 
-              className="text-gray-300 hover:text-white transition-colors block mb-1"
-            >
-              ❓ Preguntas Frecuentes
-            </a>
-            <a 
-              href="https://wa.me/5354066204" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-gray-300 hover:text-white transition-colors block"
-            >
-              💬 Soporte al Cliente
-            </a>
           </div>
           
           <div>
@@ -1465,7 +1425,6 @@ function App() {
       <Footer />
       <FloatingWhatsAppButton />
       <FloatingWishlistButton />
-      <FloatingFAQButton /> {/* NUEVO BOTÓN FLOTANTE PARA FAQ */}
       
       <NotificationToast
         message={notification.message}
