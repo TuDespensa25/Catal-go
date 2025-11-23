@@ -291,7 +291,7 @@ function MobileBanner() {
   return (
     <div className="mobile-banner px-4 mb-6">
       <OptimizedImage 
-        src="/images/banner17.m.png" 
+        src="/images/navidad.png" 
         alt="TuDespensa.25 - Ofertas Especiales"
         className="w-full h-full object-cover rounded-xl shadow-md"
       />
