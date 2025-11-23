@@ -107,6 +107,7 @@ const productData = [
 { id: 69, name: 'Malta Guajira', category: 'liquido', description: 'Botella de 330 ml', image: '/images/guajira.png', price: 0.75, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
 { id: 70, name: 'Malta Guajira', category: 'liquido', description: 'Blister de 6 uds', image: '/images/guajirablister.png', price: 4.4, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
 
+{ id:88 , name: 'Combo Navideño 1', category: 'combo', description: '2 Sobres de Spaguetis 500gr, 2 Mortadella Seara 500 gr, 2 Pasta de tomate 400 gr, Botella de aceite 1 Lt', image: '/images/navidad1.png', price: 11.45, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
 { id: 65, name: 'Combo 1', category: 'combo', description: '1 Lomo de cerdo importado 3 lb, 1 paquete de pollo 10 lb, 1 chuleta de lomo deshuesado 2 lb, 1 masas de cerdo 2 lb, 1 picadillo de pollo 400 g, 1 paquete de salchichas, 1 mortadela de queso, 1 yogurt de fresa probiótico 1 L, 2 leches condensadas de cajita, 2 libras de frijol negro, 10 libras de arroz blanco importado, 1 bolsa de azúcar 2 lb, 1 bolsa de sal 1 lb, 2 paquetes de espaguetis 500 g, 1 pasta de tomate 400 g, 2 botellas de aceite 1 L, 1 café Dufiltro 250 g, 4 jabones de 100 g, 1 malanga 5 lb.', image: '/images/combo1.png', price: 89.45, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
 { id: 66, name: 'Combo 2', category: 'combo', description: '1 paquete de pollo de 10 lb, 2 picadillos de pollo de 400 g, 2 paquetes de salchichas, 1 cartón de huevos (30 unidades), 1 yogurt de fresa de 1 L y 2 leches condensadas de cajita..', image: '/images/combo2.png', price: 34.45, availableIn: [,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
 { id: 67, name: 'Combo 3', category: 'combo', description: '10 lb de Arroz grano largo importado, 2 lb de frijol negro importado, 2 lb de azucar blanca importada ', image: '/images/combo3.jpg', price:17.35, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
@@ -290,20 +291,14 @@ const MunicipalityModal = React.memo(({ isOpen, onClose, selectedMunicipality, s
 function MobileBanner() {
   return (
     <div className="mobile-banner px-4 mb-6">
+      {/* Banner navideño */}
+      
+      
       <OptimizedImage 
         src="/images/navidad.png" 
-        alt="TuDespensa.25 - Ofertas Especiales"
-        className="w-full h-full object-cover rounded-xl shadow-md"
+        alt="TuDespensa.25 - Ofertas Navideñas"
+        className="w-full h-full object-cover rounded-xl shadow-md christmas-modal"
       />
-      <div 
-        className="w-full h-full bg-gradient-to-br from-[var(--primary-color)] to-[var(--secondary-color)] rounded-xl flex flex-col items-center justify-center text-white p-4 text-center shadow-md"
-        style={{display: 'none'}}
-      >
-        <div className="icon-shopping-basket text-4xl mb-3"></div>
-        <h3 className="text-xl font-bold mb-2">TuDespensa.25</h3>
-        <p className="text-sm opacity-90">¡Ofertas especiales !</p>
-        <p className="text-xs opacity-80 mt-2">Descuentos hasta 30%</p>
-      </div>
     </div>
   );
 }
@@ -593,10 +588,10 @@ const CartModal = React.memo(({ isOpen, onClose, cart, setCart, onProcessOrder }
             <div className="border-t p-4 space-y-3">
               <button
                 onClick={handleProcessOrder}
-                className="w-full bg-[var(--primary-color)] text-white py-3 rounded-lg font-medium flex items-center justify-center space-x-2"
+                className="w-full christmas-button py-3 rounded-lg font-medium flex items-center justify-center space-x-2"
               >
-                <div className="icon-message-circle text-lg"></div>
-                <span>Procesar Pedido por WhatsApp</span>
+                <div className="icon-gift text-lg"></div>
+                <span>Procesar Pedido Navideño</span>
               </button>
               <button
                 onClick={onClose}
@@ -769,6 +764,8 @@ const FloatingWishlistButton = React.memo(() => {
 
 const ProductCard = React.memo(({ product, onAddToCart, likedProducts, onToggleLike, onProductClick }) => {
   const isLiked = likedProducts.includes(product.id);
+  // Determinar si el producto es especial navideño
+  const isChristmasSpecial = product.category === 'combo' || product.price > 20;
 
   const handleCardClick = (e) => {
     if (e.target.closest('button')) return;
@@ -789,42 +786,42 @@ const ProductCard = React.memo(({ product, onAddToCart, likedProducts, onToggleL
     e.stopPropagation();
     const shareUrl = generateShareableLink(product.id);
     
-    // Copiar al portapapeles
     navigator.clipboard.writeText(shareUrl).then(() => {
-      // Mostrar notificación de éxito
-      alert('¡Enlace copiado! Comparte este producto.');
+      alert('¡Enlace copiado! Comparte este producto navideño. 🎁');
     }).catch(() => {
-      // Fallback
       const tempInput = document.createElement('input');
       tempInput.value = shareUrl;
       document.body.appendChild(tempInput);
       tempInput.select();
       document.execCommand('copy');
       document.body.removeChild(tempInput);
-      alert('¡Enlace copiado! Comparte este producto.');
+      alert('¡Enlace copiado! Comparte este producto navideño. 🎁');
     });
   };
 
   return (
-    <div className="product-card" onClick={handleCardClick}>
+    <div className={`product-card snow-effect ${isChristmasSpecial ? 'christmas-special' : ''}`} onClick={handleCardClick}>
       <div className="aspect-square bg-gray-100 relative overflow-hidden">
         <OptimizedImage
           src={product.image}
           alt={product.name}
           className="w-full h-full object-cover"
         />
+        
+        {/* Badge navideño para productos especiales */}
+        {isChristmasSpecial && (
+          <div className="christmas-badge">
+            🎁 Especial
+          </div>
+        )}
+        
         <div className="absolute top-2 right-2 flex flex-col space-y-1">
-          <button 
-            onClick={handleLikeClick}
-          >
+          <button onClick={handleLikeClick}>
             <div className="w-8 h-8 bg-white bg-opacity-90 rounded-full flex items-center justify-center shadow-sm">
               <div className={`icon-heart text-lg ${isLiked ? 'text-red-500' : 'text-gray-400'}`}></div>
             </div>
           </button>
-          {/* NUEVO BOTÓN DE COMPARTIR */}
-          <button 
-            onClick={handleShare}
-          >
+          <button onClick={handleShare}>
             <div className="w-8 h-8 bg-white bg-opacity-90 rounded-full flex items-center justify-center shadow-sm">
               <div className="icon-share-2 text-lg text-gray-600"></div>
             </div>
@@ -842,11 +839,14 @@ const ProductCard = React.memo(({ product, onAddToCart, likedProducts, onToggleL
           <span className="text-xs px-2 py-1 bg-gray-100 text-gray-900 rounded-full">
             {categories.find(c => c.id === product.category)?.name}
           </span>
-          <span className="text-sm font-bold text-[var(--secondary-color)]">${product.price.toFixed(2)}</span>
+          <span className="text-sm font-bold text-[var(--secondary-color)]">
+            ${product.price.toFixed(2)}
+            {isChristmasSpecial && <span className="text-xs text-red-500 ml-1">🎄</span>}
+          </span>
         </div>
         <button 
           onClick={handleAddToCart}
-          className="w-full bg-[var(--secondary-color)] text-white py-2 px-3 rounded-lg text-sm font-medium flex items-center justify-center space-x-1 hover:bg-opacity-90 transition-all"
+          className="w-full christmas-button py-2 px-3 rounded-lg text-sm font-medium flex items-center justify-center space-x-1 hover:bg-opacity-90 transition-all"
         >
           <div className="icon-shopping-cart text-sm"></div>
           <span>Añadir al carrito</span>
@@ -970,16 +970,21 @@ const ProductDetailModal = React.memo(({ isOpen, onClose, product, onAddToCart, 
 
 const Footer = React.memo(() => {
   return (
-    <footer className="bg-[var(--text-primary)] text-white mt-12">
-      <div className="px-4 py-8">
+    <footer className="bg-[var(--text-primary)] text-white mt-12 relative overflow-hidden">
+      {/* Elementos navideños decorativos */}
+      <div className="absolute top-0 left-0 right-0 text-center py-2">
+        <span className="text-xs opacity-60">🎄 🎅 🎁 ✨ ❄️</span>
+      </div>
+      
+      <div className="px-4 py-8 relative z-10">
         <div className="text-center mb-6">
           <div className="flex items-center justify-center space-x-2 mb-4">
-            <div className="w-12 h-12 bg-[var(--primary-color)] rounded-full flex items-center justify-center">
-              <div className="icon-shopping-basket text-xl text-white"></div>
+            <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center">
+              <div className="icon-santa text-xl text-white"></div>
             </div>
             <h3 className="text-2xl font-bold">TuDespensa.25</h3>
           </div>
-          <p className="text-gray-300 text-sm mb-4">Tu despensa de confianza para productos frescos y de calidad</p>
+          <p className="text-gray-300 text-sm mb-4">🎄 Tu despensa de confianza para una Navidad especial 🎄</p>
         </div>
         
         <div className="space-y-4 text-center text-sm">
@@ -1013,7 +1018,9 @@ const Footer = React.memo(() => {
         </div>
         
         <div className="border-t border-gray-600 mt-8 pt-4 text-center">
-          <p className="text-xs text-gray-400">© 2025 TuDespensa.25. Todos los derechos reservados.</p>
+          <p className="text-xs text-gray-400">
+            🎅 ¡Felices Fiestas! © 2025 TuDespensa.25. Todos los derechos reservados. 🎄
+          </p>
         </div>
       </div>
     </footer>
@@ -1412,6 +1419,16 @@ function App() {
         onCartClick={() => setIsCartOpen(true)}
         onMunicipalityClick={() => setShowMunicipalityModal(true)} // NUEVA PROPS
       />
+      
+      {/* Banner navideño superior */}
+      <div className="christmas-top-banner">
+        <div className="flex items-center justify-center space-x-4 text-sm">
+          <span className="twinkle">🎄</span>
+          <span className="font-medium">¡Ofertas Navideñas! Hasta 30% de descuento en combos especiales</span>
+          <span className="twinkle">🎅</span>
+        </div>
+      </div>
+      
       <SocialMediaLinks />
       
       {/* Banner para móvil */}
