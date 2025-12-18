@@ -148,13 +148,11 @@ section {
 }
 
 /* === Banner para vista móvil === */
-.mobile-banner {
+.mobile-banner img {
     width: 100%;
-    max-width: 423px;
-    height: 470px;
-    aspect-ratio: 9/10;
-    margin: 0 auto;
-    display: block;
+    height: auto;
+    object-fit: cover;
+    border-radius: 12px;
 }
 
 .mobile-banner img {
