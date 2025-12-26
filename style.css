@@ -360,7 +360,102 @@ section {
   box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }
 
-/* === TEMÁTICA NAVIDEÑA === */
+/* === TEMÁTICA FIN DE AÑO === */
+
+/* Badge de descuento fin de año */
+.new-year-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: linear-gradient(45deg, #ff6b00, #ffa500);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    z-index: 10;
+    animation: pulse-new-year 2s infinite;
+}
+
+@keyframes pulse-new-year {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* Botón con temática fin de año */
+.new-year-button {
+    background: linear-gradient(45deg, #ff6b00, #ffa500) !important;
+    color: white !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.new-year-button::before {
+    content: "🎉";
+    position: absolute;
+    right: 10px;
+    opacity: 0.8;
+}
+
+/* Tarjetas con descuento */
+.new-year-discount {
+    border: 2px solid #ff6b00;
+    position: relative;
+}
+
+/* Banner de oferta fin de año */
+.new-year-banner {
+    background: linear-gradient(135deg, #ff6b00 0%, #ffa500 50%, #ffcc00 100%);
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    border-radius: 12px;
+    margin: 1rem auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.new-year-banner::before {
+    content: "🎆✨🎇";
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+}
+
+.new-year-banner::after {
+    content: "✨2025✨";
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+}
+
+/* Iconos fin de año */
+.icon-fireworks::before { content: "🎆"; }
+.icon-confetti::before { content: "🎊"; }
+.icon-party::before { content: "🎉"; }
+.icon-champagne::before { content: "🍾"; }
+.icon-clock::before { content: "🕛"; }
+.icon-gift::before { content: "🎁"; }
+.icon-santa::before { content: "🎅"; }
+
+/* Efecto de confeti */
+.confetti-effect {
+    position: relative;
+    overflow: hidden;
+}
+
+.confetti-effect::after {
+    content: "🎊";
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 0.8rem;
+    opacity: 0.6;
+}
 
 /* Fondo navideño sutil para el header */
 .header-gradient {
@@ -370,7 +465,7 @@ section {
 }
 
 .header-gradient::before {
-    content: "🎄";
+    content: "🎆";
     position: absolute;
     top: 10px;
     right: 10px;
@@ -379,7 +474,7 @@ section {
 }
 
 .header-gradient::after {
-    content: "⭐";
+    content: "✨";
     position: absolute;
     bottom: 10px;
     left: 10px;
@@ -387,7 +482,7 @@ section {
     opacity: 0.7;
 }
 
-/* Efectos navideños en las tarjetas */
+/* Efectos fin de año en las tarjetas */
 .product-card {
     position: relative;
     transition: all 0.3s ease;
@@ -396,53 +491,18 @@ section {
 
 .product-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(220, 38, 38, 0.1);
-    border-color: #dc2626;
+    box-shadow: 0 10px 25px rgba(255, 107, 0, 0.1);
+    border-color: #ff6b00;
 }
 
-/* Badge navideño para productos especiales */
-.christmas-badge {
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    background: linear-gradient(45deg, #dc2626, #ea580c);
-    color: white;
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 0.7rem;
-    font-weight: bold;
-    z-index: 10;
-    animation: pulse-christmas 2s infinite;
-}
-
-@keyframes pulse-christmas {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-}
-
-/* Botones con temática navideña */
-.christmas-button {
-    background: linear-gradient(45deg, #dc2626, #ea580c) !important;
-    color: white !important;
-    position: relative;
-    overflow: hidden;
-}
-
-.christmas-button::before {
-    content: "🎁";
-    position: absolute;
-    right: 10px;
-    opacity: 0.8;
-}
-
-/* Efectos de nieve sutil */
+/* Efectos de confeti sutil */
 .snow-effect {
     position: relative;
     overflow: hidden;
 }
 
 .snow-effect::after {
-    content: "❄";
+    content: "✨";
     position: absolute;
     top: 5px;
     right: 5px;
@@ -480,31 +540,14 @@ section {
     font-size: 1.5rem;
 }
 
-/* Iconos navideños para categorías */
-.icon-christmas::before { content: "🎄"; }
-.icon-gift::before { content: "🎁"; }
-.icon-snowflake::before { content: "❄"; }
-.icon-santa::before { content: "🎅"; }
-.icon-reindeer::before { content: "🦌"; }
-
-/* Efecto de luces parpadeantes */
-@keyframes twinkle {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-}
-
-.twinkle {
-    animation: twinkle 2s infinite;
-}
-
-/* Modal navideño */
-.christmas-modal {
-    border: 2px solid #dc2626;
+/* Modal fin de año */
+.new-year-modal {
+    border: 2px solid #ff6b00;
     border-radius: 16px;
 }
 
-.christmas-modal::before {
-    content: "🎄";
+.new-year-modal::before {
+    content: "🎊";
     position: absolute;
     top: -15px;
     left: 50%;
@@ -515,17 +558,41 @@ section {
     font-size: 1.2rem;
 }
 
-/* Productos especiales navideños */
+/* Productos especiales fin de año */
 .christmas-special {
-    border: 2px solid #dc2626;
+    border: 2px solid #ff6b00;
 }
 
 /* Banner navideño superior */
 .christmas-top-banner {
-    background: linear-gradient(90deg, #1a936f 0%, #c72c41 50%, #1e40af 100%);
+    background: linear-gradient(90deg, #ff6b00 0%, #ffa500 50%, #ffcc00 100%);
     color: white;
     padding: 0.5rem 1rem;
     text-align: center;
     position: relative;
     overflow: hidden;
+}
+
+.christmas-top-banner::before {
+    content: "🎆";
+    position: absolute;
+    left: 20px;
+    animation: twinkle 1s infinite;
+}
+
+.christmas-top-banner::after {
+    content: "✨";
+    position: absolute;
+    right: 20px;
+    animation: twinkle 1.5s infinite;
+}
+
+/* Efecto de luces parpadeantes */
+@keyframes twinkle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.twinkle {
+    animation: twinkle 2s infinite;
 }

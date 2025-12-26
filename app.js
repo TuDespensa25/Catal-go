@@ -128,7 +128,7 @@ const productData = [
   { id: 80, name: "Fogon Infrarrojo  ", category: "electro", description: "Fogon Infrarrojo 1300 W  ", image: "/images/infra.png", price: 58, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27] },
   { id: 81, name: "Lavadora Semiautomática Milexus 7 L  ", category: "electro", description: "Lavadora semiautomatica 7 L ", image: "/images/semi7.png", price: 210, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27] },
   { id: 82, name: "Split milexus", category: "electro", description: "Milexus 1200 btu", image: "/images/split.png", price: 285, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27] },
-  { id: 83, name: "Frezeer", category: "electro", description: "Milexus 3.5 pies", image: "/images/freezer4p.png", price: 215, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27] },
+  { id: 83, name: "Frezeer", category: "electro", description: "Milexus 3.5 pies", image: "/images/freezer4p.png", price: 215, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,23, 24, 25, 26, 27] },
   { id: 84, name: "Frezeer", category: "electro", description: "Milexus 4.2 pies", image: "/images/freezer6p.png", price: 230, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27] },
   { id: 85, name: "Tv de 32", category: "electro", description: "Tv inteligente 32 pulgadas", image: "/images/32.png", price: 220, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27] },
   { id: 86, name: "Batidora Milexus", category: "electro", description: "Batidora 1.5 Lt vaso de cristal", image: "/images/batidora.png", price: 45, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27] },
@@ -293,13 +293,17 @@ const MunicipalityModal = React.memo(({ isOpen, onClose, selectedMunicipality, s
 function MobileBanner() {
   return (
     <div className="mobile-banner px-4 mb-6">
-      {/* Banner navideño */}
-      
+      {/* Banner de oferta fin de año */}
+      <div className="new-year-banner mb-4">
+        <h3 className="text-lg font-bold mb-2">🎊 ¡OFERTA FIN DE AÑO! 🎊</h3>
+        <p className="text-sm">5% DE DESCUENTO EN TODOS LOS PRODUCTOS</p>
+        <p className="text-xs mt-1">Válido hasta el 15 de Enero 2025</p>
+      </div>
       
       <OptimizedImage 
         src="/images/navidad.png" 
-        alt="TuDespensa.25 - Ofertas Navideñas"
-        className="w-full h-full object-cover rounded-xl shadow-md christmas-modal"
+        alt="TuDespensa.25 - Ofertas Fin de Año"
+        className="w-full h-full object-cover rounded-xl shadow-md new-year-modal"
       />
     </div>
   );
@@ -397,7 +401,7 @@ const CartModal = React.memo(({ isOpen, onClose, cart, setCart, onProcessOrder }
   };
 
   const getSubtotalPrice = () => {
-    return cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    return cart.reduce((sum, item) => sum + ((item.price * 0.95) * item.quantity), 0);
   };
 
   const getDiscountAmount = () => {
@@ -447,7 +451,10 @@ const CartModal = React.memo(({ isOpen, onClose, cart, setCart, onProcessOrder }
                   <div className="flex-1">
                     <h3 className="text-sm font-medium text-[var(--text-secondary)]">{item.name}</h3>
                     <p className="text-xs text-[var(--text-secondary)]">{item.description}</p>
-                    <p className="text-sm font-semibold text-[var(--primary-color)]">${item.price.toFixed(2)} USD</p>
+                    <p className="text-sm font-semibold text-[var(--secondary-color)]">
+                      ${(item.price * 0.95).toFixed(2)} USD
+                      <span className="text-xs text-green-600 ml-1">🎉 -5%</span>
+                    </p>
                   </div>
                   <div className="flex flex-col items-center space-y-1">
                     <div className="flex items-center space-x-2">
@@ -459,7 +466,9 @@ const CartModal = React.memo(({ isOpen, onClose, cart, setCart, onProcessOrder }
                         <div className="icon-plus text-sm text-[var(--text-secondary)]"></div>
                       </button>
                     </div>
-                    <p className="text-xs font-medium text-[var(--text-primary)]">${(item.price * item.quantity).toFixed(2)}</p>
+                    <p className="text-xs font-medium text-[var(--text-primary)]">
+                      ${(item.price * 0.95 * item.quantity).toFixed(2)}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -590,10 +599,10 @@ const CartModal = React.memo(({ isOpen, onClose, cart, setCart, onProcessOrder }
             <div className="border-t p-4 space-y-3">
               <button
                 onClick={handleProcessOrder}
-                className="w-full christmas-button py-3 rounded-lg font-medium flex items-center justify-center space-x-2"
+                className="w-full new-year-button py-3 rounded-lg font-medium flex items-center justify-center space-x-2"
               >
                 <div className="icon-gift text-lg"></div>
-                <span>Procesar Pedido Navideño</span>
+                <span>Procesar Pedido con Descuento</span>
               </button>
               <button
                 onClick={onClose}
@@ -766,8 +775,11 @@ const FloatingWishlistButton = React.memo(() => {
 
 const ProductCard = React.memo(({ product, onAddToCart, likedProducts, onToggleLike, onProductClick }) => {
   const isLiked = likedProducts.includes(product.id);
-  // Determinar si el producto es especial navideño
-  const isChristmasSpecial = product.category === 'combo' || product.price > 20;
+  // Aplicar descuento del 5% para fin de año
+  const discount = 5; // 5% de descuento
+  const originalPrice = product.price;
+  const discountedPrice = originalPrice * (1 - discount / 100);
+  const isDiscounted = true; // Todos los productos tienen descuento
 
   const handleCardClick = (e) => {
     if (e.target.closest('button')) return;
@@ -789,7 +801,7 @@ const ProductCard = React.memo(({ product, onAddToCart, likedProducts, onToggleL
     const shareUrl = generateShareableLink(product.id);
     
     navigator.clipboard.writeText(shareUrl).then(() => {
-      alert('¡Enlace copiado! Comparte este producto navideño. 🎁');
+      alert('¡Enlace copiado! Comparte este producto con descuento de fin de año. 🎉');
     }).catch(() => {
       const tempInput = document.createElement('input');
       tempInput.value = shareUrl;
@@ -797,12 +809,12 @@ const ProductCard = React.memo(({ product, onAddToCart, likedProducts, onToggleL
       tempInput.select();
       document.execCommand('copy');
       document.body.removeChild(tempInput);
-      alert('¡Enlace copiado! Comparte este producto navideño. 🎁');
+      alert('¡Enlace copiado! Comparte este producto con descuento de fin de año. 🎉');
     });
   };
 
   return (
-    <div className={`product-card snow-effect ${isChristmasSpecial ? 'christmas-special' : ''}`} onClick={handleCardClick}>
+    <div className={`product-card snow-effect ${isDiscounted ? 'new-year-discount' : ''}`} onClick={handleCardClick}>
       <div className="aspect-square bg-gray-100 relative overflow-hidden">
         <OptimizedImage
           src={product.image}
@@ -810,10 +822,10 @@ const ProductCard = React.memo(({ product, onAddToCart, likedProducts, onToggleL
           className="w-full h-full object-cover"
         />
         
-        {/* Badge navideño para productos especiales */}
-        {isChristmasSpecial && (
-          <div className="christmas-badge">
-            🎁 Especial
+        {/* Badge de descuento fin de año */}
+        {isDiscounted && (
+          <div className="new-year-badge">
+            🎉 -5%
           </div>
         )}
         
@@ -837,21 +849,28 @@ const ProductCard = React.memo(({ product, onAddToCart, likedProducts, onToggleL
         <p className="text-xs text-[var(--text-secondary)] mb-2 line-clamp-2">
           {product.description}
         </p>
+        
+        {/* Mostrar precio original y con descuento */}
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs px-2 py-1 bg-gray-100 text-gray-900 rounded-full">
             {categories.find(c => c.id === product.category)?.name}
           </span>
-          <span className="text-sm font-bold text-[var(--secondary-color)]">
-            ${product.price.toFixed(2)}
-            {isChristmasSpecial && <span className="text-xs text-red-500 ml-1">🎄</span>}
-          </span>
+          <div className="flex flex-col items-end">
+            <span className="text-xs line-through text-gray-400">
+              ${originalPrice.toFixed(2)}
+            </span>
+            <span className="text-sm font-bold text-[var(--secondary-color)]">
+              ${discountedPrice.toFixed(2)}
+              <span className="text-xs text-green-600 ml-1">🎉 -5%</span>
+            </span>
+          </div>
         </div>
         <button 
           onClick={handleAddToCart}
-          className="w-full christmas-button py-2 px-3 rounded-lg text-sm font-medium flex items-center justify-center space-x-1 hover:bg-opacity-90 transition-all"
+          className="w-full new-year-button py-2 px-3 rounded-lg text-sm font-medium flex items-center justify-center space-x-1 hover:bg-opacity-90 transition-all"
         >
           <div className="icon-shopping-cart text-sm"></div>
-          <span>Añadir al carrito</span>
+          <span>Añadir con descuento</span>
         </button>
       </div>
     </div>
@@ -926,7 +945,17 @@ const ProductDetailModal = React.memo(({ isOpen, onClose, product, onAddToCart, 
               </span>
             </div>
             <div className="text-right ml-4">
-              <span className="text-2xl font-bold text-[var(--secondary-color)]">${product.price.toFixed(2)}</span>
+              <div className="flex flex-col items-end">
+                <span className="text-sm line-through text-gray-400">
+                  ${product.price.toFixed(2)}
+                </span>
+                <span className="text-2xl font-bold text-[var(--secondary-color)]">
+                  ${(product.price * 0.95).toFixed(2)}
+                </span>
+                <span className="text-xs text-green-600 font-medium">
+                  🎉 Descuento 5% fin de año
+                </span>
+              </div>
               <span className="block text-xs text-[var(--text-secondary)]">USD</span>
             </div>
           </div>
@@ -942,10 +971,10 @@ const ProductDetailModal = React.memo(({ isOpen, onClose, product, onAddToCart, 
                 onAddToCart(product);
                 onClose();
               }}
-              className="w-full bg-[var(--secondary-color)] text-white py-3 rounded-lg font-medium flex items-center justify-center space-x-2 hover:bg-opacity-90 transition-all"
+              className="w-full new-year-button py-3 rounded-lg font-medium flex items-center justify-center space-x-2 hover:bg-opacity-90 transition-all"
             >
               <div className="icon-shopping-cart text-lg"></div>
-              <span>Añadir al carrito</span>
+              <span>Añadir al carrito con descuento</span>
             </button>
             
             {/* NUEVO BOTÓN DE COMPARTIR */}
@@ -973,38 +1002,38 @@ const ProductDetailModal = React.memo(({ isOpen, onClose, product, onAddToCart, 
 const Footer = React.memo(() => {
   return (
     <footer className="bg-[var(--text-primary)] text-white mt-12 relative overflow-hidden">
-      {/* Elementos navideños decorativos */}
+      {/* Elementos decorativos fin de año */}
       <div className="absolute top-0 left-0 right-0 text-center py-2">
-        <span className="text-xs opacity-60">🎄 🎅 🎁 ✨ ❄️</span>
+        <span className="text-xs opacity-60">🎆 ✨ 🎇 🎊 🎉</span>
       </div>
       
       <div className="px-4 py-8 relative z-10">
         <div className="text-center mb-6">
           <div className="flex items-center justify-center space-x-2 mb-4">
-            <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center">
-              <div className="icon-santa text-xl text-white"></div>
+            <div className="w-12 h-12 bg-gradient-to-r from-[#ff6b00] to-[#ffa500] rounded-full flex items-center justify-center">
+              <div className="icon-fireworks text-xl text-white"></div>
             </div>
             <h3 className="text-2xl font-bold">TuDespensa.25</h3>
           </div>
-          <p className="text-gray-300 text-sm mb-4">🎄 Tu despensa de confianza para una Navidad especial 🎄</p>
+          <p className="text-gray-300 text-sm mb-4">🎊 ¡Feliz Año Nuevo 2025! Tu despensa de confianza 🎊</p>
         </div>
         
         <div className="space-y-4 text-center text-sm">
           <div>
-            <h4 className="font-semibold text-[var(--primary-color)] mb-2">Contacto</h4>
+            <h4 className="font-semibold text-[#ff6b00] mb-2">Contacto</h4>
             <p className="text-gray-300">📱 +1 (914) 621-8369</p>
             <p className="text-gray-300">📧 ventas@tudespensa25.com</p>
             <p className="text-gray-300">📍 Disponible en todos los municipios de Artemisa</p>
           </div>
           
           <div>
-            <h4 className="font-semibold text-[var(--primary-color)] mb-2">Horarios</h4>
+            <h4 className="font-semibold text-[#ff6b00] mb-2">Horarios</h4>
             <p className="text-gray-300">Las 24 h del día</p>
             <p className="text-gray-300">Los 7 días de la semana</p>
           </div>
           
           <div>
-            <h4 className="font-semibold text-[var(--primary-color)] mb-2">Síguenos</h4>
+            <h4 className="font-semibold text-[#ff6b00] mb-2">Síguenos</h4>
             <div className="flex items-center justify-center space-x-4">
               <a href="https://wa.me/5354066204" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
                 <div className="icon-message-circle text-lg text-white"></div>
@@ -1021,7 +1050,7 @@ const Footer = React.memo(() => {
         
         <div className="border-t border-gray-600 mt-8 pt-4 text-center">
           <p className="text-xs text-gray-400">
-            🎅 ¡Felices Fiestas! © 2025 TuDespensa.25. Todos los derechos reservados. 🎄
+            🎇 ¡Próspero Año Nuevo 2025! © 2024-2025 TuDespensa.25. Todos los derechos reservados. 🎆
           </p>
         </div>
       </div>
@@ -1318,7 +1347,7 @@ function App() {
     });
     
     setNotification({
-      message: `${product.name} ha sido añadido al carrito`,
+      message: `${product.name} ha sido añadido con 5% de descuento fin de año 🎉`,
       isVisible: true
     });
   };
@@ -1343,7 +1372,8 @@ function App() {
   const handleProcessOrder = (customerData, discountCode = '', discountPercentage = 0, discountAmount = 0) => {
     const selectedMunicipalityName = municipalities.find(m => m.id === selectedMunicipality)?.name || '';
     
-    let orderMessage = `*NUEVO PEDIDO - TuDespensa.25*\n\n`;
+    let orderMessage = `*🎊 ¡FELIZ AÑO NUEVO 2025! 🎊*\n\n`;
+    orderMessage += `*OFERTA ESPECIAL DE FIN DE AÑO - 5% DE DESCUENTO EN TODOS LOS PRODUCTOS*\n\n`;
     orderMessage += `*DATOS DEL COMPRADOR:*\n`;
     orderMessage += `👤 Nombre: ${customerData.name}\n`;
     orderMessage += `📱 Teléfono: ${customerData.phone}\n\n`;
@@ -1359,37 +1389,61 @@ function App() {
       orderMessage += `📝 Notas: ${customerData.notes}\n`;
     }
     
-    // Información de descuento si aplica
+    // Información de descuento especial fin de año
+    orderMessage += `\n*🎉 DESCUENTO ESPECIAL FIN DE AÑO 2024-2025:*\n`;
+    orderMessage += `📅 Válido hasta: 15 de Enero 2025\n`;
+    orderMessage += `📉 Descuento aplicado: 5% en todos los productos\n\n`;
+    
+    // Descuento adicional por código si aplica
     if (discountCode && discountPercentage > 0) {
-      orderMessage += `\n*INFORMACIÓN DE DESCUENTO:*\n`;
-      orderMessage += `🎫 Código: ${discountCode}\n`;
-      orderMessage += `📉 Descuento: ${discountPercentage}%\n`;
-      orderMessage += `💵 Ahorro: $${discountAmount.toFixed(2)} USD\n\n`;
+      orderMessage += `*🎫 DESCUENTO ADICIONAL POR CÓDIGO:*\n`;
+      orderMessage += `Código: ${discountCode}\n`;
+      orderMessage += `Descuento adicional: ${discountPercentage}%\n`;
+      orderMessage += `💵 Ahorro adicional: $${discountAmount.toFixed(2)} USD\n\n`;
     }
     
     orderMessage += `\n*PRODUCTOS SOLICITADOS:*\n`;
     let subtotal = 0;
+    let totalDiscount = 0;
+    
     cart.forEach((item, index) => {
-      const itemSubtotal = item.price * item.quantity;
+      const originalPrice = item.price;
+      const discountedPrice = originalPrice * 0.95; // 5% descuento
+      const itemSubtotal = discountedPrice * item.quantity;
+      const itemDiscount = (originalPrice - discountedPrice) * item.quantity;
+      
       subtotal += itemSubtotal;
+      totalDiscount += itemDiscount;
+      
       orderMessage += `${index + 1}. ${item.name}\n`;
-      orderMessage += `   💰 Precio: $${item.price.toFixed(2)} USD\n`;
+      orderMessage += `   💰 Precio original: $${originalPrice.toFixed(2)} USD\n`;
+      orderMessage += `   💰 Precio con descuento: $${discountedPrice.toFixed(2)} USD\n`;
       orderMessage += `   📦 Cantidad: ${item.quantity}\n`;
-      orderMessage += `   💵 Subtotal: $${itemSubtotal.toFixed(2)} USD\n\n`;
+      orderMessage += `   💵 Subtotal: $${itemSubtotal.toFixed(2)} USD\n`;
+      orderMessage += `   🎉 Ahorro: $${itemDiscount.toFixed(2)} USD\n\n`;
     });
     
-    // Resumen de precios
-    orderMessage += `*RESUMEN DE PAGO:*\n`;
-    orderMessage += `🛒 Subtotal: $${subtotal.toFixed(2)} USD\n`;
+    // Resumen de precios con mensaje conmemorativo
+    orderMessage += `*🎊 RESUMEN DE PAGO - OFERTA FIN DE AÑO 🎊*\n`;
+    orderMessage += `🛒 Subtotal sin descuento: $${(subtotal / 0.95).toFixed(2)} USD\n`;
+    orderMessage += `🎉 Descuento fin de año (5%): -$${totalDiscount.toFixed(2)} USD\n`;
     
     if (discountPercentage > 0) {
-      orderMessage += `🎫 Descuento (${discountPercentage}%): -$${discountAmount.toFixed(2)} USD\n`;
+      orderMessage += `🎫 Descuento adicional (${discountPercentage}%): -$${discountAmount.toFixed(2)} USD\n`;
     }
     
-    const total = discountPercentage > 0 ? subtotal - discountAmount : subtotal;
-    orderMessage += `💰 *TOTAL DEL PEDIDO: $${total.toFixed(2)} USD*\n`;
+    const finalTotal = discountPercentage > 0 ? subtotal - discountAmount : subtotal;
+    orderMessage += `💰 *TOTAL FINAL CON DESCUENTO: $${finalTotal.toFixed(2)} USD*\n\n`;
     
-    orderMessage += `\n*DATOS DEL VENDEDOR:*\n`;
+    orderMessage += `*¡FELICIDADES! HAS AHORRADO: $${(totalDiscount + discountAmount).toFixed(2)} USD*\n\n`;
+    
+    orderMessage += `*🎆 MENSAJE CONMEMORATIVO:*\n`;
+    orderMessage += `¡Gracias por confiar en TuDespensa.25 en este fin de año 2024!\n`;
+    orderMessage += `Te deseamos un próspero Año Nuevo 2025 lleno de bendiciones,\n`;
+    orderMessage += `salud, prosperidad y éxitos. ¡Que el 2025 traiga abundancia\n`;
+    orderMessage += `y felicidad a tu hogar! 🎇\n\n`;
+    
+    orderMessage += `*DATOS DEL VENDEDOR:*\n`;
     orderMessage += `🏪 Tienda: TuDespensa.25\n`;
     orderMessage += `📞 Contacto: +5354066204\n`;
     orderMessage += `📧 Email: ventas@tudespensa25.com\n`;
@@ -1398,6 +1452,7 @@ function App() {
     orderMessage += `🚚 Entrega a domicilio \n`;
     orderMessage += `⏰ Tiempo estimado: 24 a 48 horas\n`;
     orderMessage += `💳 Pago: Efectivo o transferencia Zelle\n`;
+    orderMessage += `\n🎆 ¡FELIZ 2025! 🎆`;
 
     const whatsappUrl = `https://wa.me/5354066204?text=${encodeURIComponent(orderMessage)}`;
     window.open(whatsappUrl, '_blank');
@@ -1422,12 +1477,12 @@ function App() {
         onMunicipalityClick={() => setShowMunicipalityModal(true)} // NUEVA PROPS
       />
       
-      {/* Banner navideño superior */}
+      {/* Banner superior de fin de año */}
       <div className="christmas-top-banner">
         <div className="flex items-center justify-center space-x-4 text-sm">
-          <span className="twinkle">🎄</span>
-          <span className="font-medium">¡Ofertas Navideñas! Hasta 30% de descuento en combos especiales</span>
-          <span className="twinkle">🎅</span>
+          <span className="twinkle">🎆</span>
+          <span className="font-medium">¡OFERTA FIN DE AÑO! 5% de descuento en todos los productos</span>
+          <span className="twinkle">🎇</span>
         </div>
       </div>
       
