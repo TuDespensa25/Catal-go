@@ -28,13 +28,14 @@ const categories = [
 
 const productData = [
   // Cárnicos y embutidos
-  { id: 1, name: 'Pollo caja de 40 lb 4 paquetes de 10 lb', category: 'carnicos', description: 'Caja de 40 lb de pollo', image: '/images/pollo_caja.png', price: 43, availableIn: [ 3, 4, 5, 6, 7, 8, 9, 10, 11] },
+  /*{ id: 1, name: 'Pollo caja de 40 lb 4 paquetes de 10 lb', category: 'carnicos', description: 'Caja de 40 lb de pollo', image: '/images/pollo_caja.png', price: 43, availableIn: [ 3, 4, 5, 6, 7, 8, 9, 10, 11] },*/
   { id: 40, name: 'Pollo caja de 33 lb de postas', category: 'carnicos', description: 'Caja de 33 lb de pollo', image: '/images/pollo_caja33.png', price: 38, availableIn: [1,2] },
   { id: 42, name: 'Lomo de Cerdo Importado ', category: 'carnicos', description: 'Porción de 3 Lb', image: '/images/lomo.png', price: 11.2, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
-  { id: 2, name: 'Pollo paquete de 10 lb', category: 'carnicos', description: 'Paquete de 10 lb de pollo', image: '/images/pollo10lb.png', price: 11.4, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
+  { id: 2, name: 'Pollo paquete de 10 lb', category: 'carnicos', description: 'Paquete de 10 lb de pollo', image: '/images/pollo10lb.png', price: 13.2, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
+   { id: 88, name: 'Pollo paquete de 11 lb', category: 'carnicos', description: 'Paquete de 11 lb de pollo', image: '/images/pollo10lb.png', price: 11.4, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
   { id: 3, name: 'Pechuga paquete de 2 kg', category: 'carnicos', description: 'Pechuga de pollo 2 kg', image: '/images/pechuga2kg.png', price: 14, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
-  { id: 4, name: 'Bandeja de 2 lb de bistec pechuga', category: 'carnicos', description: 'Bistec de pechuga 2 lb', image: '/images/bistecpechuga.png', price: 9.25, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
-  { id: 41, name: 'Caja de pollo de 40 Lb Postas', category: 'carnicos', description: 'Caja de 40 lb de pollo', image: '/images/pollo_caja40agranel.png', price: 42, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
+  /*{ id: 4, name: 'Bandeja de 2 lb de bistec pechuga', category: 'carnicos', description: 'Bistec de pechuga 2 lb', image: '/images/bistecpechuga.png', price: 9.25, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },*/
+  /*{ id: 41, name: 'Caja de pollo de 40 Lb Postas', category: 'carnicos', description: 'Caja de 40 lb de pollo', image: '/images/pollo_caja40agranel.png', price: 42, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },*/
   { id: 5, name: 'Chuleta de lomo deshuesado 2 lb', category: 'carnicos', description: 'Chuleta de lomo deshuesado', image: '/images/chuletalomo.png', price: 8.5, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
   { id: 6, name: 'Masas de cerdo 2 lb', category: 'carnicos', description: 'Masas de cerdo 2 lb', image: '/images/masas.png', price: 8, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
   { id: 7, name: 'Bistec de cerdo 2 lb', category: 'carnicos', description: 'Bistec de cerdo 2 lb', image: '/images/bisteclomo.png', price: 9, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
@@ -43,13 +44,13 @@ const productData = [
   { id: 10, name: 'Picadillo 400 gr de pollo', category: 'carnicos', description: 'Picadillo de pollo 400 gr', image: '/images/picadillo.png', price: 1.85, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
   { id: 11, name: 'Hamburguesas mixtas de pollo y cerdo', category: 'carnicos', description: 'Hamburguesas mixtas de pollo y cerdo', image: '/images/hamburguesas.png', price: 2.3, availableIn: [4, 5, 6, 7, 8, 9, 10, 11] },
   { id: 12, name: 'Mortadella Seara de Pollo ', category: 'carnicos', description: 'Mortadella de 500 gr', image: '/images/seara500.png', price: 2.3, availableIn: [1, 2, 3] },
-  { id: 13, name: 'Mortadella clásica', category: 'carnicos', description: 'Mortadella clásica', image: '/images/mortclasica.png', price:2.3, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
-  { id: 14, name: 'Mortadela de queso', category: 'carnicos', description: 'Mortadella de queso', image: '/images/mortqueso.png', price: 2.3, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
+  { id: 13, name: 'Mortadella clásica', category: 'carnicos', description: 'Mortadella clásica', image: '/images/mortclasica.png', price:2.3, availableIn: [1, 2, ] },
+  { id: 14, name: 'Mortadela de queso', category: 'carnicos', description: 'Mortadella de queso', image: '/images/mortqueso.png', price: 2.3, availableIn: [1, 2,] },
   { id: 15, name: 'Mortadela de aceituna', category: 'carnicos', description: 'Mortadella con aceituna', image: '/images/mortaceit.png', price: 2.3, availableIn: [4, 5, 6, 7, 8, 9, 10, 11] },
   { id: 45, name: 'Carne de Res troceada', category: 'carnicos', description: 'Bolsa de 1 Kg', image: '/images/restroceada.png', price: 14.4, availableIn: [4, 5, 6, 7, 8, 9, 10, 11] },
   { id: 17, name: 'Hígado de pollo 1 kg', category: 'carnicos', description: 'Hígado de pollo 1 kg', image: '/images/higado.png', price: 2.60, availableIn: [4, 5, 6, 7, 8, 9, 10, 11] },
   { id: 18, name: 'Salchichas', category: 'carnicos', description: 'Salchichas', image: '/images/salchichas.png', price:1.75, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
-  { id: 50, name: 'Muslo de pollo ahumado', category: 'carnicos', description: 'Bolsa de 3 Lb', image: '/images/polloahumado.png', price: 7, availableIn: [3, 4, 5, 6, 7, 8, 9, 10, 11] },
+ /* { id: 50, name: 'Muslo de pollo ahumado', category: 'carnicos', description: 'Bolsa de 3 Lb', image: '/images/polloahumado.png', price: 7, availableIn: [3, 4, 5, 6, 7, 8, 9, 10, 11] },*/
 
   // Lácteos y Huevos
   { id: 19, name: 'Leche entera 1 kg', category: 'lacteos', description: 'Leche entera 1 kg', image: '/images/leche1kg.png', price: 10, availableIn: [1,2,3] },
@@ -57,7 +58,7 @@ const productData = [
   { id: 21, name: 'Yogurt de fresa 1 L', category: 'lacteos', description: 'Yogurt de fresa 1 L', image: '/images/yogurt1L.png', price: 3.3, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
   { id: 22, name: 'Leche condensada de cajita', category: 'lacteos', description: 'Leche condensada de cajita', image: '/images/cajitaleche.png', price: 1.65, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
   { id: 23, name: 'Leche condensada lata', category: 'lacteos', description: 'Leche condensada lata', image: '/images/nezkaleche.png', price: 1.8, availableIn: [] },
-  { id: 55, name: 'Helado', category: 'lacteos', description: 'Caja de 4L', image: '/images/helado.png', price: 9, availableIn: [,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
+  { id: 55, name: 'Helado', category: 'lacteos', description: 'Cubeta de 3L', image: '/images/helado.png', price: 9, availableIn: [,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
   { id: 57, name: 'Leche en Polvo', category: 'lacteos', description: 'Bolsa de 1 kg', image: '/images/lechepolvomu.png', price: 8.5, availableIn: [,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
   { id: 58, name: 'Cartón de huevos', category: 'lacteos', description: '30 uds frescos 100% orgánicos', image: '/images/huevo30.png', price: 9.4, availableIn: [1,2,3,,19,20,21,22,23,24,25,26,27] },
 
@@ -81,6 +82,7 @@ const productData = [
 
   // Mercado
   { id: 35, name: 'Aceite 1 L', category: 'mercado', description: 'Aceite 1 L', image: '/images/aceite1l.png', price: 2.95, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
+  { id: 35, name: 'Aceite 1 L', category: 'mercado', description: 'Aceite 900 ml', image: '/images/aceite900ml.png', price: 2.65, availableIn: [3,4,5,6,7,8,9,10,11] },
   { id: 36, name: 'Chocolate en polvo 500 gr', category: 'mercado', description: 'Chocolate en polvo 500 gr', image: '/images/chocopolvo.png', price: 2.9, availableIn: [3,2,1] },
   { id: 37, name: 'Gelatina', category: 'mercado', description: 'Gelatina', image: '/images/gelafresa.png', price: 0.9, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
   { id: 46, name: 'Café La LLave ', category: 'mercado', description: 'Café La Llave 10 oz', image: '/images/cafelallave.png', price: 6.9, availableIn: [] },
