@@ -295,7 +295,7 @@ function MobileBanner() {
     <div className="mobile-banner px-4 mb-6">
       {/* Banner de oferta fin de año */}
       <div className="new-year-banner mb-4">
-        <h3 className="text-lg font-bold mb-2">🎊 ¡OFERTA FIN DE AÑO! 🎊</h3>
+        <h3 className="text-lg font-bold mb-2">🎊 ¡FELIZ AÑO 2026! 🎊</h3>
         <p className="text-sm">5% DE DESCUENTO EN TODOS LOS PRODUCTOS</p>
         <p className="text-xs mt-1">Válido hasta el 15 de Enero 2026</p>
       </div>
@@ -1373,7 +1373,7 @@ function App() {
     const selectedMunicipalityName = municipalities.find(m => m.id === selectedMunicipality)?.name || '';
     
     let orderMessage = `*🎊 ¡FELIZ AÑO NUEVO 2026! 🎊*\n\n`;
-    orderMessage += `*OFERTA ESPECIAL DE FIN DE AÑO - 5% DE DESCUENTO EN TODOS LOS PRODUCTOS*\n\n`;
+    orderMessage += `*OFERTA ESPECIAL  - 5% DE DESCUENTO EN TODOS LOS PRODUCTOS*\n\n`;
     orderMessage += `*DATOS DEL COMPRADOR:*\n`;
     orderMessage += `👤 Nombre: ${customerData.name}\n`;
     orderMessage += `📱 Teléfono: ${customerData.phone}\n\n`;
@@ -1390,7 +1390,7 @@ function App() {
     }
     
     // Información de descuento especial fin de año
-    orderMessage += `\n*🎉 DESCUENTO ESPECIAL FIN DE AÑO 2025-2026:*\n`;
+    orderMessage += `\n*🎉 DESCUENTO ESPECIAL :*\n`;
     orderMessage += `📅 Válido hasta: 15 de Enero 2026\n`;
     orderMessage += `📉 Descuento aplicado: 5% en todos los productos\n\n`;
     
@@ -1424,9 +1424,9 @@ function App() {
     });
     
     // Resumen de precios con mensaje conmemorativo
-    orderMessage += `*🎊 RESUMEN DE PAGO - OFERTA FIN DE AÑO 🎊*\n`;
+    orderMessage += `*🎊 RESUMEN DE PAGO - OFERTA  DE AÑO NUEVO 🎊*\n`;
     orderMessage += `🛒 Subtotal sin descuento: $${(subtotal / 0.95).toFixed(2)} USD\n`;
-    orderMessage += `🎉 Descuento fin de año (5%): -$${totalDiscount.toFixed(2)} USD\n`;
+    orderMessage += `🎉 Descuento  (5%): -$${totalDiscount.toFixed(2)} USD\n`;
     
     if (discountPercentage > 0) {
       orderMessage += `🎫 Descuento adicional (${discountPercentage}%): -$${discountAmount.toFixed(2)} USD\n`;
@@ -1438,7 +1438,7 @@ function App() {
     orderMessage += `*¡FELICIDADES! HAS AHORRADO: $${(totalDiscount + discountAmount).toFixed(2)} USD*\n\n`;
     
     orderMessage += `*🎆 MENSAJE CONMEMORATIVO:*\n`;
-    orderMessage += `¡Gracias por confiar en TuDespensa.25 en este fin de año 2025!\n`;
+    orderMessage += `¡Gracias por confiar en TuDespensa.25 !\n`;
     orderMessage += `Te deseamos un próspero Año Nuevo 2026 lleno de bendiciones,\n`;
     orderMessage += `salud, prosperidad y éxitos. ¡Que el 2026 traiga abundancia\n`;
     orderMessage += `y felicidad a tu hogar! 🎇\n\n`;
@@ -1451,7 +1451,7 @@ function App() {
     orderMessage += `\n*DATOS DE ENTREGA:*\n`;
     orderMessage += `🚚 Entrega a domicilio \n`;
     orderMessage += `⏰ Tiempo estimado: 24 a 48 horas\n`;
-    orderMessage += `💳 Pago: Efectivo o transferencia Zelle\n`;
+    orderMessage += `💳 Pago:Transferencia Zelle\n`;
     orderMessage += `\n🎆 ¡FELIZ 2026! 🎆`;
 
     const whatsappUrl = `https://wa.me/5354066204?text=${encodeURIComponent(orderMessage)}`;
