@@ -391,7 +391,7 @@ section {
 }
 
 .new-year-button::before {
-    content: "🎉";
+    content: "";
     position: absolute;
     right: 10px;
     opacity: 0.8;
@@ -416,7 +416,7 @@ section {
 }
 
 .new-year-banner::before {
-    content: "🎆✨🎇";
+    content: "";
     position: absolute;
     top: 50%;
     left: 20px;
@@ -434,13 +434,13 @@ section {
 }
 
 /* Iconos fin de año */
-.icon-fireworks::before { content: "🎆"; }
-.icon-confetti::before { content: "🎊"; }
-.icon-party::before { content: "🎉"; }
+.icon-fireworks::before { content: ""; }
+.icon-confetti::before { content: ""; }
+.icon-party::before { content: ""; }
 .icon-champagne::before { content: "🍾"; }
 .icon-clock::before { content: "🕛"; }
 .icon-gift::before { content: "🎁"; }
-.icon-santa::before { content: "🎅"; }
+.icon-santa::before { content: ""; }
 
 /* Efecto de confeti */
 .confetti-effect {
@@ -449,7 +449,7 @@ section {
 }
 
 .confetti-effect::after {
-    content: "🎊";
+    content: "";
     position: absolute;
     top: 5px;
     right: 5px;
@@ -465,7 +465,7 @@ section {
 }
 
 .header-gradient::before {
-    content: "🎆";
+    content: "";
     position: absolute;
     top: 10px;
     right: 10px;
@@ -474,7 +474,7 @@ section {
 }
 
 .header-gradient::after {
-    content: "✨";
+    content: "";
     position: absolute;
     bottom: 10px;
     left: 10px;
@@ -502,7 +502,7 @@ section {
 }
 
 .snow-effect::after {
-    content: "✨";
+    content: "";
     position: absolute;
     top: 5px;
     right: 5px;
@@ -523,7 +523,7 @@ section {
 }
 
 .christmas-banner::before {
-    content: "🎄🎅✨";
+    content: "";
     position: absolute;
     top: 50%;
     left: 20px;
@@ -532,7 +532,7 @@ section {
 }
 
 .christmas-banner::after {
-    content: "✨🎁🎄";
+    content: "";
     position: absolute;
     top: 50%;
     right: 20px;
@@ -547,7 +547,7 @@ section {
 }
 
 .new-year-modal::before {
-    content: "🎊";
+    content: "";
     position: absolute;
     top: -15px;
     left: 50%;
@@ -574,14 +574,14 @@ section {
 }
 
 .christmas-top-banner::before {
-    content: "🎆";
+    content: "";
     position: absolute;
     left: 20px;
     animation: twinkle 1s infinite;
 }
 
 .christmas-top-banner::after {
-    content: "✨";
+    content: "";
     position: absolute;
     right: 20px;
     animation: twinkle 1.5s infinite;

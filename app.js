@@ -295,7 +295,7 @@ function MobileBanner() {
     <div className="mobile-banner px-4 mb-6">
       {/* Banner de oferta fin de año */}
       <div className="new-year-banner mb-4">
-        <h3 className="text-lg font-bold mb-2">🎊 ¡FELIZ AÑO 2026! 🎊</h3>
+        <h3 className="text-lg font-bold mb-2"> ¡FELIZ AÑO 2026! </h3>
         <p className="text-sm">5% DE DESCUENTO EN TODOS LOS PRODUCTOS</p>
         <p className="text-xs mt-1">Válido hasta el 15 de Enero 2026</p>
       </div>
@@ -801,7 +801,7 @@ const ProductCard = React.memo(({ product, onAddToCart, likedProducts, onToggleL
     const shareUrl = generateShareableLink(product.id);
     
     navigator.clipboard.writeText(shareUrl).then(() => {
-      alert('¡Enlace copiado! Comparte este producto con descuento de fin de año. 🎉');
+      alert('¡Enlace copiado! Comparte este producto con descuento. 🎉');
     }).catch(() => {
       const tempInput = document.createElement('input');
       tempInput.value = shareUrl;
@@ -1004,7 +1004,7 @@ const Footer = React.memo(() => {
     <footer className="bg-[var(--text-primary)] text-white mt-12 relative overflow-hidden">
       {/* Elementos decorativos fin de año */}
       <div className="absolute top-0 left-0 right-0 text-center py-2">
-        <span className="text-xs opacity-60">🎆 ✨ 🎇 🎊 🎉</span>
+        <span className="text-xs opacity-60"></span>
       </div>
       
       <div className="px-4 py-8 relative z-10">
