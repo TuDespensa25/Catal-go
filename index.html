@@ -11,9 +11,10 @@
     <!-- PWA Manifest -->
     <link rel="manifest" href="/manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="TuDespensa25">
-    <meta name="theme-color" content="#22c55e">
+    <meta name="theme-color" content="#22c55e" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#22c55e" media="(prefers-color-scheme: dark)">
     <meta name="msapplication-TileColor" content="#22c55e">
     <meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
     
@@ -86,7 +87,6 @@
 
         // ===== 3. MOSTRAR BOTÓN DE INSTALACIÓN =====
         setTimeout(() => {
-            // No mostrar si ya está instalado
             if (window.matchMedia('(display-mode: standalone)').matches) {
                 return;
             }
@@ -121,7 +121,6 @@
                 animation: slideUp 0.5s ease;
             `;
 
-            // Animación
             const style = document.createElement('style');
             style.textContent = `
                 @keyframes slideUp {
