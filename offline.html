@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sin conexión - TuDespensa.25</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary-color: #22c55e;
+            --secondary-color: #f97316;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center">
+        <div class="w-24 h-24 mx-auto mb-6 bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)] rounded-full flex items-center justify-center">
+            <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linecap="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path>
+            </svg>
+        </div>
+        
+        <h1 class="text-2xl font-bold text-gray-900 mb-2">Sin conexión a internet</h1>
+        <p class="text-gray-600 mb-6">
+            No te preocupes, puedes seguir navegando por nuestros productos y agregarlos al carrito. 
+            Tu pedido se procesará cuando recuperes la conexión.
+        </p>
+        
+        <div class="space-y-4">
+            <button onclick="window.location.reload()" 
+                    class="w-full bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)] text-white py-3 px-4 rounded-lg font-medium hover:opacity-90 transition-all">
+                Intentar de nuevo
+            </button>
+            
+            <a href="/" 
+               class="block w-full bg-gray-100 text-gray-900 py-3 px-4 rounded-lg font-medium hover:bg-gray-200 transition-all">
+                Volver al inicio
+            </a>
+            
+            <a href="https://wa.me/5354066204" 
+               target="_blank"
+               class="block w-full bg-green-500 text-white py-3 px-4 rounded-lg font-medium hover:bg-green-600 transition-all">
+                Contactar por WhatsApp
+            </a>
+        </div>
+        
+        <div class="mt-8 pt-6 border-t border-gray-200">
+            <p class="text-sm text-gray-500">
+                ⚡ Modo offline activado<br>
+                Puedes seguir navegando por productos vistos recientemente
+            </p>
+        </div>
+    </div>
+</body>
+</html>

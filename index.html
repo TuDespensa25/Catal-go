@@ -2,29 +2,41 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     
     <title>TuDespensa.25 - Catálogo Online</title>
     <meta name="description" content="Catálogo online de TuDespensa.25 con productos de cárnicos, lácteos, líquidos, agro, confitería, hogar y electrodomésticos">
     <meta name="keywords" content="despensa, productos, cárnicos, lácteos, confitería, hogar, electrodomésticos">
     
-    <!-- Preloads y optimizaciones de rendimiento -->
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="TuDespensa25">
+    <meta name="theme-color" content="#22c55e">
+    <meta name="msapplication-TileColor" content="#22c55e">
+    <meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+    
+    <!-- iOS Icons -->
+    <link rel="apple-touch-icon" href="/icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="/icons/icon-192x192.png">
+    
+    <!-- Preloads -->
     <link rel="preconnect" href="https://resource.trickle.so">
     <link rel="dns-prefetch" href="https://resource.trickle.so">
     <link rel="preload" href="https://resource.trickle.so/vendor_lib/unpkg/lucide-static@0.516.0/font/lucide.css" as="style">
 
-    <!-- Meta tags para performance -->
-    <meta name="theme-color" content="#22c55e">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-
     <!-- Open Graph -->
     <meta property="og:title" content="TuDespensa.25 - Catálogo Online">
     <meta property="og:description" content="Descubre nuestro catálogo completo de productos organizados por categorías">
+    <meta property="og:image" content="/icons/icon-512x512.png">
     
     <!-- Twitter -->
     <meta name="twitter:title" content="TuDespensa.25 - Catálogo Online">
     <meta name="twitter:description" content="Descubre nuestro catálogo completo de productos organizados por categorías">
+    <meta name="twitter:image" content="/icons/icon-512x512.png">
 
     <script src="https://resource.trickle.so/vendor_lib/unpkg/react@18/umd/react.production.min.js"></script>
     <script src="https://resource.trickle.so/vendor_lib/unpkg/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -33,7 +45,7 @@
     <link href="https://resource.trickle.so/vendor_lib/unpkg/lucide-static@0.516.0/font/lucide.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
 
-    <!-- CSS Crítico Inline -->
+    <!-- CSS Crítico -->
     <style>
         .header-gradient { background: linear-gradient(135deg, #1a936f 0%, #c72c41 100%); }
         .product-card { background: white; border-radius: 0.75rem; overflow: hidden; }
@@ -52,5 +64,95 @@
     <div id="root"></div>
     
     <script type="text/babel" src="app.js"></script>
+    
+    <!-- ===== PWA - SERVICE WORKER Y BOTÓN DE INSTALACIÓN ===== -->
+    <script>
+        // ===== 1. SERVICE WORKER =====
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(reg => console.log('✅ SW registrado'))
+                    .catch(err => console.log('❌ SW error:', err));
+            });
+        }
+
+        // ===== 2. CAPTURAR EVENTO DE INSTALACIÓN =====
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            console.log('✅ PWA lista para instalar');
+        });
+
+        // ===== 3. MOSTRAR BOTÓN DE INSTALACIÓN =====
+        setTimeout(() => {
+            // No mostrar si ya está instalado
+            if (window.matchMedia('(display-mode: standalone)').matches) {
+                return;
+            }
+
+            const btn = document.createElement('button');
+            btn.id = 'install-pwa-btn';
+            btn.innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: center; gap: 12px;">
+                    <span style="font-size: 24px;">📱</span>
+                    <div style="text-align: left;">
+                        <div style="font-weight: 700; font-size: 16px;">Instalar TuDespensa.25</div>
+                        <div style="font-size: 12px; opacity: 0.9;">App rápida y sin conexión</div>
+                    </div>
+                </div>
+            `;
+            
+            btn.style.cssText = `
+                position: fixed;
+                bottom: 90px;
+                left: 16px;
+                right: 16px;
+                background: linear-gradient(135deg, #22c55e, #f97316);
+                color: white;
+                border: none;
+                border-radius: 16px;
+                padding: 16px 20px;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                cursor: pointer;
+                box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+                z-index: 999999;
+                border: 1px solid rgba(255,255,255,0.3);
+                animation: slideUp 0.5s ease;
+            `;
+
+            // Animación
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideUp {
+                    from { transform: translateY(100px); opacity: 0; }
+                    to { transform: translateY(0); opacity: 1; }
+                }
+                #install-pwa-btn:hover {
+                    transform: scale(1.02);
+                    box-shadow: 0 12px 28px rgba(34, 197, 94, 0.5);
+                }
+            `;
+            document.head.appendChild(style);
+
+            btn.onclick = async () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    console.log('📱 Instalación:', outcome);
+                    deferredPrompt = null;
+                    btn.remove();
+                } else {
+                    alert('📱 Para instalar:\n\nANDROID: Menú → "Instalar aplicación"\niOS: Compartir → "Agregar a pantalla de inicio"');
+                }
+            };
+
+            document.body.appendChild(btn);
+
+            setTimeout(() => {
+                if (btn.parentNode) btn.remove();
+            }, 60000);
+        }, 2000);
+    </script>
 </body>
 </html>

@@ -13,34 +13,28 @@ const municipalities = [
 ];
 
 const categories = [
-  { id: 'combo', name: 'Combos', icon: 'icon-basket', backgroundImage: '/images/aseo.png' },
-  { id: 'carnicos', name: 'Cárnicos y embutidos', icon: 'icon-beef', backgroundImage: '/images/carnicos.png' },
-  { id: 'cereales', name: 'Cereales, pastas y granos', icon: 'icon-wheat', backgroundImage: '/images/cereales.png' },
-  { id: 'lacteos', name: 'Lácteos y huevos', icon: 'icon-milk', backgroundImage: '/images/lacteos.png' },
-  { id: 'conserva', name: 'Conserva y enlatados', icon: 'icon-can', backgroundImage: '/images/conserva.png' },
-  { id: 'mercado', name: 'Mercado', icon: 'icon-basket', backgroundImage: '/images/mercado.png' },
-  { id: 'aseo', name: 'Aseo', icon: 'icon-broom', backgroundImage: '/images/aseo.png' },
-  { id: 'agro', name: 'Agrito', icon: 'icon-basket', backgroundImage: '/images/aseo.png' },
-  { id: 'liquido', name: 'Líquidos', icon: 'icon-basket', backgroundImage: '/images/aseo.png' },
-  { id: 'electro', name: 'Electrodomésticos', icon: 'icon-basket', backgroundImage: '/images/aseo.png' },
-  
+  { id: 'combo', name: 'Combos', icon: 'icon-basket' },
+  { id: 'carnicos', name: 'Cárnicos y embutidos', icon: 'icon-beef' },
+  { id: 'cereales', name: 'Cereales, pastas y granos', icon: 'icon-wheat' },
+  { id: 'lacteos', name: 'Lácteos y huevos', icon: 'icon-milk' },
+  { id: 'conserva', name: 'Conserva y enlatados', icon: 'icon-can' },
+  { id: 'mercado', name: 'Mercado', icon: 'icon-basket' },
+  { id: 'aseo', name: 'Aseo', icon: 'icon-broom' },
+  { id: 'agro', name: 'Agrito', icon: 'icon-basket' },
+  { id: 'liquido', name: 'Líquidos', icon: 'icon-basket' },
+  { id: 'electro', name: 'Electrodomésticos', icon: 'icon-basket' },
 ];
 
 const productData = [
   // Cárnicos y embutidos
-  /*{ id: 1, name: 'Pollo caja de 40 lb 4 paquetes de 10 lb', category: 'carnicos', description: 'Caja de 40 lb de pollo', image: '/images/pollo_caja.png', price: 43, availableIn: [ 3, 4, 5, 6, 7, 8, 9, 10, 11] },*/
   { id: 40, name: 'Pollo caja de 33 lb de postas', category: 'carnicos', description: 'Caja de 33 lb de pollo', image: '/images/pollo_caja33.png', price: 38, availableIn: [1,2] },
   { id: 42, name: 'Lomo de Cerdo Importado ', category: 'carnicos', description: 'Porción de 3 Lb', image: '/images/lomo.png', price: 11.2, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
   { id: 2, name: 'Pollo paquete de 10 lb', category: 'carnicos', description: 'Paquete de 10 lb de pollo', image: '/images/pollo10lb.png', price: 11.4, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
  { id: 88, name: 'Pollo paquete de 11 lb', category: 'carnicos', description: 'Paquete de 11 lb de pollo', image: '/images/pollo10lb.png', price: 13.2, availableIn: [1, 2, ] },
   { id: 3, name: 'Pechuga paquete de 2 kg', category: 'carnicos', description: 'Pechuga de pollo 2 kg', image: '/images/pechuga2kg.png', price: 14, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
-  /*{ id: 4, name: 'Bandeja de 2 lb de bistec pechuga', category: 'carnicos', description: 'Bistec de pechuga 2 lb', image: '/images/bistecpechuga.png', price: 9.25, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },*/
-  /*{ id: 41, name: 'Caja de pollo de 40 Lb Postas', category: 'carnicos', description: 'Caja de 40 lb de pollo', image: '/images/pollo_caja40agranel.png', price: 42, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },*/
   { id: 5, name: 'Chuleta de lomo deshuesado 2 lb', category: 'carnicos', description: 'Chuleta de lomo deshuesado', image: '/images/chuletalomo.png', price: 8.5, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
   { id: 6, name: 'Masas de cerdo 2 lb', category: 'carnicos', description: 'Masas de cerdo 2 lb', image: '/images/masas.png', price: 8, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
   { id: 7, name: 'Bistec de cerdo 2 lb', category: 'carnicos', description: 'Bistec de cerdo 2 lb', image: '/images/bisteclomo.png', price: 9, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
-  /*{ id: 8, name: 'Lomo ahumado 2 lb lasqueado', category: 'carnicos', description: 'Lomo ahumado lasqueado', image: '/images/ahumadolasqueado.png', price: 4.6, availableIn: [4, 5, 6, 7, 8, 9, 10, 11] },
-  { id: 9, name: 'Lomo ahumado importado 2 lb', category: 'carnicos', description: 'Lomo ahumado deshuesado 1 lb', image: '/images/ahumado.png', price: 4.6, availableIn: [4, 5, 6, 7, 8, 9, 10, 11] },*/
   { id: 10, name: 'Picadillo 400 gr de pollo', category: 'carnicos', description: 'Picadillo de pollo 400 gr', image: '/images/picadillo.png', price: 1.85, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
   { id: 11, name: 'Hamburguesas mixtas de pollo y cerdo', category: 'carnicos', description: 'Hamburguesas mixtas de pollo y cerdo', image: '/images/hamburguesas.png', price: 2.3, availableIn: [4, 5, 6, 7, 8, 9, 10, 11] },
   { id: 12, name: 'Mortadella Seara de Pollo ', category: 'carnicos', description: 'Mortadella de 500 gr', image: '/images/seara500.png', price: 2.3, availableIn: [1, 2, 3] },
@@ -50,12 +44,10 @@ const productData = [
   { id: 45, name: 'Carne de Res troceada', category: 'carnicos', description: 'Bolsa de 1 Kg', image: '/images/restroceada.png', price: 14.4, availableIn: [4, 5, 6, 7, 8, 9, 10, 11] },
   { id: 17, name: 'Hígado de pollo 1 kg', category: 'carnicos', description: 'Hígado de pollo 1 kg', image: '/images/higado.png', price: 2.60, availableIn: [4, 5, 6, 7, 8, 9, 10, 11] },
   { id: 18, name: 'Salchichas', category: 'carnicos', description: 'Salchichas', image: '/images/salchichas.png', price:1.75, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
- /* { id: 50, name: 'Muslo de pollo ahumado', category: 'carnicos', description: 'Bolsa de 3 Lb', image: '/images/polloahumado.png', price: 7, availableIn: [3, 4, 5, 6, 7, 8, 9, 10, 11] },*/
 
   // Lácteos y Huevos
   { id: 19, name: 'Leche entera 1 kg', category: 'lacteos', description: 'Leche entera 1 kg', image: '/images/leche1kg.png', price: 10, availableIn: [1,2,3] },
   { id: 20, name: 'Cartón de huevos', category: 'lacteos', description: 'Cartón de huevos frescos', image: '/images/huevo30.png', price: 8.5, availableIn: [4,5,6,7,8,9,10,11] },
- /* { id: 21, name: 'Yogurt de fresa 1 L', category: 'lacteos', description: 'Yogurt de fresa 1 L', image: '/images/yogurt1L.png', price: 3.3, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },*/
   { id: 22, name: 'Leche condensada de cajita', category: 'lacteos', description: 'Leche condensada de cajita', image: '/images/cajitaleche.png', price: 1.65, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
   { id: 23, name: 'Leche condensada lata', category: 'lacteos', description: 'Leche condensada lata', image: '/images/nezkaleche.png', price: 1.8, availableIn: [] },
   { id: 55, name: 'Helado', category: 'lacteos', description: 'Cubeta de 3L', image: '/images/helado.png', price: 9, availableIn: [,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
@@ -119,12 +111,8 @@ const productData = [
 { id: 73, name: 'Combo 7 descuento 10 % ', category: 'combo', description: 'Arroz Grano Largo importado (10 lb), Frijol Negro Importado (4 lb), Azúcar Blanca Importada (4 lb), Aceite de Girasol 1 L (6 uds)', image: '/images/combo7.png', price: 30.99, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
 { id: 74, name: 'Combo 8 ', category: 'combo', description: ' Chuleta de lomo deshuesado 2 lb (1 unid), Masas de cerdo 2 lb (1 unid), Yogurt de fresa 1 L (1 unid), Arroz Grano Largo 10 , Azúcar blanca 4 lb , Frijol negro 2 lb , Spaguetis 500 gr (2 unid), Pasta de tomate 400 g (1 unid), Café Dufiltro 250 gr (1 unid), Jabón 100 g (4 unid), Malta Guajira (6 unid), Leche condensada en cajita (2 unid), Aceite 1 L (2 unid)', image: '/images/combo8.png', price: 60.99, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
 
-
-  /*{ id: 75, name: "Cajas de tv Hd", category: "electro", description: "Caja descodificadora Hd", image: "/images/cajita.png", price: 65, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27] },*/
   { id: 76, name: "Olla reina Milexus ", category: "electro", description: "Olla reina de 6L Milexus", image: "/images/reina.png", price: 68, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27] },
   { id: 77, name: "Olla Arrocera ", category: "electro", description: "Olla arrocera de 1,8 l Milexus", image: "/images/arrocera.png", price: 48, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27] },
- /* { id: 78, name: "Freidora de aire ", category: "electro", description: "Olla freidora de aire de 4 l ", image: "/images/freidora.png", price: 100, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27] }, */
- /* { id: 79, name: "Fogon de 3 quemadores ", category: "electro", description: "Fogon milexus de 3 quemadores ", image: "/images/fogon.png", price: 75, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27] },*/
   { id: 80, name: "Fogon Infrarrojo  ", category: "electro", description: "Fogon Infrarrojo 1300 W  ", image: "/images/infra.png", price: 58, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27] },
   { id: 81, name: "Lavadora Semiautomática Milexus 7 L  ", category: "electro", description: "Lavadora semiautomatica 7 L ", image: "/images/semi7.png", price: 210, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27] },
   { id: 82, name: "Split milexus", category: "electro", description: "Milexus 1200 btu", image: "/images/split.png", price: 285, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27] },
@@ -132,7 +120,6 @@ const productData = [
   { id: 84, name: "Frezeer", category: "electro", description: "Milexus 4.2 pies", image: "/images/freezer6p.png", price: 230, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27] },
   { id: 85, name: "Tv de 32", category: "electro", description: "Tv inteligente 32 pulgadas", image: "/images/32.png", price: 220, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27] },
   { id: 86, name: "Batidora Milexus", category: "electro", description: "Batidora 1.5 Lt vaso de cristal", image: "/images/batidora.png", price: 45, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27] },
- /* { id: 87, name: "Generador Eléctrico de Gasolina", category: "electro", description: "Generador Eléctrico de Gasolina de 3000 w, salida de 220v y 110 v Voltaje 110-220V (50/60Hz), motor de 7.0 HP OHV TOTAL, sistema AVR para voltaje estable y panel de control súper fácil de usar. ⛽ Gran tanque de combustible con filtro, encendido por cuerda y breaker de seguridad para máxima protección. 🛠 Incluye interruptor automático AC y sistema de enfriamiento.", image: "/images/tota.png", price: 800, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27] }*/
 
 ];
 
@@ -201,7 +188,7 @@ const OptimizedImage = React.memo(({ src, alt, className, ...props }) => {
   );
 });
 
-// NUEVO COMPONENTE: Modal de Selección de Municipio
+// Componente: Modal de Selección de Municipio
 const MunicipalityModal = React.memo(({ isOpen, onClose, selectedMunicipality, setSelectedMunicipality }) => {
   if (!isOpen) return null;
 
@@ -293,17 +280,10 @@ const MunicipalityModal = React.memo(({ isOpen, onClose, selectedMunicipality, s
 function MobileBanner() {
   return (
     <div className="mobile-banner px-4 mb-6">
-      {/* Banner de oferta fin de año */}
-      <div className="new-year-banner mb-4">
-        <h3 className="text-lg font-bold mb-2"> ¡FELIZ AÑO 2026! </h3>
-        <p className="text-sm">5% DE DESCUENTO EN TODOS LOS PRODUCTOS</p>
-        <p className="text-xs mt-1">Válido hasta el 15 de Enero 2026</p>
-      </div>
-      
       <OptimizedImage 
         src="/images/navidad.png" 
-        alt="TuDespensa.25 - Ofertas Fin de Año"
-        className="w-full h-full object-cover rounded-xl shadow-md new-year-modal"
+        alt="TuDespensa.25 - Ofertas"
+        className="w-full h-full object-cover rounded-xl shadow-md"
       />
     </div>
   );
@@ -346,22 +326,21 @@ const CartModal = React.memo(({ isOpen, onClose, cart, setCart, onProcessOrder }
   const [discountError, setDiscountError] = React.useState('');
   const [discountPercentage, setDiscountPercentage] = React.useState(0);
 
-  // Códigos de descuento válidos (puedes agregar más)
+  // Códigos de descuento válidos
   const validDiscountCodes = {
-    'CLIENTEF': 5,   // 5% de descuento
-    'BIENVENIDOhoy': 10, // 10% de descuento
-    'PRIMERACOMPRAtd25.': 15 // 15% de descuento
+    'CLIENTEF': 5,
+    'BIENVENIDOhoy': 10,
+    'PRIMERACOMPRAtd25.': 15
   };
 
  const applyDiscount = () => {
-  const code = discountCode.trim(); // Quita el .toUpperCase()
+  const code = discountCode.trim();
   
   if (!code) {
     setDiscountError('Por favor ingresa un código');
     return;
   }
 
-  // Verifica el código exacto (case-sensitive)
   if (validDiscountCodes[code]) {
     setDiscountPercentage(validDiscountCodes[code]);
     setDiscountApplied(true);
@@ -401,7 +380,7 @@ const CartModal = React.memo(({ isOpen, onClose, cart, setCart, onProcessOrder }
   };
 
   const getSubtotalPrice = () => {
-    return cart.reduce((sum, item) => sum + ((item.price * 0.95) * item.quantity), 0);
+    return cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   };
 
   const getDiscountAmount = () => {
@@ -452,8 +431,7 @@ const CartModal = React.memo(({ isOpen, onClose, cart, setCart, onProcessOrder }
                     <h3 className="text-sm font-medium text-[var(--text-secondary)]">{item.name}</h3>
                     <p className="text-xs text-[var(--text-secondary)]">{item.description}</p>
                     <p className="text-sm font-semibold text-[var(--secondary-color)]">
-                      ${(item.price * 0.95).toFixed(2)} USD
-                      <span className="text-xs text-green-600 ml-1">🎉 -5%</span>
+                      ${item.price.toFixed(2)} USD
                     </p>
                   </div>
                   <div className="flex flex-col items-center space-y-1">
@@ -467,7 +445,7 @@ const CartModal = React.memo(({ isOpen, onClose, cart, setCart, onProcessOrder }
                       </button>
                     </div>
                     <p className="text-xs font-medium text-[var(--text-primary)]">
-                      ${(item.price * 0.95 * item.quantity).toFixed(2)}
+                      ${(item.price * item.quantity).toFixed(2)}
                     </p>
                   </div>
                 </div>
@@ -599,10 +577,9 @@ const CartModal = React.memo(({ isOpen, onClose, cart, setCart, onProcessOrder }
             <div className="border-t p-4 space-y-3">
               <button
                 onClick={handleProcessOrder}
-                className="w-full new-year-button py-3 rounded-lg font-medium flex items-center justify-center space-x-2"
+                className="w-full bg-[var(--primary-color)] text-white py-3 rounded-lg font-medium hover:bg-opacity-90 transition-all"
               >
-                <div className="icon-gift text-lg"></div>
-                <span>Procesar Pedido con Descuento</span>
+                Procesar Pedido
               </button>
               <button
                 onClick={onClose}
@@ -775,11 +752,7 @@ const FloatingWishlistButton = React.memo(() => {
 
 const ProductCard = React.memo(({ product, onAddToCart, likedProducts, onToggleLike, onProductClick }) => {
   const isLiked = likedProducts.includes(product.id);
-  // Aplicar descuento del 5% para fin de año
-  const discount = 5; // 5% de descuento
   const originalPrice = product.price;
-  const discountedPrice = originalPrice * (1 - discount / 100);
-  const isDiscounted = true; // Todos los productos tienen descuento
 
   const handleCardClick = (e) => {
     if (e.target.closest('button')) return;
@@ -801,7 +774,7 @@ const ProductCard = React.memo(({ product, onAddToCart, likedProducts, onToggleL
     const shareUrl = generateShareableLink(product.id);
     
     navigator.clipboard.writeText(shareUrl).then(() => {
-      alert('¡Enlace copiado! Comparte este producto con descuento. 🎉');
+      alert('¡Enlace copiado! Comparte este producto.');
     }).catch(() => {
       const tempInput = document.createElement('input');
       tempInput.value = shareUrl;
@@ -809,25 +782,18 @@ const ProductCard = React.memo(({ product, onAddToCart, likedProducts, onToggleL
       tempInput.select();
       document.execCommand('copy');
       document.body.removeChild(tempInput);
-      alert('¡Enlace copiado! Comparte este producto con descuento de fin de año. 🎉');
+      alert('¡Enlace copiado! Comparte este producto.');
     });
   };
 
   return (
-    <div className={`product-card snow-effect ${isDiscounted ? 'new-year-discount' : ''}`} onClick={handleCardClick}>
+    <div className="product-card" onClick={handleCardClick}>
       <div className="aspect-square bg-gray-100 relative overflow-hidden">
         <OptimizedImage
           src={product.image}
           alt={product.name}
           className="w-full h-full object-cover"
         />
-        
-        {/* Badge de descuento fin de año */}
-        {isDiscounted && (
-          <div className="new-year-badge">
-            🎉 -5%
-          </div>
-        )}
         
         <div className="absolute top-2 right-2 flex flex-col space-y-1">
           <button onClick={handleLikeClick}>
@@ -850,27 +816,20 @@ const ProductCard = React.memo(({ product, onAddToCart, likedProducts, onToggleL
           {product.description}
         </p>
         
-        {/* Mostrar precio original y con descuento */}
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs px-2 py-1 bg-gray-100 text-gray-900 rounded-full">
             {categories.find(c => c.id === product.category)?.name}
           </span>
-          <div className="flex flex-col items-end">
-            <span className="text-xs line-through text-gray-400">
-              ${originalPrice.toFixed(2)}
-            </span>
-            <span className="text-sm font-bold text-[var(--secondary-color)]">
-              ${discountedPrice.toFixed(2)}
-              <span className="text-xs text-green-600 ml-1">🎉 -5%</span>
-            </span>
-          </div>
+          <span className="text-sm font-bold text-[var(--secondary-color)]">
+            ${originalPrice.toFixed(2)} USD
+          </span>
         </div>
         <button 
           onClick={handleAddToCart}
-          className="w-full new-year-button py-2 px-3 rounded-lg text-sm font-medium flex items-center justify-center space-x-1 hover:bg-opacity-90 transition-all"
+          className="w-full bg-[var(--primary-color)] text-white py-2 px-3 rounded-lg text-sm font-medium flex items-center justify-center space-x-1 hover:bg-opacity-90 transition-all"
         >
           <div className="icon-shopping-cart text-sm"></div>
-          <span>Añadir con descuento</span>
+          <span>Añadir al carrito</span>
         </button>
       </div>
     </div>
@@ -887,7 +846,6 @@ const ProductDetailModal = React.memo(({ isOpen, onClose, product, onAddToCart, 
     if (product) {
       const shareUrl = generateShareableLink(product.id);
       
-      // Intentar usar la Web Share API si está disponible
       if (navigator.share) {
         navigator.share({
           title: product.name,
@@ -896,11 +854,9 @@ const ProductDetailModal = React.memo(({ isOpen, onClose, product, onAddToCart, 
         })
         .catch(console.error);
       } else {
-        // Fallback: copiar al portapapeles
         navigator.clipboard.writeText(shareUrl).then(() => {
           alert('¡Enlace copiado al portapapeles! Compártelo con quien quieras.');
         }).catch(() => {
-          // Fallback para navegadores más antiguos
           const tempInput = document.createElement('input');
           tempInput.value = shareUrl;
           document.body.appendChild(tempInput);
@@ -945,17 +901,9 @@ const ProductDetailModal = React.memo(({ isOpen, onClose, product, onAddToCart, 
               </span>
             </div>
             <div className="text-right ml-4">
-              <div className="flex flex-col items-end">
-                <span className="text-sm line-through text-gray-400">
-                  ${product.price.toFixed(2)}
-                </span>
-                <span className="text-2xl font-bold text-[var(--secondary-color)]">
-                  ${(product.price * 0.95).toFixed(2)}
-                </span>
-                <span className="text-xs text-green-600 font-medium">
-                  🎉 Descuento 5% fin de año
-                </span>
-              </div>
+              <span className="text-2xl font-bold text-[var(--secondary-color)]">
+                ${product.price.toFixed(2)}
+              </span>
               <span className="block text-xs text-[var(--text-secondary)]">USD</span>
             </div>
           </div>
@@ -971,13 +919,11 @@ const ProductDetailModal = React.memo(({ isOpen, onClose, product, onAddToCart, 
                 onAddToCart(product);
                 onClose();
               }}
-              className="w-full new-year-button py-3 rounded-lg font-medium flex items-center justify-center space-x-2 hover:bg-opacity-90 transition-all"
+              className="w-full bg-[var(--primary-color)] text-white py-3 rounded-lg font-medium hover:bg-opacity-90 transition-all"
             >
-              <div className="icon-shopping-cart text-lg"></div>
-              <span>Añadir al carrito con descuento</span>
+              Añadir al carrito
             </button>
             
-            {/* NUEVO BOTÓN DE COMPARTIR */}
             <button
               onClick={handleShare}
               className="w-full bg-[var(--primary-color)] text-white py-3 rounded-lg font-medium flex items-center justify-center space-x-2 hover:bg-opacity-90 transition-all"
@@ -1002,38 +948,33 @@ const ProductDetailModal = React.memo(({ isOpen, onClose, product, onAddToCart, 
 const Footer = React.memo(() => {
   return (
     <footer className="bg-[var(--text-primary)] text-white mt-12 relative overflow-hidden">
-      {/* Elementos decorativos fin de año */}
-      <div className="absolute top-0 left-0 right-0 text-center py-2">
-        <span className="text-xs opacity-60"></span>
-      </div>
-      
       <div className="px-4 py-8 relative z-10">
         <div className="text-center mb-6">
           <div className="flex items-center justify-center space-x-2 mb-4">
-            <div className="w-12 h-12 bg-gradient-to-r from-[#ff6b00] to-[#ffa500] rounded-full flex items-center justify-center">
-              <div className="icon-fireworks text-xl text-white"></div>
+            <div className="w-12 h-12 bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)] rounded-full flex items-center justify-center">
+              <div className="icon-shopping-cart text-xl text-white"></div>
             </div>
             <h3 className="text-2xl font-bold">TuDespensa.25</h3>
           </div>
-          <p className="text-gray-300 text-sm mb-4">🎊 ¡Feliz Año Nuevo 2026! Tu despensa de confianza 🎊</p>
+          <p className="text-gray-300 text-sm mb-4">Tu despensa de confianza</p>
         </div>
         
         <div className="space-y-4 text-center text-sm">
           <div>
-            <h4 className="font-semibold text-[#ff6b00] mb-2">Contacto</h4>
+            <h4 className="font-semibold text-[var(--secondary-color)] mb-2">Contacto</h4>
             <p className="text-gray-300">📱 +1 (914) 621-8369</p>
             <p className="text-gray-300">📧 ventas@tudespensa25.com</p>
             <p className="text-gray-300">📍 Disponible en todos los municipios de Artemisa</p>
           </div>
           
           <div>
-            <h4 className="font-semibold text-[#ff6b00] mb-2">Horarios</h4>
+            <h4 className="font-semibold text-[var(--secondary-color)] mb-2">Horarios</h4>
             <p className="text-gray-300">Las 24 h del día</p>
             <p className="text-gray-300">Los 7 días de la semana</p>
           </div>
           
           <div>
-            <h4 className="font-semibold text-[#ff6b00] mb-2">Síguenos</h4>
+            <h4 className="font-semibold text-[var(--secondary-color)] mb-2">Síguenos</h4>
             <div className="flex items-center justify-center space-x-4">
               <a href="https://wa.me/5354066204" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
                 <div className="icon-message-circle text-lg text-white"></div>
@@ -1050,7 +991,7 @@ const Footer = React.memo(() => {
         
         <div className="border-t border-gray-600 mt-8 pt-4 text-center">
           <p className="text-xs text-gray-400">
-            🎇 ¡Próspero Año Nuevo 2026! © 2025-2026 TuDespensa.25. Todos los derechos reservados. 🎆
+            © 2025 TuDespensa.25. Todos los derechos reservados.
           </p>
         </div>
       </div>
@@ -1087,7 +1028,7 @@ const ProductGrid = React.memo(({ products, onAddToCart, likedProducts, onToggle
   );
 });
 
-// NUEVO COMPONENTE FAQ
+// Componente FAQ
 const FAQSection = React.memo(() => {
   const [openItems, setOpenItems] = React.useState([]);
 
@@ -1122,7 +1063,7 @@ const FAQSection = React.memo(() => {
     },
     {
       question: "¿Tienen promociones especiales?",
-      answer: "🎯 **Promociones Activas:**\n\n🔥 **Combos Especiales:** 3 días a la semana mostramos combos con descuentos\n💥 **Zona Roja:** Productos con descuentos mayores para aprovechar\n📦 **Envío Gratis:** En municipios seleccionados a partir de 30 USD\n🎁 **Ofertas de Temporada:** Siempre tenemos promociones vigentes"
+      answer: "🎯 **Promociones Activas:**\n\n🔥 **Combos Especiales:** 3 días a la semana mostramos combos con descuentos\n💥 **Zona Roja:** Productos con descuentos mayores para aprovechar\n📦 **Envío Gratis:** En municipios seleccionados a partir de 30 USD"
     },
     {
       question: "¿Puedo hacer pedidos personalizados?",
@@ -1145,7 +1086,6 @@ const FAQSection = React.memo(() => {
   return (
     <section id="faq" className="px-4 py-12 bg-gradient-to-b from-gray-50 to-white">
       <div className="max-w-4xl mx-auto">
-        {/* Header Mejorado */}
         <div className="text-center mb-12">
           <div className="flex items-center justify-center space-x-3 mb-4">
             <div className="w-16 h-16 bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)] rounded-full flex items-center justify-center shadow-lg">
@@ -1158,7 +1098,6 @@ const FAQSection = React.memo(() => {
           </div>
         </div>
 
-        {/* Grid de FAQ Mejorado */}
         <div className="grid gap-4 md:grid-cols-2">
           {faqItems.map((item, index) => (
             <div 
@@ -1190,7 +1129,6 @@ const FAQSection = React.memo(() => {
           ))}
         </div>
 
-        {/* CTA Mejorado */}
         <div className="mt-12 text-center bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)] rounded-2xl p-8 text-white shadow-xl">
           <h3 className="text-2xl font-bold mb-3">¿No encontraste tu respuesta?</h3>
           <p className="text-white text-opacity-90 mb-6 text-lg">
@@ -1219,7 +1157,6 @@ const FAQSection = React.memo(() => {
           </p>
         </div>
 
-        {/* Información Adicional */}
         <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
           <div className="bg-white p-4 rounded-xl border border-gray-200">
             <div className="icon-truck text-2xl text-[var(--primary-color)] mb-2"></div>
@@ -1288,40 +1225,31 @@ function App() {
   const [likedProducts, setLikedProducts] = React.useState([]);
   const [notification, setNotification] = React.useState({ message: '', isVisible: false });
   const [selectedProduct, setSelectedProduct] = React.useState(null);
-  
-  // NUEVO ESTADO: Modal de municipio
-  const [showMunicipalityModal, setShowMunicipalityModal] = React.useState(true); // Cambiado a true para que aparezca al inicio
+  const [showMunicipalityModal, setShowMunicipalityModal] = React.useState(true);
 
-  // Debounce para búsqueda
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
-  // Agregar este useEffect para manejar productos desde URL
   React.useEffect(() => {
     const productFromURL = getProductFromURL();
     if (productFromURL) {
       setSelectedProduct(productFromURL);
-      // También podemos navegar a la categoría del producto
       setSelectedCategory(productFromURL.category);
     }
   }, []);
 
-  // Filtrado optimizado de productos
   const filteredProducts = React.useMemo(() => {
     if (!selectedMunicipality) return [];
     
     let filtered = productData;
     
-    // Filtrar por municipio primero (más restrictivo)
     filtered = filtered.filter(product => 
       product.availableIn.includes(selectedMunicipality)
     );
     
-    // Luego por categoría
     if (selectedCategory !== 'todos') {
       filtered = filtered.filter(product => product.category === selectedCategory);
     }
     
-    // Finalmente por búsqueda
     if (debouncedSearchTerm.trim()) {
       const term = debouncedSearchTerm.toLowerCase().trim();
       filtered = filtered.filter(product =>
@@ -1347,7 +1275,7 @@ function App() {
     });
     
     setNotification({
-      message: `${product.name} ha sido añadido con 5% de descuento fin de año 🎉`,
+      message: `${product.name} ha sido añadido al carrito`,
       isVisible: true
     });
   };
@@ -1372,8 +1300,7 @@ function App() {
   const handleProcessOrder = (customerData, discountCode = '', discountPercentage = 0, discountAmount = 0) => {
     const selectedMunicipalityName = municipalities.find(m => m.id === selectedMunicipality)?.name || '';
     
-    let orderMessage = `*🎊 ¡FELIZ AÑO NUEVO 2026! 🎊*\n\n`;
-    orderMessage += `*OFERTA ESPECIAL  - 5% DE DESCUENTO EN TODOS LOS PRODUCTOS*\n\n`;
+    let orderMessage = `*NUEVO PEDIDO - TuDespensa.25*\n\n`;
     orderMessage += `*DATOS DEL COMPRADOR:*\n`;
     orderMessage += `👤 Nombre: ${customerData.name}\n`;
     orderMessage += `📱 Teléfono: ${customerData.phone}\n\n`;
@@ -1389,59 +1316,36 @@ function App() {
       orderMessage += `📝 Notas: ${customerData.notes}\n`;
     }
     
-    // Información de descuento especial fin de año
-    orderMessage += `\n*🎉 DESCUENTO ESPECIAL :*\n`;
-    orderMessage += `📅 Válido hasta: 15 de Enero 2026\n`;
-    orderMessage += `📉 Descuento aplicado: 5% en todos los productos\n\n`;
-    
-    // Descuento adicional por código si aplica
     if (discountCode && discountPercentage > 0) {
-      orderMessage += `*🎫 DESCUENTO ADICIONAL POR CÓDIGO:*\n`;
+      orderMessage += `\n*🎫 DESCUENTO APLICADO:*\n`;
       orderMessage += `Código: ${discountCode}\n`;
-      orderMessage += `Descuento adicional: ${discountPercentage}%\n`;
-      orderMessage += `💵 Ahorro adicional: $${discountAmount.toFixed(2)} USD\n\n`;
+      orderMessage += `Descuento: ${discountPercentage}%\n`;
+      orderMessage += `💵 Ahorro: $${discountAmount.toFixed(2)} USD\n\n`;
     }
     
     orderMessage += `\n*PRODUCTOS SOLICITADOS:*\n`;
     let subtotal = 0;
-    let totalDiscount = 0;
     
     cart.forEach((item, index) => {
-      const originalPrice = item.price;
-      const discountedPrice = originalPrice * 0.95; // 5% descuento
-      const itemSubtotal = discountedPrice * item.quantity;
-      const itemDiscount = (originalPrice - discountedPrice) * item.quantity;
-      
-      subtotal += itemSubtotal;
-      totalDiscount += itemDiscount;
+      const itemTotal = item.price * item.quantity;
+      subtotal += itemTotal;
       
       orderMessage += `${index + 1}. ${item.name}\n`;
-      orderMessage += `   💰 Precio original: $${originalPrice.toFixed(2)} USD\n`;
-      orderMessage += `   💰 Precio con descuento: $${discountedPrice.toFixed(2)} USD\n`;
+      orderMessage += `   💰 Precio: $${item.price.toFixed(2)} USD\n`;
       orderMessage += `   📦 Cantidad: ${item.quantity}\n`;
-      orderMessage += `   💵 Subtotal: $${itemSubtotal.toFixed(2)} USD\n`;
-      orderMessage += `   🎉 Ahorro: $${itemDiscount.toFixed(2)} USD\n\n`;
+      orderMessage += `   💵 Subtotal: $${itemTotal.toFixed(2)} USD\n\n`;
     });
     
-    // Resumen de precios con mensaje conmemorativo
-    orderMessage += `*🎊 RESUMEN DE PAGO - OFERTA  DE AÑO NUEVO 🎊*\n`;
-    orderMessage += `🛒 Subtotal sin descuento: $${(subtotal / 0.95).toFixed(2)} USD\n`;
-    orderMessage += `🎉 Descuento  (5%): -$${totalDiscount.toFixed(2)} USD\n`;
+    orderMessage += `*RESUMEN DE PAGO:*\n`;
     
     if (discountPercentage > 0) {
-      orderMessage += `🎫 Descuento adicional (${discountPercentage}%): -$${discountAmount.toFixed(2)} USD\n`;
+      orderMessage += `🛒 Subtotal: $${subtotal.toFixed(2)} USD\n`;
+      orderMessage += `🎫 Descuento (${discountPercentage}%): -$${discountAmount.toFixed(2)} USD\n`;
+      const finalTotal = subtotal - discountAmount;
+      orderMessage += `💰 *TOTAL FINAL: $${finalTotal.toFixed(2)} USD*\n\n`;
+    } else {
+      orderMessage += `💰 *TOTAL: $${subtotal.toFixed(2)} USD*\n\n`;
     }
-    
-    const finalTotal = discountPercentage > 0 ? subtotal - discountAmount : subtotal;
-    orderMessage += `💰 *TOTAL FINAL CON DESCUENTO: $${finalTotal.toFixed(2)} USD*\n\n`;
-    
-    orderMessage += `*¡FELICIDADES! HAS AHORRADO: $${(totalDiscount + discountAmount).toFixed(2)} USD*\n\n`;
-    
-    orderMessage += `*🎆 MENSAJE CONMEMORATIVO:*\n`;
-    orderMessage += `¡Gracias por confiar en TuDespensa.25 !\n`;
-    orderMessage += `Te deseamos un próspero Año Nuevo 2026 lleno de bendiciones,\n`;
-    orderMessage += `salud, prosperidad y éxitos. ¡Que el 2026 traiga abundancia\n`;
-    orderMessage += `y felicidad a tu hogar! 🎇\n\n`;
     
     orderMessage += `*DATOS DEL VENDEDOR:*\n`;
     orderMessage += `🏪 Tienda: TuDespensa.25\n`;
@@ -1449,10 +1353,9 @@ function App() {
     orderMessage += `📧 Email: ventas@tudespensa25.com\n`;
     
     orderMessage += `\n*DATOS DE ENTREGA:*\n`;
-    orderMessage += `🚚 Entrega a domicilio \n`;
+    orderMessage += `🚚 Entrega a domicilio\n`;
     orderMessage += `⏰ Tiempo estimado: 24 a 48 horas\n`;
-    orderMessage += `💳 Pago:Transferencia Zelle\n`;
-    orderMessage += `\n🎆 ¡FELIZ 2026! 🎆`;
+    orderMessage += `💳 Pago: Transferencia Zelle\n`;
 
     const whatsappUrl = `https://wa.me/5354066204?text=${encodeURIComponent(orderMessage)}`;
     window.open(whatsappUrl, '_blank');
@@ -1474,21 +1377,11 @@ function App() {
         setSelectedMunicipality={setSelectedMunicipality}
         cartItems={getTotalCartItems()}
         onCartClick={() => setIsCartOpen(true)}
-        onMunicipalityClick={() => setShowMunicipalityModal(true)} // NUEVA PROPS
+        onMunicipalityClick={() => setShowMunicipalityModal(true)}
       />
-      
-      {/* Banner superior de fin de año */}
-      <div className="christmas-top-banner">
-        <div className="flex items-center justify-center space-x-4 text-sm">
-          <span className="twinkle">🎆</span>
-          <span className="font-medium">¡OFERTA FIN DE AÑO! 5% de descuento en todos los productos</span>
-          <span className="twinkle">🎇</span>
-        </div>
-      </div>
       
       <SocialMediaLinks />
       
-      {/* Banner para móvil */}
       <MobileBanner />
       
       <main className="pb-20">
@@ -1509,7 +1402,6 @@ function App() {
           />
         </div>
 
-        {/* SECCIÓN FAQ */}
         <FAQSection />
       </main>
       
@@ -1542,7 +1434,6 @@ function App() {
         onToggleLike={handleToggleLike}
       />
       
-      {/* NUEVO MODAL DE MUNICIPIO - REEMPLAZA AL DE OFERTAS ESPECIALES */}
       <MunicipalityModal
         isOpen={showMunicipalityModal}
         onClose={() => setShowMunicipalityModal(false)}
