@@ -32,10 +32,10 @@ const categories = [
 
 const productData = [
   // Cárnicos y embutidos
-  /*{ id: 40, name: 'Pollo caja de 33 lb de postas', category: 'carnicos', description: 'Caja de 33 lb de pollo', image: '/images/pollo_caja33.png', price: 38, availableIn: 1 },*/
+  { id: 40, name: 'Pollo caja de 33 lb de postas', category: 'carnicos', description: 'Caja de 33 lb de pollo', image: '/images/pollo_caja33.png', price: 38, availableIn: 1 },
   { id: 42, name: 'Lomo de Cerdo Importado ', category: 'carnicos', description: 'Porción de 3 Lb', image: '/images/lomo.png', price: 11.2, availableIn: [1,2] },
   { id: 2, name: 'Pollo paquete de 10 lb', category: 'carnicos', description: 'Paquete de 10 lb de pollo', image: '/images/pollo10lb.png', price: 11.4, availableIn: [1,2] },
-  /*{ id: 88, name: 'Pollo paquete de 11 lb', category: 'carnicos', description: 'Paquete de 11 lb de pollo', image: '/images/pollo11lb.png', price: 13.2, availableIn: 1 },*/
+  { id: 88, name: 'Pollo paquete de 11 lb', category: 'carnicos', description: 'Paquete de 11 lb de pollo', image: '/images/pollo11lb.png', price: 13.2, availableIn: 1 },
   { id: 3, name: 'Pechuga paquete de 2 kg', category: 'carnicos', description: 'Pechuga de pollo 2 kg', image: '/images/pechuga2kg.png', price: 14, availableIn: [1,2] },
   { id: 5, name: 'Chuleta de lomo deshuesado 2 lb', category: 'carnicos', description: 'Chuleta de lomo deshuesado', image: '/images/chuletalomo.png', price: 8.5, availableIn: [1,2] },
   { id: 6, name: 'Masas de cerdo 2 lb', category: 'carnicos', description: 'Masas de cerdo 2 lb', image: '/images/masas.png', price: 8, availableIn: [1,2] },
@@ -48,13 +48,13 @@ const productData = [
   { id: 15, name: 'Mortadela de aceituna', category: 'carnicos', description: 'Mortadella con aceituna', image: '/images/mortaceit.png', price: 2.3, availableIn: 2 },
   { id: 45, name: 'Carne de Res troceada', category: 'carnicos', description: 'Bolsa de 1 Kg', image: '/images/restroceada.png', price: 14.4, availableIn: 2 },
   { id: 17, name: 'Hígado de pollo 1 kg', category: 'carnicos', description: 'Hígado de pollo 1 kg', image: '/images/higado.png', price: 2.60, availableIn: 2 },
- /* { id: 18, name: 'Salchichas', category: 'carnicos', description: 'Salchichas', image: '/images/salchichas.png', price:1.75, availableIn: [1,2] },*/
+  { id: 18, name: 'Salchichas', category: 'carnicos', description: 'Salchichas', image: '/images/salchichas.png', price:1.75, availableIn: [1,2] },
 
   // Lácteos y Huevos
   { id: 19, name: 'Leche entera 1 kg', category: 'lacteos', description: 'Leche entera 1 kg', image: '/images/leche1kg.png', price: 10, availableIn: 1 },
   { id: 20, name: 'Cartón de huevos', category: 'lacteos', description: 'Cartón de huevos frescos', image: '/images/huevo30.png', price: 8.5, availableIn: 2 },
-  { id: 22, name: 'Leche condensada de cajita', category: 'lacteos', description: 'Leche condensada de cajita', image: '/images/cajitaleche.png', price: 1.65, availableIn: [1,] },
-  { id: 23, name: 'Leche condensada lata', category: 'lacteos', description: 'Leche condensada lata', image: '/images/nezkaleche.png', price: 1.8, availableIn: [2] },
+  { id: 22, name: 'Leche condensada de cajita', category: 'lacteos', description: 'Leche condensada de cajita', image: '/images/cajitaleche.png', price: 1.65, availableIn: [1,2] },
+  { id: 23, name: 'Leche condensada lata', category: 'lacteos', description: 'Leche condensada lata', image: '/images/nezkaleche.png', price: 1.8, availableIn: [] },
   { id: 55, name: 'Helado', category: 'lacteos', description: 'Cubeta de 3L', image: '/images/helado.png', price: 9, availableIn: 2 },
   { id: 57, name: 'Leche en Polvo', category: 'lacteos', description: 'Bolsa de 1 kg', image: '/images/lechepolvomu.png', price: 8.5, availableIn: 2 },
   { id: 58, name: 'Cartón de huevos', category: 'lacteos', description: '30 uds frescos 100% orgánicos', image: '/images/huevo30.png', price: 9.4, availableIn: 1 },
@@ -72,17 +72,17 @@ const productData = [
 
   // Conserva y Enlatados
   { id: 31, name: 'Pasta de tomate 400 gr', category: 'conserva', description: 'Pasta de tomate 400 gr', image: '/images/pasta400.png', price: 1.6, availableIn: [1,2] },
-  /*{ id: 43, name: 'Pasta de tomate Vima 3 Kg', category: 'conserva', description: 'Pasta de tomate 3 Kg', image: '/images/vima3kg.png', price: 9.4, availableIn: 2 },*/
-  /*{ id: 32, name: 'Pasta de tomate 800 gr', category: 'conserva', description: 'Pasta de tomate 800 gr', image: '/images/800gr.png', price: 3.5, availableIn: [1,2] },*/
+  { id: 43, name: 'Pasta de tomate Vima 3 Kg', category: 'conserva', description: 'Pasta de tomate 3 Kg', image: '/images/vima3kg.png', price: 9.4, availableIn: 2 },
+  { id: 32, name: 'Pasta de tomate 800 gr', category: 'conserva', description: 'Pasta de tomate 800 gr', image: '/images/800gr.png', price: 3.5, availableIn: [1,2] },
   { id: 33, name: 'Leche condensada cocinada', category: 'conserva', description: 'Leche condensada cocinada', image: '/images/cocinada.png', price: 2.2, availableIn: [1,2] },
-  { id: 34, name: 'Mayonesa celorio', category: 'conserva', description: 'Mayonesa Celorio', image: '/images/celorio.png', price: 4.25, availableIn: [,2] },
+  { id: 34, name: 'Mayonesa celorio', category: 'conserva', description: 'Mayonesa Celorio', image: '/images/celorio.png', price: 4.25, availableIn: [1,2] },
 
   // MERCADO
   { id: 35, name: 'Aceite 1 L', category: 'mercado', description: 'Aceite de cocina 1 Litro', image: '/images/aceite1l.png', price: 2.95, availableIn: [1,2] },
-  
+  { id: 90, name: 'Aceite 900 ml', category: 'mercado', description: 'Aceite de cocina 900 ml', image: '/images/aceite900ml.png', price: 2.65, availableIn: 2 },
   { id: 36, name: 'Chocolate en polvo 500 gr', category: 'mercado', description: 'Chocolate en polvo 500 gr', image: '/images/chocopolvo.png', price: 2.9, availableIn: 1 },
   { id: 37, name: 'Gelatina', category: 'mercado', description: 'Gelatina', image: '/images/gelafresa.png', price: 0.9, availableIn: [1,2] },
- /* { id: 46, name: 'Café La LLave ', category: 'mercado', description: 'Café La Llave 10 oz', image: '/images/cafelallave.png', price: 6.9, availableIn: [] },*/
+  { id: 46, name: 'Café La LLave ', category: 'mercado', description: 'Café La Llave 10 oz', image: '/images/cafelallave.png', price: 6.9, availableIn: [] },
   { id: 47, name: 'Café La Carreta', category: 'mercado', description: 'Café Prensado 10 oz', image: '/images/cafelacarreta.png', price: 6.4, availableIn: 2 },
   { id: 48, name: 'Café Sello Rojo', category: 'mercado', description: 'Café Prensado 10 oz', image: '/images/cafesellorojo.png', price: 6.4, availableIn: 2 },
   { id: 49, name: 'Café Dufiltro', category: 'mercado', description: 'Café Prensado 250 gr', image: '/images/cafedufiltro.png', price: 4.5, availableIn: [1,2] },
@@ -669,19 +669,19 @@ const SocialMediaLinks = React.memo(() => {
   );
 });
 
-// ==================== HEADER ====================
+// ==================== HEADER CON LOGO MÁS GRANDE ====================
 const Header = React.memo(({ searchTerm, setSearchTerm, selectedMunicipality, setSelectedMunicipality, cartItems, onCartClick, onMunicipalityClick }) => {
   return (
     <header className="bg-white text-[#0f172a] sticky top-0 z-50 shadow-sm border-b border-gray-100">
       <div className="px-4 py-4">
         <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-3">
             <OptimizedImage 
               src="https://app.trickle.so/storage/public/images/usr_0b2efdb2f0000001/2fc53855-ded6-40ff-959b-7a5c6077e0e3.svg" 
               alt="TuDespensa25 Logo" 
-              className="w-10 h-10 bg-white rounded-full p-2"
+              className="w-12 h-12 bg-white rounded-full p-2 shadow-sm"
             />
-            <h1 className="text-lg font-bold text-[#0f172a]">TuDespensa25</h1>
+            <h1 className="text-xl font-bold text-[#0f172a]">TuDespensa25</h1>
           </div>
           <div className="flex items-center space-x-3">
             <button 
@@ -724,34 +724,66 @@ const Header = React.memo(({ searchTerm, setSearchTerm, selectedMunicipality, se
   );
 });
 
-// ==================== CATEGORÍAS ====================
+// ==================== TEXTO DE DESCRIPCIÓN (NUEVO) ====================
+const HeroText = React.memo(() => {
+  return (
+    <div className="px-4 py-6 bg-gradient-to-b from-white to-[#fafaf9]">
+      <div className="max-w-3xl mx-auto text-center">
+        <h2 className="text-2xl md:text-3xl font-bold text-[#0f172a] mb-3">
+          Ayuda a tu familia desde la distancia, <br className="hidden sm:block" />
+          <span className="text-[#10b981]">nosotros nos encargamos del resto</span>
+        </h2>
+        <p className="text-base text-[#475569] mb-4 max-w-2xl mx-auto">
+          Compra alimentos, esenciales y productos del hogar de forma rápida, segura y confiable. 
+          Tu familia lo recibe, tú te quedas tranquilo.
+        </p>
+        <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-[#64748b]">
+          <div className="flex items-center gap-1">
+            <span className="text-[#10b981]">🚚</span> Entregas rápidas
+          </div>
+          <div className="flex items-center gap-1">
+            <span className="text-[#10b981]">🛡️</span> Pagos seguros
+          </div>
+          <div className="flex items-center gap-1">
+            <span className="text-[#10b981]">📋</span> Catálogo listo
+          </div>
+          <div className="flex items-center gap-1">
+            <span className="text-[#10b981]">💬</span> Atención humana
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+});
+
+// ==================== CATEGORÍAS MÁS COMPACTAS EN MÓVIL ====================
 const CategoryGrid = React.memo(({ selectedCategory, onCategorySelect }) => {
   return (
-    <section className="px-4 py-6 bg-white categories-section">
-      <h2 className="text-xl font-bold text-[#0f172a] mb-5">Categorías</h2>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+    <section className="px-4 py-4 bg-white categories-section">
+      <h2 className="text-lg font-bold text-[#0f172a] mb-3">Categorías</h2>
+      <div className="grid grid-cols-5 gap-1.5 sm:grid-cols-5 md:grid-cols-5 lg:grid-cols-5">
         {categories.map((category) => (
           <button
             key={category.id}
             onClick={() => onCategorySelect(category.id)}
-            className={`relative rounded-2xl overflow-hidden flex flex-col items-center justify-center p-4 bg-white border transition-all ${
+            className={`relative rounded-xl overflow-hidden flex flex-col items-center justify-center p-2 bg-white border transition-all ${
               selectedCategory === category.id 
-                ? 'border-2 border-[#10b981] bg-[#f0fdf4] shadow-md' 
-                : 'border-gray-100 hover:border-[#10b981] hover:bg-[#f8fafc] hover:shadow-sm'
+                ? 'border-2 border-[#10b981] bg-[#f0fdf4] shadow-sm' 
+                : 'border-gray-100 hover:border-[#10b981] hover:bg-[#f8fafc]'
             }`}
           >
-            <div className={`w-14 h-14 rounded-full flex items-center justify-center mb-3 transition-all ${
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-1 transition-all ${
               selectedCategory === category.id 
-                ? 'bg-[#dcfce7] scale-110' 
+                ? 'bg-[#dcfce7] scale-105' 
                 : 'bg-[#f1f5f9] group-hover:bg-[#dcfce7]'
             }`}>
-              <span className={`text-3xl transition-transform ${
-                selectedCategory === category.id ? 'scale-110' : ''
+              <span className={`text-xl transition-transform ${
+                selectedCategory === category.id ? 'scale-105' : ''
               }`}>
                 {category.icon}
               </span>
             </div>
-            <p className={`text-sm font-medium text-center transition-colors ${
+            <p className={`text-[10px] font-medium text-center transition-colors leading-tight ${
               selectedCategory === category.id 
                 ? 'text-[#10b981] font-semibold' 
                 : 'text-[#334155]'
@@ -1411,6 +1443,9 @@ function App() {
       />
       
       <SocialMediaLinks />
+      
+      {/* NUEVO: TEXTO DE DESCRIPCIÓN ESTILO LOVABLE */}
+      <HeroText />
       
       <main className="pb-20">
         <CategoryGrid 

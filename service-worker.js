@@ -6,7 +6,6 @@ const urlsToCache = [
   './app.js',
   './manifest.json',
   './offline.html'
-  // 👈 SOLO ESTOS ARCHIVOS, SIN ICONOS NI IMÁGENES
 ];
 
 self.addEventListener('install', e => {
@@ -44,4 +43,12 @@ self.addEventListener('fetch', e => {
         return response || fetch(e.request);
       })
   );
+});
+
+// ===== NUEVO: ESCUCHAR MENSAJES PARA ACTUALIZACIÓN INMEDIATA =====
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    console.log('Service Worker: Actualización forzada');
+    self.skipWaiting();
+  }
 });
