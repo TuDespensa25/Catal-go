@@ -16,6 +16,111 @@ const municipalities = [
 const MUNICIPIOS_GRUPO_1 = [1, 2]; // San Cristóbal, Candelaria
 const MUNICIPIOS_GRUPO_2 = [4, 5, 6, 7, 8, 9, 10, 11]; // Todos los demás (sin Bahía Honda)
 
+// ==================== FUNCIÓN DE NOTIFICACIONES ====================
+// Esta función maneja las notificaciones push
+function usePushNotifications() {
+  // IMPORTANTE: Después de subir el backend a un servidor real, cambia esta URL
+  const SERVER_URL = 'http://localhost:3000'; // Cambiar después a tu servidor real
+  
+  // Función para suscribirse a notificaciones
+  const subscribeToNotifications = async () => {
+    try {
+      // 1. Verificar soporte del navegador
+      if (!('Notification' in window) || !('serviceWorker' in navigator)) {
+        alert('Tu navegador no soporta notificaciones push');
+        return false;
+      }
+
+      // 2. Pedir permiso al usuario
+      const permission = await Notification.requestPermission();
+      
+      if (permission !== 'granted') {
+        alert('Necesitamos permiso para enviarte notificaciones');
+        return false;
+      }
+
+      // 3. Obtener el service worker
+      const registration = await navigator.serviceWorker.ready;
+
+      // 4. Obtener la clave pública (la misma que generamos)
+      const VAPID_PUBLIC_KEY = "BH4PgxcsagZ-gEtYG-fCX6-BaaVSj5obs0Zr_sFfx8alIPVcVntQ8CoKbvuLddoHNMGbfNZjPnATP6PZBwL1N-g";
+      
+      // 5. Crear la suscripción
+      const subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+      });
+
+      // 6. Guardar la suscripción en nuestro servidor
+      const response = await fetch(`${SERVER_URL}/api/subscribe`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(subscription)
+      });
+
+      if (response.ok) {
+        alert('✅ Notificaciones activadas correctamente');
+        return true;
+      } else {
+        alert('❌ Error al activar notificaciones');
+        return false;
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('❌ No se pudieron activar las notificaciones. Asegúrate de que el servidor esté corriendo.');
+      return false;
+    }
+  };
+
+  // Función para desuscribirse
+  const unsubscribeFromNotifications = async () => {
+    try {
+      const registration = await navigator.serviceWorker.ready;
+      const subscription = await registration.pushManager.getSubscription();
+      
+      if (subscription) {
+        await subscription.unsubscribe();
+        
+        // Avisar al servidor
+        await fetch(`${SERVER_URL}/api/unsubscribe`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ endpoint: subscription.endpoint })
+        });
+        
+        alert('❌ Notificaciones desactivadas');
+        return true;
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      return false;
+    }
+  };
+
+  // Función auxiliar (necesaria para convertir la clave)
+  function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+      .replace(/-/g, '+')
+      .replace(/_/g, '/');
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+  }
+
+  return {
+    subscribeToNotifications,
+    unsubscribeFromNotifications
+  };
+}
+
 // ==================== ICONOS CON EMOJIS ====================
 const categories = [
   { id: 'combo', name: 'Combos', icon: '🥫' },
@@ -213,6 +318,85 @@ const OptimizedImage = React.memo(({ src, alt, className, ...props }) => {
         </div>
       )}
     </div>
+  );
+});
+
+// ==================== BOTÓN DE NOTIFICACIONES ====================
+const NotificationButton = React.memo(() => {
+  const [showModal, setShowModal] = React.useState(false);
+  const { subscribeToNotifications, unsubscribeFromNotifications } = usePushNotifications();
+
+  // Verificar si el navegador soporta notificaciones
+  if (!('Notification' in window) || !('serviceWorker' in navigator)) {
+    return null; // No mostrar el botón si no soporta
+  }
+
+  const isSubscribed = Notification.permission === 'granted';
+
+  return (
+    <>
+      <button
+        onClick={() => setShowModal(true)}
+        className="w-10 h-10 bg-[#10b981] bg-opacity-10 rounded-full flex items-center justify-center hover:bg-opacity-20 transition-all relative"
+        aria-label="Notificaciones"
+      >
+        <span className="text-lg text-[#10b981]">🔔</span>
+        {isSubscribed && (
+          <span className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full"></span>
+        )}
+      </button>
+
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-[100] flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-sm w-full p-6">
+            <div className="w-16 h-16 mx-auto mb-4 bg-[#10b981] bg-opacity-10 rounded-full flex items-center justify-center">
+              <span className="text-3xl">🔔</span>
+            </div>
+            
+            <h3 className="text-xl font-bold text-[#0f172a] text-center mb-2">
+              {isSubscribed ? 'Notificaciones activadas' : '¿Recibir notificaciones?'}
+            </h3>
+            
+            <p className="text-[#64748b] text-center mb-6">
+              {isSubscribed 
+                ? 'Recibirás ofertas y novedades de TuDespensa.25'
+                : 'Te avisaremos de ofertas especiales y el estado de tus pedidos'}
+            </p>
+
+            <div className="space-y-3">
+              {!isSubscribed ? (
+                <button
+                  onClick={async () => {
+                    const result = await subscribeToNotifications();
+                    if (result) setShowModal(false);
+                  }}
+                  className="w-full bg-[#10b981] text-white py-3 rounded-full font-medium hover:bg-[#059669] transition-all"
+                >
+                  Activar notificaciones
+                </button>
+              ) : (
+                <button
+                  onClick={async () => {
+                    await unsubscribeFromNotifications();
+                    setShowModal(false);
+                  }}
+                  className="w-full bg-red-500 text-white py-3 rounded-full font-medium hover:bg-red-600 transition-all"
+                >
+                  Desactivar notificaciones
+                </button>
+              )}
+              
+              <button
+                onClick={() => setShowModal(false)}
+                className="w-full bg-gray-100 text-[#0f172a] py-3 rounded-full font-medium hover:bg-gray-200 transition-all"
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 });
 
@@ -683,7 +867,7 @@ const Header = React.memo(({ searchTerm, setSearchTerm, selectedMunicipality, se
             />
             <h1 className="text-xl font-bold text-[#0f172a]">TuDespensa25</h1>
           </div>
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2">
             <button 
               onClick={onMunicipalityClick}
               className="flex items-center space-x-2 bg-[#10b981] bg-opacity-10 rounded-full px-4 py-2 hover:bg-opacity-20 transition-all"
@@ -694,6 +878,10 @@ const Header = React.memo(({ searchTerm, setSearchTerm, selectedMunicipality, se
               </span>
               <span className="text-sm text-[#10b981]">▼</span>
             </button>
+            
+            {/* BOTÓN DE NOTIFICACIONES - AÑADIDO */}
+            <NotificationButton />
+            
             <button
               onClick={onCartClick}
               className="relative w-10 h-10 bg-[#10b981] bg-opacity-10 rounded-full flex items-center justify-center hover:bg-opacity-20 transition-all"
@@ -724,7 +912,7 @@ const Header = React.memo(({ searchTerm, setSearchTerm, selectedMunicipality, se
   );
 });
 
-// ==================== TEXTO DE DESCRIPCIÓN (NUEVO) ====================
+// ==================== TEXTO DE DESCRIPCIÓN ====================
 const HeroText = React.memo(() => {
   return (
     <div className="px-4 py-6 bg-gradient-to-b from-white to-[#fafaf9]">
@@ -756,7 +944,7 @@ const HeroText = React.memo(() => {
   );
 });
 
-// ==================== CATEGORÍAS MÁS COMPACTAS EN MÓVIL ====================
+// ==================== CATEGORÍAS MÁS COMPACTAS ====================
 const CategoryGrid = React.memo(({ selectedCategory, onCategorySelect }) => {
   return (
     <section className="px-4 py-4 bg-white categories-section">
@@ -1444,7 +1632,7 @@ function App() {
       
       <SocialMediaLinks />
       
-      {/* NUEVO: TEXTO DE DESCRIPCIÓN ESTILO LOVABLE */}
+      {/* TEXTO DE DESCRIPCIÓN */}
       <HeroText />
       
       <main className="pb-20">
