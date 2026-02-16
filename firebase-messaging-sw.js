@@ -1,18 +1,8 @@
-const CACHE_NAME = 'tudespensa25-v2'; // Versión actualizada
-const urlsToCache = [
-  './',
-  './index.html',
-  './style.css',
-  './app.js',
-  './manifest.json',
-  './offline.html'
-];
-
 // Importar Firebase en el Service Worker
 importScripts('https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging-compat.js');
 
-// Configuración de Firebase (misma que en index.html)
+// Configuración de Firebase
 firebase.initializeApp({
     apiKey: "AIzaSyD93j0jVzFSUHhfFX2BfKIbBBM8vNCFQ0o",
     authDomain: "tudespensa25-5606a.firebaseapp.com",
@@ -66,7 +56,6 @@ self.addEventListener('notificationclick', (event) => {
         return;
     }
 
-    // Determinar URL a abrir
     let urlToOpen = '/';
     if (event.notification.data?.url) {
         urlToOpen = event.notification.data.url;
@@ -79,7 +68,6 @@ self.addEventListener('notificationclick', (event) => {
             type: 'window',
             includeUncontrolled: true
         }).then((clientList) => {
-            // Si ya hay una ventana abierta, enfocarla
             for (const client of clientList) {
                 if (client.url.includes(self.location.origin) && 'focus' in client) {
                     return client.focus().then(() => {
@@ -89,54 +77,7 @@ self.addEventListener('notificationclick', (event) => {
                     });
                 }
             }
-            // Si no hay ventana abierta, abrir una nueva
             return clients.openWindow(urlToOpen);
         })
     );
-});
-
-// Instalación del Service Worker
-self.addEventListener('install', e => {
-    console.log('Service Worker: Instalando...');
-    e.waitUntil(
-        caches.open(CACHE_NAME)
-            .then(cache => {
-                console.log('Service Worker: Cacheando archivos');
-                return cache.addAll(urlsToCache);
-            })
-            .then(() => self.skipWaiting())
-    );
-});
-
-self.addEventListener('activate', e => {
-    console.log('Service Worker: Activado');
-    e.waitUntil(
-        caches.keys().then(cacheNames => {
-            return Promise.all(
-                cacheNames.map(cacheName => {
-                    if (cacheName !== CACHE_NAME) {
-                        console.log('Service Worker: Eliminando caché viejo', cacheName);
-                        return caches.delete(cacheName);
-                    }
-                })
-            );
-        }).then(() => self.clients.claim())
-    );
-});
-
-self.addEventListener('fetch', e => {
-    e.respondWith(
-        caches.match(e.request)
-            .then(response => {
-                return response || fetch(e.request);
-            })
-    );
-});
-
-// Manejar mensajes para actualización
-self.addEventListener('message', (event) => {
-    if (event.data && event.data.type === 'SKIP_WAITING') {
-        console.log('Service Worker: Actualización forzada');
-        self.skipWaiting();
-    }
 });

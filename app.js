@@ -836,6 +836,116 @@ const FloatingWishlistButton = React.memo(() => {
   );
 });
 
+// ==================== BOTÓN DE NOTIFICACIONES CORREGIDO ====================
+const NotificationButton = React.memo(() => {
+  const [permission, setPermission] = React.useState(Notification?.permission || 'default');
+  const [showPrompt, setShowPrompt] = React.useState(false);
+  const [error, setError] = React.useState('');
+
+  React.useEffect(() => {
+    console.log('🔔 Estado del permiso:', Notification?.permission);
+    
+    // Verificar si ya hay token guardado
+    const savedToken = localStorage.getItem('fcm_token');
+    const savedTime = localStorage.getItem('fcm_token_time');
+    
+    if (savedToken && savedTime) {
+      const tokenAge = Date.now() - parseInt(savedTime);
+      if (tokenAge > 7 * 24 * 60 * 60 * 1000) {
+        localStorage.removeItem('fcm_token');
+        localStorage.removeItem('fcm_token_time');
+      }
+    }
+  }, []);
+
+  const handleEnableNotifications = async () => {
+    try {
+      setError('');
+      
+      if (!('Notification' in window)) {
+        setError('Tu navegador no soporta notificaciones');
+        return;
+      }
+
+      if (window.requestNotificationPermission) {
+        const token = await window.requestNotificationPermission();
+        setPermission(Notification.permission);
+        setShowPrompt(false);
+        
+        if (token) {
+          console.log('✅ Token obtenido:', token);
+        }
+      } else {
+        const perm = await Notification.requestPermission();
+        setPermission(perm);
+        setShowPrompt(false);
+        
+        if (perm === 'granted') {
+          new Notification('✅ ¡Notificaciones activadas!', {
+            body: 'Ahora recibirás ofertas y novedades de TuDespensa.25',
+            icon: '/icons/icon-192x192.png'
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Error al activar notificaciones:', error);
+      setError('Error al activar notificaciones: ' + error.message);
+    }
+  };
+
+  // SIEMPRE mostrar el botón para depurar (temporalmente)
+  console.log('🎯 Renderizando botón de notificaciones, permiso:', permission);
+  
+  return (
+    <div className="fixed bottom-40 right-6 z-50">
+      {/* Botón principal */}
+      <button
+        onClick={handleEnableNotifications}
+        className={`w-14 h-14 rounded-full shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-200 flex items-center justify-center ${
+          permission === 'granted' 
+            ? 'bg-green-500 cursor-default opacity-50' 
+            : permission === 'denied'
+            ? 'bg-gray-400 cursor-not-allowed'
+            : 'bg-gradient-to-r from-[#10b981] to-[#059669] animate-pulse'
+        }`}
+        title={
+          permission === 'granted' 
+            ? 'Notificaciones activadas' 
+            : permission === 'denied'
+            ? 'Notificaciones bloqueadas'
+            : 'Activar notificaciones'
+        }
+        disabled={permission === 'granted' || permission === 'denied'}
+      >
+        <span className="text-2xl">
+          {permission === 'granted' ? '✅' : permission === 'denied' ? '🔕' : '🔔'}
+        </span>
+      </button>
+      
+      {/* Mensaje de error si existe */}
+      {error && (
+        <div className="absolute bottom-16 right-0 bg-red-100 text-red-700 rounded-lg p-2 text-xs w-48 mb-2 border border-red-200">
+          {error}
+        </div>
+      )}
+      
+      {/* Botón de prueba temporal */}
+      {process.env.NODE_ENV === 'development' && (
+        <button
+          onClick={() => {
+            console.log('Test manual - Permiso:', Notification.permission);
+            console.log('Token en localStorage:', localStorage.getItem('fcm_token'));
+            alert(`Permiso: ${Notification.permission}\nToken: ${localStorage.getItem('fcm_token') || 'No hay token'}`);
+          }}
+          className="absolute -left-20 top-0 bg-gray-800 text-white text-xs px-2 py-1 rounded"
+        >
+          Test
+        </button>
+      )}
+    </div>
+  );
+});
+
 // ==================== TARJETA DE PRODUCTO ====================
 const ProductCard = React.memo(({ product, onAddToCart, likedProducts, onToggleLike, onProductClick }) => {
   const isLiked = likedProducts.includes(product.id);
@@ -1444,7 +1554,7 @@ function App() {
       
       <SocialMediaLinks />
       
-      {/* NUEVO: TEXTO DE DESCRIPCIÓN ESTILO LOVABLE */}
+      {/* TEXTO DE DESCRIPCIÓN ESTILO LOVABLE */}
       <HeroText />
       
       <main className="pb-20">
@@ -1471,6 +1581,7 @@ function App() {
       <Footer />
       <FloatingWhatsAppButton />
       <FloatingWishlistButton />
+      <NotificationButton /> {/* NUEVO BOTÓN DE NOTIFICACIONES */}
       
       <NotificationToast
         message={notification.message}
@@ -1506,6 +1617,7 @@ function App() {
     </div>
   );
 }
+
 
 // Render
 const root = ReactDOM.createRoot(document.getElementById('root'));

@@ -64,9 +64,166 @@
 <body>
     <div id="root"></div>
     
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging-compat.js"></script>
+    
+    <!-- Configuración de Firebase con tus credenciales -->
+    <script>
+        // TU CONFIGURACIÓN DE FIREBASE
+        const firebaseConfig = {
+            apiKey: "AIzaSyD93j0jVzFSUHhfFX2BfKIbBBM8vNCFQ0o",
+            authDomain: "tudespensa25-5606a.firebaseapp.com",
+            projectId: "tudespensa25-5606a",
+            storageBucket: "tudespensa25-5606a.firebasestorage.app",
+            messagingSenderId: "1004027123407",
+            appId: "1:1004027123407:web:18dfc21271cd4ea6c4c9ba",
+            measurementId: "G-FF0KPDKF5D"
+        };
+
+        // Inicializar Firebase
+        firebase.initializeApp(firebaseConfig);
+        const messaging = firebase.messaging();
+
+        // Variable global para tokens
+        let currentFCMToken = null;
+
+        // Función para solicitar permiso y obtener token
+        window.requestNotificationPermission = async function() {
+            try {
+                // Solicitar permiso de notificaciones
+                const permission = await Notification.requestPermission();
+                
+                if (permission === 'granted') {
+                    console.log('✅ Permiso de notificaciones concedido');
+                    
+                    // Obtener token FCM
+                    const token = await messaging.getToken({
+                        vapidKey: 'BHtRjDmjawGcjLGnE37RLglg5wCriZmD7cJbbdkhXhDf6fMkKre01uUaF62csfozeidoANJ549AxVlt0Q38rW24'
+                    });
+                    
+                    if (token) {
+                        console.log('📱 Token FCM:', token);
+                        currentFCMToken = token;
+                        
+                        // Guardar token en localStorage
+                        localStorage.setItem('fcm_token', token);
+                        localStorage.setItem('fcm_token_time', Date.now().toString());
+                        
+                        // Mostrar notificación de éxito
+                        new Notification('✅ ¡Notificaciones activadas!', {
+                            body: 'Ahora recibirás ofertas y novedades de TuDespensa.25',
+                            icon: '/icons/icon-192x192.png',
+                            badge: '/icons/icon-72x72.png'
+                        });
+                        
+                        console.log('✅ Token guardado localmente');
+                    } else {
+                        console.log('❌ No se pudo obtener el token');
+                    }
+                    
+                    return token;
+                } else {
+                    console.log('❌ Permiso de notificaciones denegado');
+                    return null;
+                }
+            } catch (error) {
+                console.error('Error solicitando permiso:', error);
+                return null;
+            }
+        };
+
+        // Escuchar mensajes en primer plano
+        messaging.onMessage((payload) => {
+            console.log('📨 Notificación recibida en primer plano:', payload);
+            
+            // Mostrar notificación personalizada
+            const notificationTitle = payload.notification?.title || '¡Novedad en TuDespensa.25!';
+            const notificationOptions = {
+                body: payload.notification?.body || 'Tenemos nuevos productos para ti',
+                icon: '/icons/icon-192x192.png',
+                badge: '/icons/icon-72x72.png',
+                image: payload.notification?.image,
+                data: payload.data,
+                actions: [
+                    {
+                        action: 'open',
+                        title: 'Ver oferta'
+                    },
+                    {
+                        action: 'close',
+                        title: 'Cerrar'
+                    }
+                ],
+                vibrate: [200, 100, 200],
+                requireInteraction: true,
+                silent: false
+            };
+
+            // Mostrar notificación
+            const notification = new Notification(notificationTitle, notificationOptions);
+            
+            // Manejar clicks en la notificación
+            notification.onclick = function(event) {
+                event.preventDefault();
+                if (payload.data?.url) {
+                    window.open(payload.data.url, '_blank');
+                } else {
+                    window.focus();
+                }
+                notification.close();
+            };
+        });
+
+        // Función para probar notificaciones localmente
+        window.testNotification = function() {
+            if (Notification.permission === 'granted') {
+                new Notification('🔔 ¡Notificación de prueba!', {
+                    body: 'Las notificaciones están funcionando correctamente',
+                    icon: '/icons/icon-192x192.png',
+                    badge: '/icons/icon-72x72.png'
+                });
+            } else {
+                alert('Primero debes permitir las notificaciones');
+            }
+        };
+
+        // Función para mostrar el estado de las notificaciones
+        window.showNotificationStatus = function() {
+            const status = {
+                permiso: Notification.permission,
+                token: currentFCMToken || localStorage.getItem('fcm_token'),
+                tokenTime: localStorage.getItem('fcm_token_time') 
+                    ? new Date(parseInt(localStorage.getItem('fcm_token_time'))).toLocaleString()
+                    : null
+            };
+            
+            console.log('📊 Estado de notificaciones:', status);
+            alert(`Estado de notificaciones:\n\nPermiso: ${status.permiso}\nToken: ${status.token ? '✓ Obtenido' : '✗ No obtenido'}\nHora: ${status.tokenTime || 'No disponible'}`);
+        };
+
+        // Verificar si el navegador soporta notificaciones
+        if ('Notification' in window) {
+            console.log('✅ Notificaciones soportadas');
+            
+            // Verificar estado actual del permiso
+            if (Notification.permission === 'granted') {
+                // Si ya tiene permiso, obtener token automáticamente
+                window.requestNotificationPermission();
+            } else if (Notification.permission !== 'denied') {
+                // Si no se ha preguntado antes, esperar un poco y preguntar
+                setTimeout(() => {
+                    window.requestNotificationPermission();
+                }, 5000);
+            }
+        } else {
+            console.log('❌ Notificaciones no soportadas en este navegador');
+        }
+    </script>
+    
     <script type="text/babel" src="app.js"></script>
     
-    <!-- ===== PWA - SERVICE WORKER, BOTÓN DE INSTALACIÓN Y ACTUALIZACIÓN ===== -->
+    <!-- PWA - SERVICE WORKER, BOTÓN DE INSTALACIÓN Y ACTUALIZACIÓN -->
     <script>
         // ===== 1. SERVICE WORKER CON DETECCIÓN DE ACTUALIZACIONES =====
         let newWorker = null;
@@ -91,13 +248,11 @@
             }).catch(err => console.log('❌ SW error:', err));
         }
 
-        // ===== 2. NOTIFICACIÓN DE ACTUALIZACIÓN (ESTILO LOVABLE) =====
+        // ===== 2. NOTIFICACIÓN DE ACTUALIZACIÓN =====
         function mostrarNotificacionActualizacion() {
-            // Crear contenedor
             const aviso = document.createElement('div');
             aviso.id = 'update-notification';
             
-            // Estructura HTML
             aviso.innerHTML = `
                 <div style="
                     position: fixed;
@@ -140,7 +295,6 @@
             
             document.body.appendChild(aviso);
             
-            // Evento del botón Actualizar
             document.getElementById('update-now-btn').onclick = () => {
                 if (newWorker) {
                     newWorker.postMessage({ type: 'SKIP_WAITING' });
@@ -148,7 +302,6 @@
                 window.location.reload();
             };
             
-            // Auto-ocultar después de 30 segundos
             setTimeout(() => {
                 if (aviso.parentNode) aviso.remove();
             }, 30000);
