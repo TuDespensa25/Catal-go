@@ -1,3 +1,10 @@
+// Versión de la app (cámbiala cada vez que subas una actualización)
+const APP_VERSION = '1.0.1'; // Incrementa con cada cambio
+
+// Guardar versión si no existe
+if (!localStorage.getItem('app_version')) {
+    localStorage.setItem('app_version', APP_VERSION);
+}
 // Data
 const municipalities = [
   { id: 1, name: 'Artemisa, San Cristóbal' },
@@ -938,6 +945,122 @@ const NotificationButton = React.memo(() => {
     </div>
   );
 });
+// ==================== DETECTOR DE ACTUALIZACIONES ====================
+const UpdateNotification = () => {
+    const [updateAvailable, setUpdateAvailable] = React.useState(false);
+    const [newVersion, setNewVersion] = React.useState('');
+
+    React.useEffect(() => {
+        // Detectar nueva versión del Service Worker
+        if ('serviceWorker' in navigator) {
+            // Escuchar mensajes del Service Worker
+            navigator.serviceWorker.addEventListener('message', (event) => {
+                if (event.data && event.data.type === 'NEW_VERSION_ACTIVATED') {
+                    console.log('🔄 Nueva versión activada:', event.data.version);
+                    setNewVersion(event.data.version);
+                    setUpdateAvailable(true);
+                }
+            });
+
+            // Verificar actualizaciones cada 30 minutos
+            const checkInterval = setInterval(() => {
+                checkForUpdates();
+            }, 30 * 60 * 1000);
+
+            // Verificar al inicio
+            checkForUpdates();
+
+            return () => clearInterval(checkInterval);
+        }
+    }, []);
+
+    const checkForUpdates = () => {
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.ready.then(registration => {
+                registration.update();
+                
+                // Comparar versión actual con la del service worker
+                const messageChannel = new MessageChannel();
+                messageChannel.port1.onmessage = (event) => {
+                    if (event.data && event.data.version) {
+                        const currentVersion = localStorage.getItem('app_version') || '1.0.0';
+                        if (event.data.version !== currentVersion) {
+                            console.log('🔄 Nueva versión detectada:', event.data.version);
+                            setNewVersion(event.data.version);
+                            setUpdateAvailable(true);
+                        }
+                    }
+                };
+                
+                navigator.serviceWorker.controller?.postMessage(
+                    { type: 'CHECK_VERSION' },
+                    [messageChannel.port2]
+                );
+            });
+        }
+    };
+
+    const handleUpdate = () => {
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.ready.then(registration => {
+                registration.waiting?.postMessage({ type: 'SKIP_WAITING' });
+            });
+        }
+        
+        // Guardar nueva versión
+        localStorage.setItem('app_version', newVersion);
+        
+        // Recargar la página
+        window.location.reload();
+    };
+
+    if (!updateAvailable) return null;
+
+    return (
+        <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 animate-slideDown">
+            <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-4 max-w-md">
+                <div className="bg-white bg-opacity-20 rounded-full p-3">
+                    <span className="text-2xl">🔄</span>
+                </div>
+                <div className="flex-1">
+                    <h3 className="font-bold text-lg">¡Nueva actualización!</h3>
+                    <p className="text-sm opacity-90">Hay una versión más reciente disponible</p>
+                </div>
+                <button
+                    onClick={handleUpdate}
+                    className="bg-white text-blue-600 px-4 py-2 rounded-full font-semibold text-sm hover:scale-105 transition-transform shadow-lg"
+                >
+                    Actualizar ahora
+                </button>
+                <button
+                    onClick={() => setUpdateAvailable(false)}
+                    className="text-white hover:bg-white hover:bg-opacity-20 rounded-full p-2 transition"
+                >
+                    ✕
+                </button>
+            </div>
+        </div>
+    );
+};
+
+// Agregar estilos para la animación
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideDown {
+        from {
+            transform: translate(-50%, -100%);
+            opacity: 0;
+        }
+        to {
+            transform: translate(-50%, 0);
+            opacity: 1;
+        }
+    }
+    .animate-slideDown {
+        animation: slideDown 0.5s ease-out;
+    }
+`;
+document.head.appendChild(style);
 
 // ==================== TARJETA DE PRODUCTO ====================
 const ProductCard = React.memo(({ product, onAddToCart, likedProducts, onToggleLike, onProductClick }) => {
@@ -1533,7 +1656,7 @@ function App() {
     return cart.reduce((sum, item) => sum + item.quantity, 0);
   };
 
-  return (
+ return (
     <div className="min-h-screen bg-[#fafaf9]">
       <Header 
         searchTerm={searchTerm} 
@@ -1544,13 +1667,15 @@ function App() {
         onCartClick={() => setIsCartOpen(true)}
         onMunicipalityClick={() => setShowMunicipalityModal(true)}
       />
+      <UpdateNotification /> {/* ← AGREGADO AQUÍ */}
       
       <SocialMediaLinks />
       
-      {/* TEXTO DE DESCRIPCIÓN ESTILO LOVABLE */}
+      {/* TEXTO DE DESCRIPCIÓN */}
       <HeroText />
       
       <main className="pb-20">
+        {/* ... resto del código ... */}
         <CategoryGrid 
           selectedCategory={selectedCategory}
           onCategorySelect={setSelectedCategory}
