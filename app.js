@@ -934,14 +934,7 @@ const NotificationButton = React.memo(() => {
         </div>
       )}
       
-      {/* Botón de diagnóstico siempre visible */}
-      <button
-        onClick={runDiagnostic}
-        className="absolute -left-12 top-0 bg-gray-800 text-white text-xs w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-700"
-        title="Diagnóstico"
-      >
-        🔧
-      </button>
+    
     </div>
   );
 });
