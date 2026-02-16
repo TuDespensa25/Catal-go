@@ -44,9 +44,9 @@
     <script src="https://resource.trickle.so/vendor_lib/unpkg/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://resource.trickle.so/vendor_lib/unpkg/@babel/standalone/babel.min.js"></script>
 
-    <!-- Firebase SDK (NECESARIO) -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-messaging-compat.js"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging-compat.js"></script>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -73,12 +73,7 @@
 <body>
     <div id="root"></div>
     
-<<<<<<< HEAD
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging-compat.js"></script>
-    
-    <!-- Configuración de Firebase con tus credenciales -->
+    <!-- Configuración de Firebase -->
     <script>
         // TU CONFIGURACIÓN DE FIREBASE
         const firebaseConfig = {
@@ -233,13 +228,7 @@
     
     <script type="text/babel" src="app.js"></script>
     
-    <!-- PWA - SERVICE WORKER, BOTÓN DE INSTALACIÓN Y ACTUALIZACIÓN -->
-=======
-    <!-- Tu app.js -->
-    <script type="text/babel" src="app.js"></script>
-    
-    <!-- ===== SERVICE WORKER Y BOTÓN DE INSTALACIÓN ===== -->
->>>>>>> a3280519e27dca82cad55bc568f64409ab523686
+    <!-- Service Worker y PWA -->
     <script>
         // Service Worker
         if ('serviceWorker' in navigator) {
@@ -248,70 +237,7 @@
                 .catch(err => console.log('❌ SW error:', err));
         }
 
-<<<<<<< HEAD
-        // ===== 2. NOTIFICACIÓN DE ACTUALIZACIÓN =====
-        function mostrarNotificacionActualizacion() {
-            const aviso = document.createElement('div');
-            aviso.id = 'update-notification';
-            
-            aviso.innerHTML = `
-                <div style="
-                    position: fixed;
-                    bottom: 90px;
-                    left: 16px;
-                    right: 16px;
-                    background: #10b981;
-                    color: white;
-                    border-radius: 16px;
-                    padding: 16px;
-                    box-shadow: 0 10px 25px rgba(16,185,129,0.3);
-                    z-index: 999999;
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    gap: 12px;
-                    animation: slideUp 0.3s ease;
-                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                ">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <span style="font-size: 24px;">🔄</span>
-                        <div>
-                            <div style="font-weight: bold; font-size: 16px;">¡Nueva versión disponible!</div>
-                            <div style="font-size: 12px; opacity: 0.9;">Actualiza para ver los cambios</div>
-                        </div>
-                    </div>
-                    <button id="update-now-btn" style="
-                        background: white;
-                        color: #10b981;
-                        border: none;
-                        border-radius: 9999px;
-                        padding: 8px 16px;
-                        font-weight: bold;
-                        font-size: 14px;
-                        cursor: pointer;
-                        transition: all 0.2s;
-                    ">Actualizar</button>
-                </div>
-            `;
-            
-            document.body.appendChild(aviso);
-            
-            document.getElementById('update-now-btn').onclick = () => {
-                if (newWorker) {
-                    newWorker.postMessage({ type: 'SKIP_WAITING' });
-                }
-                window.location.reload();
-            };
-            
-            setTimeout(() => {
-                if (aviso.parentNode) aviso.remove();
-            }, 30000);
-        }
-
-        // ===== 3. BOTÓN DE INSTALACIÓN PWA CON CIERRE =====
-=======
         // Botón de instalación PWA
->>>>>>> a3280519e27dca82cad55bc568f64409ab523686
         let deferredPrompt;
         
         window.addEventListener('beforeinstallprompt', (e) => {

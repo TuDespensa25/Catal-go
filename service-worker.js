@@ -25,7 +25,58 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-// Manejar notificaciones en segundo plano
+// Instalación del Service Worker
+self.addEventListener('install', e => {
+    console.log('Service Worker: Instalando...');
+    e.waitUntil(
+        caches.open(CACHE_NAME)
+            .then(cache => {
+                console.log('Service Worker: Cacheando archivos');
+                return cache.addAll(urlsToCache);
+            })
+            .then(() => self.skipWaiting())
+    );
+});
+
+// Activación del Service Worker
+self.addEventListener('activate', e => {
+    console.log('Service Worker: Activado');
+    e.waitUntil(
+        caches.keys().then(cacheNames => {
+            return Promise.all(
+                cacheNames.map(cacheName => {
+                    if (cacheName !== CACHE_NAME) {
+                        console.log('Service Worker: Eliminando caché viejo', cacheName);
+                        return caches.delete(cacheName);
+                    }
+                })
+            );
+        }).then(() => self.clients.claim())
+    );
+});
+
+// Estrategia de caché: Network first con fallback a caché
+self.addEventListener('fetch', e => {
+    e.respondWith(
+        fetch(e.request)
+            .then(response => {
+                // Si la respuesta es válida, clonarla y guardarla en caché
+                if (response && response.status === 200 && response.type === 'basic') {
+                    const responseClone = response.clone();
+                    caches.open(CACHE_NAME).then(cache => {
+                        cache.put(e.request, responseClone);
+                    });
+                }
+                return response;
+            })
+            .catch(() => {
+                // Si falla la red, buscar en caché
+                return caches.match(e.request);
+            })
+    );
+});
+
+// Manejar notificaciones en segundo plano (Firebase)
 messaging.onBackgroundMessage((payload) => {
     console.log('📨 Notificación en segundo plano:', payload);
 
@@ -56,22 +107,64 @@ messaging.onBackgroundMessage((payload) => {
     return self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
-// Manejar clicks en notificaciones
+// Manejar notificaciones push genéricas (no Firebase)
+self.addEventListener('push', event => {
+    console.log('🔔 Push genérico recibido:', event);
+    
+    let data = { 
+        title: 'TuDespensa.25', 
+        body: '¡Nueva notificación!', 
+        icon: '/icons/icon-192x192.png' 
+    };
+    
+    if (event.data) {
+        try {
+            data = event.data.json();
+        } catch (e) {
+            data.body = event.data.text();
+        }
+    }
+    
+    const options = {
+        body: data.body,
+        icon: data.icon || '/icons/icon-192x192.png',
+        badge: '/icons/icon-72x72.png',
+        vibrate: [200, 100, 200],
+        data: {
+            url: data.url || '/'
+        },
+        actions: [
+            {
+                action: 'open',
+                title: 'Abrir'
+            }
+        ]
+    };
+    
+    event.waitUntil(
+        self.registration.showNotification(data.title, options)
+    );
+});
+
+// Manejar clicks en notificaciones (unificado)
 self.addEventListener('notificationclick', (event) => {
     console.log('🔔 Click en notificación:', event.notification);
     
     event.notification.close();
 
+    // Si la acción es cerrar, no hacer nada más
     if (event.action === 'close') {
         return;
     }
 
-    // Determinar URL a abrir
+    // Determinar URL a abrir (prioridad: data.url, luego productId, luego por defecto)
     let urlToOpen = '/';
-    if (event.notification.data?.url) {
-        urlToOpen = event.notification.data.url;
-    } else if (event.notification.data?.productId) {
-        urlToOpen = `/?product=${event.notification.data.productId}`;
+    const notificationData = event.notification.data;
+    
+    if (notificationData?.url) {
+        urlToOpen = notificationData.url;
+    } else if (notificationData?.productId) {
+        urlToOpen = `/?product=${notificationData.productId}`;
     }
 
     event.waitUntil(
@@ -79,10 +172,11 @@ self.addEventListener('notificationclick', (event) => {
             type: 'window',
             includeUncontrolled: true
         }).then((clientList) => {
-            // Si ya hay una ventana abierta, enfocarla
+            // Buscar una ventana existente de la app
             for (const client of clientList) {
                 if (client.url.includes(self.location.origin) && 'focus' in client) {
                     return client.focus().then(() => {
+                        // Navegar a la URL si es diferente
                         if (client.url !== urlToOpen) {
                             return client.navigate(urlToOpen);
                         }
@@ -95,132 +189,10 @@ self.addEventListener('notificationclick', (event) => {
     );
 });
 
-// Instalación del Service Worker
-self.addEventListener('install', e => {
-<<<<<<< HEAD
-    console.log('Service Worker: Instalando...');
-    e.waitUntil(
-        caches.open(CACHE_NAME)
-            .then(cache => {
-                console.log('Service Worker: Cacheando archivos');
-                return cache.addAll(urlsToCache);
-            })
-            .then(() => self.skipWaiting())
-    );
-});
-
-self.addEventListener('activate', e => {
-    console.log('Service Worker: Activado');
-    e.waitUntil(
-        caches.keys().then(cacheNames => {
-            return Promise.all(
-                cacheNames.map(cacheName => {
-                    if (cacheName !== CACHE_NAME) {
-                        console.log('Service Worker: Eliminando caché viejo', cacheName);
-                        return caches.delete(cacheName);
-                    }
-                })
-            );
-        }).then(() => self.clients.claim())
-    );
-});
-
-self.addEventListener('fetch', e => {
-    e.respondWith(
-        caches.match(e.request)
-            .then(response => {
-                return response || fetch(e.request);
-            })
-    );
-});
-
 // Manejar mensajes para actualización
 self.addEventListener('message', (event) => {
     if (event.data && event.data.type === 'SKIP_WAITING') {
         console.log('Service Worker: Actualización forzada');
         self.skipWaiting();
     }
-=======
-  console.log('Service Worker: Instalando...');
-  e.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(urlsToCache))
-      .then(() => self.skipWaiting())
-  );
-});
-
-self.addEventListener('activate', e => {
-  console.log('Service Worker: Activado');
-  e.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cacheName => {
-          if (cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    }).then(() => self.clients.claim())
-  );
-});
-
-self.addEventListener('fetch', e => {
-  e.respondWith(
-    caches.match(e.request)
-      .then(response => response || fetch(e.request))
-  );
-});
-
-// NOTIFICACIONES PUSH
-self.addEventListener('push', event => {
-  console.log('Notificación recibida:', event);
-  
-  let data = { 
-    title: 'TuDespensa.25', 
-    body: '¡Nueva notificación!', 
-    icon: '/icons/icon-192x192.png' 
-  };
-  
-  if (event.data) {
-    try {
-      data = event.data.json();
-    } catch (e) {
-      data.body = event.data.text();
-    }
-  }
-  
-  const options = {
-    body: data.body,
-    icon: data.icon || '/icons/icon-192x192.png',
-    badge: '/icons/icon-72x72.png',
-    vibrate: [200, 100, 200],
-    data: {
-      url: data.url || '/'
-    }
-  };
-  
-  event.waitUntil(
-    self.registration.showNotification(data.title, options)
-  );
-});
-
-self.addEventListener('notificationclick', event => {
-  event.notification.close();
-  
-  const urlToOpen = event.notification.data.url || '/';
-  
-  event.waitUntil(
-    clients.matchAll({
-      type: 'window',
-      includeUncontrolled: true
-    }).then(windowClients => {
-      for (let client of windowClients) {
-        if (client.url === urlToOpen && 'focus' in client) {
-          return client.focus();
-        }
-      }
-      return clients.openWindow(urlToOpen);
-    })
-  );
->>>>>>> a3280519e27dca82cad55bc568f64409ab523686
 });
