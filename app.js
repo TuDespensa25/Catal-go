@@ -1,4 +1,169 @@
-// Data
+// ==================== IMPORTAR FIREBASE ====================
+import { initializeApp } from 'firebase/app';
+import { getMessaging, getToken, onMessage } from 'firebase/messaging';
+
+// ==================== CONFIGURACIÓN DE FIREBASE ====================
+// ⚠️ IMPORTANTE: Reemplaza estos valores con los de tu proyecto Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyD93j0jVzFSUHhfFX2BfKIbBBM8vNCFQ0o",
+  authDomain: "tudespensa25-5606a.firebaseapp.com",
+  projectId: "tudespensa25-5606a",
+  storageBucket: "tudespensa25-5606a.firebasestorage.app",
+  messagingSenderId: "1004027123407",
+  appId: "1:1004027123407:web:18dfc21271cd4ea6c4c9ba",
+  measurementId: "G-FF0KPDKF5D"
+};
+// Inicializar Firebase
+const app = initializeApp(firebaseConfig);
+const messaging = getMessaging(app);
+
+// Clave VAPID de Firebase (la que generaste en la consola)
+const VAPID_KEY = "BH4PgxcsagZ-gEtYG-fCX6-BaaVSj5obs0Zr_sFfx8alIPVcVntQ8CoKbvuLddoHNMGbfNZjPnATP6PZBwL1N-g";
+
+// ==================== FUNCIÓN PARA PEDIR PERMISO Y ACTIVAR NOTIFICACIONES ====================
+async function activarNotificaciones() {
+  try {
+    console.log('🔔 Solicitando permiso de notificaciones...');
+    
+    // 1. Verificar soporte del navegador
+    if (!('Notification' in window) || !('serviceWorker' in navigator)) {
+      alert('Tu navegador no soporta notificaciones push');
+      return false;
+    }
+
+    // 2. Pedir permiso al usuario
+    const permission = await Notification.requestPermission();
+    
+    if (permission !== 'granted') {
+      alert('Necesitamos permiso para enviarte notificaciones');
+      return false;
+    }
+
+    // 3. Obtener el token de Firebase
+    const token = await getToken(messaging, { 
+      vapidKey: VAPID_KEY 
+    });
+    
+    if (token) {
+      console.log('✅ Token de notificaciones obtenido:', token);
+      
+      // Guardar el token en localStorage para futuras referencias
+      localStorage.setItem('fcm_token', token);
+      
+      // Aquí puedes enviar el token a tu servidor si quieres guardarlo
+      // await fetch('https://tu-servidor.com/guardar-token', { ... })
+      
+      alert('✅ Notificaciones activadas correctamente');
+      return true;
+    } else {
+      alert('❌ No se pudo obtener el token de notificaciones');
+      return false;
+    }
+  } catch (error) {
+    console.error('❌ Error al activar notificaciones:', error);
+    alert('❌ Error al activar notificaciones: ' + error.message);
+    return false;
+  }
+}
+
+// Escuchar mensajes cuando la app está abierta
+onMessage(messaging, (payload) => {
+  console.log('📨 Mensaje recibido:', payload);
+  
+  // Mostrar notificación personalizada cuando la app está abierta
+  if (payload.notification) {
+    new Notification(payload.notification.title, {
+      body: payload.notification.body,
+      icon: payload.notification.icon || '/icons/icon-192x192.png'
+    });
+  }
+});
+
+// ==================== BOTÓN DE NOTIFICACIONES ====================
+const NotificationButton = React.memo(() => {
+  const [showModal, setShowModal] = React.useState(false);
+  const [isSubscribed, setIsSubscribed] = React.useState(
+    Notification.permission === 'granted' && localStorage.getItem('fcm_token')
+  );
+
+  // Verificar si el navegador soporta notificaciones
+  if (!('Notification' in window) || !('serviceWorker' in navigator)) {
+    return null;
+  }
+
+  return (
+    <>
+      <button
+        onClick={() => setShowModal(true)}
+        className="w-10 h-10 bg-[#10b981] bg-opacity-10 rounded-full flex items-center justify-center hover:bg-opacity-20 transition-all relative"
+        aria-label="Notificaciones"
+      >
+        <span className="text-lg text-[#10b981]">🔔</span>
+        {isSubscribed && (
+          <span className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full"></span>
+        )}
+      </button>
+
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-[100] flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-sm w-full p-6">
+            <div className="w-16 h-16 mx-auto mb-4 bg-[#10b981] bg-opacity-10 rounded-full flex items-center justify-center">
+              <span className="text-3xl">🔔</span>
+            </div>
+            
+            <h3 className="text-xl font-bold text-[#0f172a] text-center mb-2">
+              {isSubscribed ? 'Notificaciones activadas' : '¿Recibir notificaciones?'}
+            </h3>
+            
+            <p className="text-[#64748b] text-center mb-6">
+              {isSubscribed 
+                ? 'Recibirás ofertas y novedades de TuDespensa.25'
+                : 'Te avisaremos de ofertas especiales y el estado de tus pedidos'}
+            </p>
+
+            <div className="space-y-3">
+              {!isSubscribed ? (
+                <button
+                  onClick={async () => {
+                    const result = await activarNotificaciones();
+                    if (result) {
+                      setIsSubscribed(true);
+                      setShowModal(false);
+                    }
+                  }}
+                  className="w-full bg-[#10b981] text-white py-3 rounded-full font-medium hover:bg-[#059669] transition-all"
+                >
+                  Activar notificaciones
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    // Por ahora solo cerramos el modal
+                    // Para desuscribir habría que eliminar el token del servidor
+                    setShowModal(false);
+                  }}
+                  className="w-full bg-gray-100 text-[#0f172a] py-3 rounded-full font-medium hover:bg-gray-200 transition-all"
+                >
+                  Cerrar
+                </button>
+              )}
+              
+              <button
+                onClick={() => setShowModal(false)}
+                className="w-full bg-gray-100 text-[#0f172a] py-3 rounded-full font-medium hover:bg-gray-200 transition-all"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+});
+
+// ==================== DATA (TODO IGUAL QUE ANTES) ====================
+// (Todo el resto de tu código se mantiene exactamente igual)
 const municipalities = [
   { id: 1, name: 'Artemisa, San Cristóbal' },
   { id: 2, name: 'Artemisa, Candelaria' },
@@ -12,116 +177,9 @@ const municipalities = [
   { id: 11, name: 'Artemisa, San Antonio de los Baños' },
 ];
 
-// NUEVA LISTA DE MUNICIPIOS PARA VALIDACIÓN
-const MUNICIPIOS_GRUPO_1 = [1, 2]; // San Cristóbal, Candelaria
-const MUNICIPIOS_GRUPO_2 = [4, 5, 6, 7, 8, 9, 10, 11]; // Todos los demás (sin Bahía Honda)
+const MUNICIPIOS_GRUPO_1 = [1, 2];
+const MUNICIPIOS_GRUPO_2 = [4, 5, 6, 7, 8, 9, 10, 11];
 
-// ==================== FUNCIÓN DE NOTIFICACIONES ====================
-// Esta función maneja las notificaciones push
-function usePushNotifications() {
-  // IMPORTANTE: Después de subir el backend a un servidor real, cambia esta URL
-  const SERVER_URL = 'http://localhost:3000'; // Cambiar después a tu servidor real
-  
-  // Función para suscribirse a notificaciones
-  const subscribeToNotifications = async () => {
-    try {
-      // 1. Verificar soporte del navegador
-      if (!('Notification' in window) || !('serviceWorker' in navigator)) {
-        alert('Tu navegador no soporta notificaciones push');
-        return false;
-      }
-
-      // 2. Pedir permiso al usuario
-      const permission = await Notification.requestPermission();
-      
-      if (permission !== 'granted') {
-        alert('Necesitamos permiso para enviarte notificaciones');
-        return false;
-      }
-
-      // 3. Obtener el service worker
-      const registration = await navigator.serviceWorker.ready;
-
-      // 4. Obtener la clave pública (la misma que generamos)
-      const VAPID_PUBLIC_KEY = "BH4PgxcsagZ-gEtYG-fCX6-BaaVSj5obs0Zr_sFfx8alIPVcVntQ8CoKbvuLddoHNMGbfNZjPnATP6PZBwL1N-g";
-      
-      // 5. Crear la suscripción
-      const subscription = await registration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
-      });
-
-      // 6. Guardar la suscripción en nuestro servidor
-      const response = await fetch(`${SERVER_URL}/api/subscribe`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(subscription)
-      });
-
-      if (response.ok) {
-        alert('✅ Notificaciones activadas correctamente');
-        return true;
-      } else {
-        alert('❌ Error al activar notificaciones');
-        return false;
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('❌ No se pudieron activar las notificaciones. Asegúrate de que el servidor esté corriendo.');
-      return false;
-    }
-  };
-
-  // Función para desuscribirse
-  const unsubscribeFromNotifications = async () => {
-    try {
-      const registration = await navigator.serviceWorker.ready;
-      const subscription = await registration.pushManager.getSubscription();
-      
-      if (subscription) {
-        await subscription.unsubscribe();
-        
-        // Avisar al servidor
-        await fetch(`${SERVER_URL}/api/unsubscribe`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ endpoint: subscription.endpoint })
-        });
-        
-        alert('❌ Notificaciones desactivadas');
-        return true;
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      return false;
-    }
-  };
-
-  // Función auxiliar (necesaria para convertir la clave)
-  function urlBase64ToUint8Array(base64String) {
-    const padding = '='.repeat((4 - base64String.length % 4) % 4);
-    const base64 = (base64String + padding)
-      .replace(/-/g, '+')
-      .replace(/_/g, '/');
-    const rawData = window.atob(base64);
-    const outputArray = new Uint8Array(rawData.length);
-    for (let i = 0; i < rawData.length; ++i) {
-      outputArray[i] = rawData.charCodeAt(i);
-    }
-    return outputArray;
-  }
-
-  return {
-    subscribeToNotifications,
-    unsubscribeFromNotifications
-  };
-}
-
-// ==================== ICONOS CON EMOJIS ====================
 const categories = [
   { id: 'combo', name: 'Combos', icon: '🥫' },
   { id: 'carnicos', name: 'Cárnicos', icon: '🥩' },
@@ -235,7 +293,6 @@ const productData = [
   { id: 86, name: "Batidora Milexus", category: "electro", description: "Batidora 1.5 Lt vaso de cristal", image: "/images/batidora.png", price: 45, availableIn: [1,2] },
 ];
 
-// Función para verificar disponibilidad por municipio
 function isProductAvailable(product, municipalityId) {
   if (Array.isArray(product.availableIn) && product.availableIn.length === 0) {
     return false;
@@ -256,7 +313,6 @@ function isProductAvailable(product, municipalityId) {
   return false;
 }
 
-// Función para obtener producto desde URL
 function getProductFromURL() {
   const urlParams = new URLSearchParams(window.location.search);
   const productId = urlParams.get('product');
@@ -266,13 +322,11 @@ function getProductFromURL() {
   return null;
 }
 
-// Función para generar enlace compartible
 function generateShareableLink(productId) {
   const baseUrl = window.location.origin + window.location.pathname;
   return `${baseUrl}?product=${productId}`;
 }
 
-// Hook de debounce optimizado
 function useDebounce(value, delay) {
   const [debouncedValue, setDebouncedValue] = React.useState(value);
 
@@ -289,7 +343,6 @@ function useDebounce(value, delay) {
   return debouncedValue;
 }
 
-// Componente de imagen optimizado
 const OptimizedImage = React.memo(({ src, alt, className, ...props }) => {
   const [isLoading, setIsLoading] = React.useState(true);
   const [hasError, setHasError] = React.useState(false);
@@ -318,85 +371,6 @@ const OptimizedImage = React.memo(({ src, alt, className, ...props }) => {
         </div>
       )}
     </div>
-  );
-});
-
-// ==================== BOTÓN DE NOTIFICACIONES ====================
-const NotificationButton = React.memo(() => {
-  const [showModal, setShowModal] = React.useState(false);
-  const { subscribeToNotifications, unsubscribeFromNotifications } = usePushNotifications();
-
-  // Verificar si el navegador soporta notificaciones
-  if (!('Notification' in window) || !('serviceWorker' in navigator)) {
-    return null; // No mostrar el botón si no soporta
-  }
-
-  const isSubscribed = Notification.permission === 'granted';
-
-  return (
-    <>
-      <button
-        onClick={() => setShowModal(true)}
-        className="w-10 h-10 bg-[#10b981] bg-opacity-10 rounded-full flex items-center justify-center hover:bg-opacity-20 transition-all relative"
-        aria-label="Notificaciones"
-      >
-        <span className="text-lg text-[#10b981]">🔔</span>
-        {isSubscribed && (
-          <span className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full"></span>
-        )}
-      </button>
-
-      {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-[100] flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-sm w-full p-6">
-            <div className="w-16 h-16 mx-auto mb-4 bg-[#10b981] bg-opacity-10 rounded-full flex items-center justify-center">
-              <span className="text-3xl">🔔</span>
-            </div>
-            
-            <h3 className="text-xl font-bold text-[#0f172a] text-center mb-2">
-              {isSubscribed ? 'Notificaciones activadas' : '¿Recibir notificaciones?'}
-            </h3>
-            
-            <p className="text-[#64748b] text-center mb-6">
-              {isSubscribed 
-                ? 'Recibirás ofertas y novedades de TuDespensa.25'
-                : 'Te avisaremos de ofertas especiales y el estado de tus pedidos'}
-            </p>
-
-            <div className="space-y-3">
-              {!isSubscribed ? (
-                <button
-                  onClick={async () => {
-                    const result = await subscribeToNotifications();
-                    if (result) setShowModal(false);
-                  }}
-                  className="w-full bg-[#10b981] text-white py-3 rounded-full font-medium hover:bg-[#059669] transition-all"
-                >
-                  Activar notificaciones
-                </button>
-              ) : (
-                <button
-                  onClick={async () => {
-                    await unsubscribeFromNotifications();
-                    setShowModal(false);
-                  }}
-                  className="w-full bg-red-500 text-white py-3 rounded-full font-medium hover:bg-red-600 transition-all"
-                >
-                  Desactivar notificaciones
-                </button>
-              )}
-              
-              <button
-                onClick={() => setShowModal(false)}
-                className="w-full bg-gray-100 text-[#0f172a] py-3 rounded-full font-medium hover:bg-gray-200 transition-all"
-              >
-                Cerrar
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </>
   );
 });
 
@@ -853,7 +827,7 @@ const SocialMediaLinks = React.memo(() => {
   );
 });
 
-// ==================== HEADER CON LOGO MÁS GRANDE ====================
+// ==================== HEADER ====================
 const Header = React.memo(({ searchTerm, setSearchTerm, selectedMunicipality, setSelectedMunicipality, cartItems, onCartClick, onMunicipalityClick }) => {
   return (
     <header className="bg-white text-[#0f172a] sticky top-0 z-50 shadow-sm border-b border-gray-100">
@@ -879,7 +853,7 @@ const Header = React.memo(({ searchTerm, setSearchTerm, selectedMunicipality, se
               <span className="text-sm text-[#10b981]">▼</span>
             </button>
             
-            {/* BOTÓN DE NOTIFICACIONES - AÑADIDO */}
+            {/* BOTÓN DE NOTIFICACIONES */}
             <NotificationButton />
             
             <button
@@ -944,7 +918,7 @@ const HeroText = React.memo(() => {
   );
 });
 
-// ==================== CATEGORÍAS MÁS COMPACTAS ====================
+// ==================== CATEGORÍAS ====================
 const CategoryGrid = React.memo(({ selectedCategory, onCategorySelect }) => {
   return (
     <section className="px-4 py-4 bg-white categories-section">
@@ -1632,7 +1606,6 @@ function App() {
       
       <SocialMediaLinks />
       
-      {/* TEXTO DE DESCRIPCIÓN */}
       <HeroText />
       
       <main className="pb-20">
