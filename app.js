@@ -31,110 +31,75 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 async function activarNotificaciones() {
+  console.log("🔔 Iniciando activación...");
+  
   try {
-    console.log('🔔 Iniciando activación...');
-
-    // 1. Permiso
-    const permission = await Notification.requestPermission();
-    if (permission !== 'granted') throw new Error('Permiso denegado');
-
-    // 2. Limpiar y registrar SW
-    const registrations = await navigator.serviceWorker.getRegistrations();
-    for (let reg of registrations) {
-      if (reg.scope.includes('firebase-cloud-messaging-push-scope')) {
-        await reg.unregister();
-        console.log('🗑️ SW antiguo eliminado');
-      }
-    }
-
-    const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js', {
-      scope: '/firebase-cloud-messaging-push-scope'
-    });
-    console.log('✅ Firebase SW registrado');
-
-    // 3. Esperar activación
-    if (!registration.active) {
-      await new Promise(r => {
-        const check = setInterval(() => {
-          if (registration.active) { clearInterval(check); r(); }
-        }, 200);
+    // 1. Esperar SW
+    const registration = await navigator.serviceWorker.ready;
+    console.log("✅ SW activo");
+    
+    // 2. Obtener suscripción existente o crear nueva
+    let subscription = await registration.pushManager.getSubscription();
+    
+    if (!subscription) {
+      console.log("🔑 Creando suscripción push...");
+      
+      // Convertir VAPID key
+      const convertedVapidKey = urlBase64ToUint8Array('BAsALDG2w6ByeTEn2FBQZcjdT01nXsFO57p5DlEctT4VJRKlRf++NUiGhql/5CmP7oid19B4MJNxtj9+1SZqHtU=');
+      
+      subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: convertedVapidKey
       });
-    }
-    console.log('✅ SW activo');
-
-    // 4. Convertir clave
-    function urlBase64ToUint8Array(b) {
-      b = b.replace(/\s/g, '');
-      const padding = '='.repeat((4 - b.length % 4) % 4);
-      const base64 = (b + padding).replace(/\-/g, '+').replace(/_/g, '/');
-      const raw = window.atob(base64);
-      const arr = new Uint8Array(raw.length);
-      for (let i = 0; i < raw.length; i++) arr[i] = raw.charCodeAt(i);
-      return arr;
-    }
-
-    const convertedKey = urlBase64ToUint8Array(VAPID_KEY);
-    console.log('✅ Clave convertida');
-
-    // 5. Suscribirse CON TIMEOUT
-    console.log('🔑 Creando suscripción push...');
-    
-    const subscribePromise = registration.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: convertedKey
-    });
-    
-    const timeoutPromise = new Promise((_, reject) => 
-      setTimeout(() => reject(new Error('Timeout en suscripción push (10s)')), 10000)
-    );
-    
-    const pushSubscription = await Promise.race([subscribePromise, timeoutPromise]);
-    
-    console.log('✅ Suscripción push creada EXITOSAMENTE');
-    console.log('📌 Endpoint:', pushSubscription.endpoint);
-    console.log('📌 Clave pública:', btoa(String.fromCharCode.apply(null, new Uint8Array(pushSubscription.getKey('p256dh')))));
-    console.log('📌 Auth:', btoa(String.fromCharCode.apply(null, new Uint8Array(pushSubscription.getKey('auth')))));
-
-    // 6. Verificar que la suscripción se guardó
-    const checkSubscription = await registration.pushManager.getSubscription();
-    if (!checkSubscription) {
-      throw new Error('La suscripción no se mantuvo');
-    }
-    console.log('✅ Suscripción verificada en el navegador');
-
-    // 7. Token de Firebase
-    console.log('📨 Solicitando token a Firebase...');
-    let token = null;
-    for (let i = 0; i < 3; i++) {
-      try {
-        token = await messaging.getToken({ 
-          vapidKey: VAPID_KEY,
-          serviceWorkerRegistration: registration 
-        });
-        if (token) break;
-      } catch (e) {
-        console.log(`⚠️ Intento ${i+1} falló:`, e.message);
-        await new Promise(r => setTimeout(r, 2000));
-      }
-    }
-
-    if (token) {
-      console.log('✅ Token obtenido:', token);
-      localStorage.setItem('fcm_token', token);
-      alert('✅ Notificaciones activadas');
-      return true;
+      
+      console.log("✅ Suscripción push creada EXITOSAMENTE");
     } else {
-      throw new Error('No se pudo obtener el token después de 3 intentos');
+      console.log("✅ Usando suscripción existente");
     }
-
+    
+    // 3. Extraer el token de Firebase del endpoint
+    console.log("📌 Endpoint:", subscription.endpoint);
+    
+    // El token FCM está en el endpoint
+    const endpointParts = subscription.endpoint.split('/');
+    const fcmToken = endpointParts[endpointParts.length - 1];
+    
+    console.log("✅ TOKEN FCM (extraído del endpoint):", fcmToken);
+    console.log("📌 Clave pública:", arrayBufferToBase64(subscription.getKey('pkey')));
+    console.log("📌 Auth:", arrayBufferToBase64(subscription.getKey('auth')));
+    
+    // Aquí puedes enviar fcmToken a tu servidor
+    await enviarTokenAlServidor(fcmToken);
+    
+    return fcmToken;
+    
   } catch (error) {
-    console.error('❌ Error en activación:', error);
-    console.error('Tipo de error:', error.name);
-    console.error('Mensaje:', error.message);
-    console.error('Stack:', error.stack);
-    alert('❌ Error al activar: ' + error.message);
-    return false;
+    console.error("❌ Error en activación:", error);
   }
+}
+
+// Función auxiliar para convertir Base64 a Uint8Array
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding)
+    .replace(/\-/g, '+')
+    .replace(/_/g, '/');
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
+
+// Función para convertir ArrayBuffer a Base64
+function arrayBufferToBase64(buffer) {
+  let binary = '';
+  const bytes = new Uint8Array(buffer);
+  for (let i = 0; i < bytes.byteLength; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return window.btoa(binary);
 }
 
 // Escuchar mensajes
