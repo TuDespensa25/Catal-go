@@ -39,10 +39,19 @@
     <meta name="twitter:description" content="Descubre nuestro catálogo completo de productos organizados por categorías">
     <meta name="twitter:image" content="/icons/icon-512x512.png">
 
+    <!-- React y Babel -->
     <script src="https://resource.trickle.so/vendor_lib/unpkg/react@18/umd/react.production.min.js"></script>
     <script src="https://resource.trickle.so/vendor_lib/unpkg/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://resource.trickle.so/vendor_lib/unpkg/@babel/standalone/babel.min.js"></script>
+
+    <!-- Firebase SDK (NECESARIO) -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-messaging-compat.js"></script>
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Estilos -->
     <link href="https://resource.trickle.so/vendor_lib/unpkg/lucide-static@0.516.0/font/lucide.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
 
@@ -64,6 +73,7 @@
 <body>
     <div id="root"></div>
     
+<<<<<<< HEAD
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging-compat.js"></script>
@@ -224,30 +234,21 @@
     <script type="text/babel" src="app.js"></script>
     
     <!-- PWA - SERVICE WORKER, BOTÓN DE INSTALACIÓN Y ACTUALIZACIÓN -->
+=======
+    <!-- Tu app.js -->
+    <script type="text/babel" src="app.js"></script>
+    
+    <!-- ===== SERVICE WORKER Y BOTÓN DE INSTALACIÓN ===== -->
+>>>>>>> a3280519e27dca82cad55bc568f64409ab523686
     <script>
-        // ===== 1. SERVICE WORKER CON DETECCIÓN DE ACTUALIZACIONES =====
-        let newWorker = null;
-        
+        // Service Worker
         if ('serviceWorker' in navigator) {
-            // Registrar el Service Worker
-            navigator.serviceWorker.register('./service-worker.js').then(reg => {
-                console.log('✅ SW registrado');
-                
-                // Detectar cuando hay una nueva versión
-                reg.addEventListener('updatefound', () => {
-                    newWorker = reg.installing;
-                    console.log('🔄 Nueva versión detectada');
-                    
-                    newWorker.addEventListener('statechange', () => {
-                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                            // Mostrar notificación de actualización
-                            mostrarNotificacionActualizacion();
-                        }
-                    });
-                });
-            }).catch(err => console.log('❌ SW error:', err));
+            navigator.serviceWorker.register('./service-worker.js')
+                .then(reg => console.log('✅ SW registrado'))
+                .catch(err => console.log('❌ SW error:', err));
         }
 
+<<<<<<< HEAD
         // ===== 2. NOTIFICACIÓN DE ACTUALIZACIÓN =====
         function mostrarNotificacionActualizacion() {
             const aviso = document.createElement('div');
@@ -308,19 +309,24 @@
         }
 
         // ===== 3. BOTÓN DE INSTALACIÓN PWA CON CIERRE =====
+=======
+        // Botón de instalación PWA
+>>>>>>> a3280519e27dca82cad55bc568f64409ab523686
         let deferredPrompt;
         
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
             console.log('✅ PWA lista para instalar');
+            
+            setTimeout(() => {
+                if (deferredPrompt && !window.matchMedia('(display-mode: standalone)').matches) {
+                    mostrarBotonInstalacion();
+                }
+            }, 2000);
         });
 
-        setTimeout(() => {
-            if (window.matchMedia('(display-mode: standalone)').matches) {
-                return;
-            }
-
+        function mostrarBotonInstalacion() {
             const container = document.createElement('div');
             container.id = 'pwa-install-container';
             container.style.cssText = `
@@ -383,15 +389,6 @@
                 z-index: 1000000;
             `;
 
-            closeBtn.onmouseover = () => {
-                closeBtn.style.background = '#f3f4f6';
-                closeBtn.style.transform = 'scale(1.1)';
-            };
-            closeBtn.onmouseout = () => {
-                closeBtn.style.background = 'white';
-                closeBtn.style.transform = 'scale(1)';
-            };
-
             const style = document.createElement('style');
             style.textContent = `
                 @keyframes slideUp {
@@ -401,6 +398,10 @@
                 #install-pwa-btn:hover {
                     transform: scale(1.02);
                     box-shadow: 0 12px 28px rgba(34, 197, 94, 0.5);
+                }
+                #close-pwa-btn:hover {
+                    background: #f3f4f6;
+                    transform: scale(1.1);
                 }
             `;
             document.head.appendChild(style);
@@ -421,7 +422,6 @@
             closeBtn.onclick = (e) => {
                 e.stopPropagation();
                 container.remove();
-                console.log('❌ Cartel de instalación cerrado');
             };
 
             container.appendChild(btn);
@@ -431,7 +431,7 @@
             setTimeout(() => {
                 if (container.parentNode) container.remove();
             }, 120000);
-        }, 2000);
+        }
     </script>
 </body>
 </html>
