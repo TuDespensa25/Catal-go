@@ -71,7 +71,7 @@ body {
     overflow: hidden;
 }
 
-/* === Ajustes mejorados de imágenes de productos === */
+/* Ajustes mejorados de imágenes de productos */
 .product-card img {
     width: 100%;
     max-width: 500px;
@@ -107,7 +107,7 @@ body {
     }
 }
 
-/* === Corrección para superposición de imágenes sobre el texto === */
+/* Corrección para superposición de imágenes sobre el texto */
 .product-card {
     display: flex;
     flex-direction: column;
@@ -130,7 +130,7 @@ body {
     }
 }
 
-/* === Separación clara entre categorías y productos === */
+/* Separación clara entre categorías y productos */
 section {
     position: relative;
     z-index: 1;
@@ -147,17 +147,10 @@ section {
     z-index: 2;
 }
 
-/* === Banner para vista móvil === */
+/* Banner para vista móvil */
 .mobile-banner img {
     width: 100%;
     height: auto;
-    object-fit: cover;
-    border-radius: 12px;
-}
-
-.mobile-banner img {
-    width: 100%;
-    height: 100%;
     object-fit: cover;
     border-radius: 12px;
 }
@@ -174,7 +167,7 @@ section {
     }
 }
 
-/* === IMAGEN DEL MODAL DE PRODUCTO - MOSTRAR COMPLETA === */
+/* IMAGEN DEL MODAL DE PRODUCTO - MOSTRAR COMPLETA */
 .product-detail-modal img {
     width: 100%;
     max-width: 500px;
@@ -203,7 +196,7 @@ section {
     }
 }
 
-/* === MODAL DE MUNICIPIO === */
+/* MODAL DE MUNICIPIO */
 .municipality-modal-container {
     z-index: 60;
 }
@@ -261,6 +254,22 @@ section {
 .icon-map-pin::before { content: "📍"; }
 .icon-check::before { content: "✓"; }
 .icon-info::before { content: "ℹ️"; }
+.icon-minus::before { content: "−"; }
+.icon-plus::before { content: "+"; }
+.icon-x::before { content: "✕"; }
+.icon-shopping-cart::before { content: "🛒"; }
+.icon-search::before { content: "🔍"; }
+.icon-heart::before { content: "❤️"; }
+.icon-message-circle::before { content: "💬"; }
+.icon-instagram::before { content: "📷"; }
+.icon-facebook::before { content: "👤"; }
+.icon-check-circle::before { content: "✓"; }
+.icon-chevron-down::before { content: "▼"; }
+.icon-phone::before { content: "📞"; }
+.icon-truck::before { content: "🚚"; }
+.icon-shield::before { content: "🛡️"; }
+.icon-star::before { content: "⭐"; }
+.icon-help-circle::before { content: "❓"; }
 
 /* Optimizaciones de rendimiento */
 .image-loading {
@@ -283,7 +292,7 @@ section {
     @apply bg-[var(--primary-color)] text-white px-4 py-2 rounded-lg font-medium flex items-center justify-center space-x-2 hover:bg-opacity-90 transition-all;
 }
 
-/* === SECCIÓN FAQ - NUEVA === */
+/* SECCIÓN FAQ - NUEVA */
 
 /* Animaciones mejoradas para FAQ */
 @keyframes fade-in {
@@ -300,14 +309,6 @@ section {
 .animate-fade-in {
   animation: fade-in 0.3s ease-out;
 }
-
-/* Iconos adicionales para FAQ */
-.icon-help-circle::before { content: "❓"; }
-.icon-phone::before { content: "📞"; }
-.icon-chevron-down::before { content: "⬇️"; }
-.icon-truck::before { content: "🚚"; }
-.icon-shield::before { content: "🛡️"; }
-.icon-star::before { content: "⭐"; }
 
 /* Estilos responsivos mejorados para FAQ */
 @media (max-width: 640px) {
@@ -358,241 +359,4 @@ section {
 .cta-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-}
-
-/* === TEMÁTICA FIN DE AÑO === */
-
-/* Badge de descuento fin de año */
-.new-year-badge {
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    background: linear-gradient(45deg, #ff6b00, #ffa500);
-    color: white;
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 0.7rem;
-    font-weight: bold;
-    z-index: 10;
-    animation: pulse-new-year 2s infinite;
-}
-
-@keyframes pulse-new-year {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-}
-
-/* Botón con temática fin de año */
-.new-year-button {
-    background: linear-gradient(45deg, #ff6b00, #ffa500) !important;
-    color: white !important;
-    position: relative;
-    overflow: hidden;
-}
-
-.new-year-button::before {
-    content: "";
-    position: absolute;
-    right: 10px;
-    opacity: 0.8;
-}
-
-/* Tarjetas con descuento */
-.new-year-discount {
-    border: 2px solid #ff6b00;
-    position: relative;
-}
-
-/* Banner de oferta fin de año */
-.new-year-banner {
-    background: linear-gradient(135deg, #ff6b00 0%, #ffa500 50%, #ffcc00 100%);
-    color: white;
-    padding: 1rem;
-    text-align: center;
-    border-radius: 12px;
-    margin: 1rem auto;
-    position: relative;
-    overflow: hidden;
-}
-
-.new-year-banner::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 20px;
-    transform: translateY(-50%);
-    font-size: 1.5rem;
-}
-
-.new-year-banner::after {
-    content: "✨2026✨";
-    position: absolute;
-    top: 50%;
-    right: 20px;
-    transform: translateY(-50%);
-    font-size: 1.5rem;
-}
-
-/* Iconos fin de año */
-.icon-fireworks::before { content: ""; }
-.icon-confetti::before { content: ""; }
-.icon-party::before { content: ""; }
-.icon-champagne::before { content: "🍾"; }
-.icon-clock::before { content: "🕛"; }
-.icon-gift::before { content: "🎁"; }
-.icon-santa::before { content: ""; }
-
-/* Efecto de confeti */
-.confetti-effect {
-    position: relative;
-    overflow: hidden;
-}
-
-.confetti-effect::after {
-    content: "";
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    font-size: 0.8rem;
-    opacity: 0.6;
-}
-
-/* Fondo navideño sutil para el header */
-.header-gradient {
-    background: linear-gradient(135deg, #1a936f 0%, #c72c41 100%);
-    position: relative;
-    overflow: hidden;
-}
-
-.header-gradient::before {
-    content: "";
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 1.5rem;
-    opacity: 0.8;
-}
-
-.header-gradient::after {
-    content: "";
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    font-size: 1.2rem;
-    opacity: 0.7;
-}
-
-/* Efectos fin de año en las tarjetas */
-.product-card {
-    position: relative;
-    transition: all 0.3s ease;
-    border: 1px solid #e5e7eb;
-}
-
-.product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(255, 107, 0, 0.1);
-    border-color: #ff6b00;
-}
-
-/* Efectos de confeti sutil */
-.snow-effect {
-    position: relative;
-    overflow: hidden;
-}
-
-.snow-effect::after {
-    content: "";
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    font-size: 0.8rem;
-    opacity: 0.6;
-}
-
-/* Banner navideño especial */
-.christmas-banner {
-    background: linear-gradient(135deg, #1a936f 0%, #c72c41 50%, #1e40af 100%);
-    color: white;
-    padding: 1rem;
-    text-align: center;
-    border-radius: 12px;
-    margin: 1rem auto;
-    position: relative;
-    overflow: hidden;
-}
-
-.christmas-banner::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 20px;
-    transform: translateY(-50%);
-    font-size: 1.5rem;
-}
-
-.christmas-banner::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    right: 20px;
-    transform: translateY(-50%);
-    font-size: 1.5rem;
-}
-
-/* Modal fin de año */
-.new-year-modal {
-    border: 2px solid #ff6b00;
-    border-radius: 16px;
-}
-
-.new-year-modal::before {
-    content: "";
-    position: absolute;
-    top: -15px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: white;
-    padding: 5px;
-    border-radius: 50%;
-    font-size: 1.2rem;
-}
-
-/* Productos especiales fin de año */
-.christmas-special {
-    border: 2px solid #ff6b00;
-}
-
-/* Banner navideño superior */
-.christmas-top-banner {
-    background: linear-gradient(90deg, #ff6b00 0%, #ffa500 50%, #ffcc00 100%);
-    color: white;
-    padding: 0.5rem 1rem;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-}
-
-.christmas-top-banner::before {
-    content: "";
-    position: absolute;
-    left: 20px;
-    animation: twinkle 1s infinite;
-}
-
-.christmas-top-banner::after {
-    content: "";
-    position: absolute;
-    right: 20px;
-    animation: twinkle 1.5s infinite;
-}
-
-/* Efecto de luces parpadeantes */
-@keyframes twinkle {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-}
-
-.twinkle {
-    animation: twinkle 2s infinite;
 }
