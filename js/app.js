@@ -1,131 +1,29 @@
-// Data
-const municipalities = [
-  { id: 1, name: 'Artemisa, San Cristóbal' },
-  { id: 2, name: 'Artemisa, Candelaria' },
-  { id: 4, name: 'Artemisa, Mariel' },
-  { id: 5, name: 'Artemisa, Guanajay' },
-  { id: 6, name: 'Artemisa, Caimito' },
-  { id: 7, name: 'Artemisa, Bauta' },
-  { id: 8, name: 'Artemisa, Artemisa' },
-  { id: 9, name: 'Artemisa, Alquízar' },
-  { id: 10, name: 'Artemisa, Güira de Melena' },
-  { id: 11, name: 'Artemisa, San Antonio de los Baños' },
-];
+// js/app.js
+// ============================================
+// TuDespensa.25 - Aplicación Principal
+// Versión Profesional - Todas las funcionalidades intactas
+// ============================================
 
-const categories = [
-  { id: 'combo', name: 'Combos', icon: 'icon-basket', backgroundImage: '/images/aseo.png' },
-  { id: 'carnicos', name: 'Cárnicos y embutidos', icon: 'icon-beef', backgroundImage: '/images/carnicos.png' },
-  { id: 'cereales', name: 'Cereales, pastas y granos', icon: 'icon-wheat', backgroundImage: '/images/cereales.png' },
-  { id: 'lacteos', name: 'Lácteos y huevos', icon: 'icon-milk', backgroundImage: '/images/lacteos.png' },
-  { id: 'conserva', name: 'Conserva y enlatados', icon: 'icon-can', backgroundImage: '/images/conserva.png' },
-  { id: 'mercado', name: 'Mercado', icon: 'icon-basket', backgroundImage: '/images/mercado.png' },
-  { id: 'aseo', name: 'Aseo', icon: 'icon-broom', backgroundImage: '/images/aseo.png' },
-  { id: 'agro', name: 'Agrito', icon: 'icon-basket', backgroundImage: '/images/aseo.png' },
-  { id: 'liquido', name: 'Líquidos', icon: 'icon-basket', backgroundImage: '/images/aseo.png' },
-  { id: 'electro', name: 'Electrodomésticos', icon: 'icon-basket', backgroundImage: '/images/aseo.png' },
-];
+// NOTA: Los datos (products, categories, municipalities)
+// se cargan desde archivos separados en index.html
 
-const productData = [
-  // Cárnicos y embutidos
-  { id: 40, name: 'Pollo caja de 33 lb de postas', category: 'carnicos', description: 'Caja de 33 lb de pollo', image: '/images/pollo_caja33.png', price: 38, availableIn: [1,2] },
-  { id: 42, name: 'Lomo de Cerdo Importado ', category: 'carnicos', description: 'Porción de 3 Lb', image: '/images/lomo.png', price: 11.2, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
-  { id: 2, name: 'Pollo paquete de 10 lb', category: 'carnicos', description: 'Paquete de 10 lb de pollo', image: '/images/pollo10lb.png', price: 11.4, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
-  { id: 88, name: 'Pollo paquete de 11 lb', category: 'carnicos', description: 'Paquete de 11 lb de pollo', image: '/images/pollo10lb.png', price: 13.2, availableIn: [1, 2 ] },
-  { id: 3, name: 'Pechuga paquete de 2 kg', category: 'carnicos', description: 'Pechuga de pollo 2 kg', image: '/images/pechuga2kg.png', price: 14, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
-  { id: 5, name: 'Chuleta de lomo deshuesado 2 lb', category: 'carnicos', description: 'Chuleta de lomo deshuesado', image: '/images/chuletalomo.png', price: 8.5, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
-  { id: 6, name: 'Masas de cerdo 2 lb', category: 'carnicos', description: 'Masas de cerdo 2 lb', image: '/images/masas.png', price: 8, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
-  { id: 7, name: 'Bistec de cerdo 2 lb', category: 'carnicos', description: 'Bistec de cerdo 2 lb', image: '/images/bisteclomo.png', price: 9, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
-  { id: 10, name: 'Picadillo 400 gr de pollo', category: 'carnicos', description: 'Picadillo de pollo 400 gr', image: '/images/picadillo.png', price: 1.85, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
-  { id: 11, name: 'Hamburguesas mixtas de pollo y cerdo', category: 'carnicos', description: 'Hamburguesas mixtas de pollo y cerdo', image: '/images/hamburguesas.png', price: 2.3, availableIn: [4, 5, 6, 7, 8, 9, 10, 11] },
-  { id: 12, name: 'Mortadella Seara de Pollo ', category: 'carnicos', description: 'Mortadella de 500 gr', image: '/images/seara500.png', price: 2.3, availableIn: [1, 2, 3] },
-  { id: 13, name: 'Mortadella clásica', category: 'carnicos', description: 'Mortadella clásica', image: '/images/mortclasica.png', price:2.3, availableIn: [1, 2 ] },
-  { id: 14, name: 'Mortadela de queso', category: 'carnicos', description: 'Mortadella de queso', image: '/images/mortqueso.png', price: 2.3, availableIn: [1, 2] },
-  { id: 15, name: 'Mortadela de aceituna', category: 'carnicos', description: 'Mortadella con aceituna', image: '/images/mortaceit.png', price: 2.3, availableIn: [4, 5, 6, 7, 8, 9, 10, 11] },
-  { id: 45, name: 'Carne de Res troceada', category: 'carnicos', description: 'Bolsa de 1 Kg', image: '/images/restroceada.png', price: 14.4, availableIn: [4, 5, 6, 7, 8, 9, 10, 11] },
-  { id: 17, name: 'Hígado de pollo 1 kg', category: 'carnicos', description: 'Hígado de pollo 1 kg', image: '/images/higado.png', price: 2.60, availableIn: [4, 5, 6, 7, 8, 9, 10, 11] },
-  { id: 18, name: 'Salchichas', category: 'carnicos', description: 'Salchichas', image: '/images/salchichas.png', price:1.75, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
+// --------------------------------------------
+// 1. CONSTANTES Y CONFIGURACIÓN
+// --------------------------------------------
+const APP_CONFIG = {
+  WHATSAPP_NUMBER: '5354066204',
+  DEFAULT_MUNICIPALITY: 1,
+  DEBOUNCE_DELAY: 300,
+  DISCOUNT_CODES: {
+    'CLIENTEF': 5,
+    'BIENVENIDOhoy': 10,
+    'PRIMERACOMPRAtd25.': 15
+  }
+};
 
-  // Lácteos y Huevos
- /* { id: 19, name: 'Leche entera 1 kg', category: 'lacteos', description: 'Leche entera 1 kg', image: '/images/leche1kg.png', price: 10, availableIn: [1,2,3] },*/
-  { id: 20, name: 'Cartón de huevos', category: 'lacteos', description: 'Cartón de huevos frescos', image: '/images/huevo30.png', price: 8.5, availableIn: [4,5,6,7,8,9,10,11] },
-  { id: 22, name: 'Leche condensada de cajita', category: 'lacteos', description: 'Leche condensada de cajita', image: '/images/cajitaleche.png', price: 1.65, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
-  { id: 23, name: 'Leche condensada lata', category: 'lacteos', description: 'Leche condensada lata', image: '/images/nezkaleche.png', price: 1.8, availableIn: [] },
-  { id: 55, name: 'Helado', category: 'lacteos', description: 'Cubeta de 3L', image: '/images/helado.png', price: 9, availableIn: [4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
-  { id: 57, name: 'Leche en Polvo', category: 'lacteos', description: 'Bolsa de 1 kg', image: '/images/lechepolvomu.png', price: 8.5, availableIn: [4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
-  { id: 58, name: 'Cartón de huevos', category: 'lacteos', description: '30 uds frescos 100% orgánicos', image: '/images/huevo30.png', price: 9.4, availableIn: [1,2,3,19,20,21,22,23,24,25,26,27] },
-
-  // Cereales, Pastas y Granos
-  { id: 24, name: 'Frijol negro 1 lb', category: 'cereales', description: 'Frijol negro 1 lb', image: '/images/frijol2lb.png', price: 1.2, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
-  { id: 25, name: 'Arroz Grano Largo', category: 'cereales', description: 'Arroz bolsa 2 lb', image: '/images/arroz2lb.png', price: 1.9, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
-  { id: 26, name: 'Sal 1 lb', category: 'cereales', description: 'Sal 1 lb', image: '/images/sal.png', price: 0.65, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
-  { id: 27, name: 'Azúcar 2 lb', category: 'cereales', description: 'Azúcar 2 lb', image: '/images/azucar2lb.png', price: 1.95, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
-  { id: 28, name: 'Spaguetis', category: 'cereales', description: 'Spaguetis', image: '/images/spaguetis.png', price:1.2, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
-  { id: 29, name: 'Arroz Grano Largo 25 kg (55 lb)', category: 'cereales', description: 'Saco de arroz  25 kg (55 lb)', image: '/images/arroz25kgsur.png', price: 45, availableIn: [1,3,2] },
-  { id: 44, name: 'Arroz Grano Largo 25 kg (55 lb)', category: 'cereales', description: 'Saco de arroz  25 kg (55 lb)', image: '/images/Arroz55lbguy.png', price: 45, availableIn: [] },
-  { id: 30, name: 'Harina de trigo 1 kg', category: 'cereales', description: 'Harina de trigo 1 kg', image: '/images/harinafresko.png', price: 2.3, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
-  { id: 53, name: 'Frijoles Blanco Del Campo ', category: 'cereales', description: 'Bolsa de 16 OZ', image: '/images/alubiasdelcampo.png', price: 2.4, availableIn: [4,5,6,7,8,9,10,11,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
-
-  // Conserva y Enlatados
-  { id: 31, name: 'Pasta de tomate 400 gr', category: 'conserva', description: 'Pasta de tomate 400 gr', image: '/images/pasta400.png', price: 1.6, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
-  { id: 43, name: 'Pasta de tomate Vima 3 Kg', category: 'conserva', description: 'Pasta de tomate 3 Kg', image: '/images/vima3kg.png', price: 9.4, availableIn: [4,5,6,7,8,9,10,11] },
-  { id: 32, name: 'Pasta de tomate 800 gr', category: 'conserva', description: 'Pasta de tomate 800 gr', image: '/images/800gr.png', price: 3.5, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
-  { id: 33, name: 'Leche condensada cocinada', category: 'conserva', description: 'Leche condensada cocinada', image: '/images/cocinada.png', price: 2.2, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
-  { id: 34, name: 'Mayonesa celorio', category: 'conserva', description: 'Mayonesa Celorio', image: '/images/celorio.png', price: 4.25, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
-
-  // Mercado
-  /*{ id: 35, name: 'Aceite 1 L', category: 'mercado', description: 'Aceite de cocina 1 Litro', image: '/images/aceite1l.png', price: 2.95, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
-  { id: 90, name: 'Aceite 900 ml', category: 'mercado', description: 'Aceite de cocina 900 ml', image: '/images/aceite900ml.png', price: 2.65, availableIn: [3,4,5,6,7,8,9,10,11] },*/
-  { id: 36, name: 'Chocolate en polvo 500 gr', category: 'mercado', description: 'Chocolate en polvo 500 gr', image: '/images/chocopolvo.png', price: 2.9, availableIn: [3,2,1] },
-  { id: 37, name: 'Gelatina', category: 'mercado', description: 'Gelatina', image: '/images/gelafresa.png', price: 0.9, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
-  { id: 46, name: 'Café La LLave ', category: 'mercado', description: 'Café La Llave 10 oz', image: '/images/cafelallave.png', price: 6.9, availableIn: [] },
-  { id: 47, name: 'Café La Carreta', category: 'mercado', description: 'Café Prensado 10 oz', image: '/images/cafelacarreta.png', price: 6.4, availableIn: [4,5,6,7,8,9,10,11] },
-  { id: 48, name: 'Café Sello Rojo', category: 'mercado', description: 'Café Prensado 10 oz', image: '/images/cafesellorojo.png', price: 6.4, availableIn: [4,5,6,7,8,9,10,11] },
-  { id: 49, name: 'Café Dufiltro', category: 'mercado', description: 'Café Prensado 250 gr', image: '/images/cafedufiltro.png', price: 4.5, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
-  { id: 51, name: 'Refresco Zuko', category: 'mercado', description: 'Caja de 8 sobres', image: '/images/zuko.png', price: 2.95, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
-  { id: 52, name: 'Maíz dulce en granos', category: 'mercado', description: 'Lata de 445 gr', image: '/images/maizdulce.png', price: 1.7, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
-  { id: 54, name: 'Ketchup Kurtz', category: 'mercado', description: 'Pomo de 10 OZ', image: '/images/ketchupkurtz.png', price: 2.95, availableIn: [4,5,6,7,8,9,10,11,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
-
-  // Aseo
-  { id: 38, name: 'Papel higiénico', category: 'aseo', description: 'Papel higiénico', image: '/images/papelhigi.png', price: 2.4, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
-  { id: 39, name: 'Jabón  100 gr', category: 'aseo', description: 'Jabón de 100 gr', image: '/images/jabon.png', price: 0.48 , availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
-  { id: 56, name: 'Detergente polvo Multiuso', category: 'aseo', description: 'Bolsa de 1 Kg', image: '/images/detergente.png', price: 2.6, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
-
-  // Agrito
-  { id: 59, name: 'Boniato', category: 'agro', description: 'Bolsa de 5 lb', image: '/images/boniato.png', price: 2.4, availableIn: [1,2,3,4,5,6,7,8,9,10,11] },
-  { id: 60, name: 'Malanga', category: 'agro', description: 'Bolsa de 5 lb', image: '/images/malanga.png', price: 3.5, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
-  { id: 61, name: 'Ajo', category: 'agro', description: 'Bolsa de 10 cabezas Importados', image: '/images/ajo.png', price: 2.7, availableIn: [1,2] },
-
-  // Líquidos
-  { id: 62, name: 'Whisky Old Star', category: 'liquido', description: 'Botella de 1 Lts', image: '/images/old.png', price: 7, recent: 1, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
-  { id: 63, name: 'Cerveza Cristal', category: 'liquido', description: 'Caja de 24 uds', image: '/images/cristal.png', price: 24, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
-  { id: 64, name: 'Cerveza Económica', category: 'liquido', description: 'Caja de 24 uds', image: '/images/timber.png', price: 20, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
-  { id: 69, name: 'Malta Guajira', category: 'liquido', description: 'Botella de 330 ml', image: '/images/guajira.png', price: 0.75, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
-  { id: 70, name: 'Malta Guajira Blister', category: 'liquido', description: 'Blister de 6 uds', image: '/images/guajirablister.png', price: 4.4, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
-
-  // COMBOS
-  { id: 89, name: 'Combo 9', category: 'combo', description: '2 Sobres de Spaguetis 500gr, 2 Mortadella Seara 500 gr, 2 Pasta de tomate 400 gr, Botella de aceite 1 Lt', image: '/images/combo9.png', price: 11.45, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
-  { id: 65, name: 'Combo 1', category: 'combo', description: '1 Lomo de cerdo importado 3 lb, 1 paquete de pollo 10 lb, 1 chuleta de lomo deshuesado 2 lb, 1 masas de cerdo 2 lb, 1 picadillo de pollo 400 g, 1 paquete de salchichas, 1 mortadela de queso, 1 yogurt de fresa probiótico 1 L, 2 leches condensadas de cajita, 2 libras de frijol negro, 10 libras de arroz blanco importado, 1 bolsa de azúcar 2 lb, 1 bolsa de sal 1 lb, 2 paquetes de espaguetis 500 g, 1 pasta de tomate 400 g, 2 botellas de aceite 1 L, 1 café Dufiltro 250 g, 4 jabones de 100 g, 1 malanga 5 lb.', image: '/images/combo1.png', price: 89.45, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
-  { id: 66, name: 'Combo 2', category: 'combo', description: '1 paquete de pollo de 10 lb, 2 picadillos de pollo de 400 g, 2 paquetes de salchichas, 1 cartón de huevos (30 unidades), 1 yogurt de fresa de 1 L y 2 leches condensadas de cajita..', image: '/images/combo2.png', price: 34.45, availableIn: [4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
-  { id: 67, name: 'Combo 3', category: 'combo', description: '10 lb de Arroz grano largo importado, 2 lb de frijol negro importado, 2 lb de azucar blanca importada ', image: '/images/combo3.jpg', price:17.35, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
-  { id: 68, name: 'Combo 4', category: 'combo', description: 'Chuleta de lomo deshuesado 2 lb (1 unidad), Masas de cerdo 2 lb (1 unidad), Mortadela de queso 500 gr (2 unidades), Mortadela clásica 500 gr (2 unidades), Aceite 1 L (2 unidades), Gelatina  (2 unidades), Jabón 100 g (5 unidades) + 5 LB de Malanga GRATIS ', image: '/images/combo4.png', price:37.65, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
-  { id: 71, name: 'Combo 5 ', category: 'combo', description: '12 maltas guajiras, 6 leche condensada', image: '/images/combo5.png', price: 22.6, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
-  { id: 72, name: 'Combo 6', category: 'combo', description: '1 lomo de cerdo importado (3 lb) + 10 lb de arroz grano largo + 2 paquetes de espagueti (500 g c/u) + 1 paquete de harina de trigo (500 g) + 1 yogurt probiótico de fresa (1 L) + 1 cartón de huevos (30 u) + 2 pastas de tomate (400 g c/u) + 1 chocolate en polvo (500 g) + 2 gelatinas + 1 caja de refresco Zuko (8 sobres) + 1 café Dufiltro (250 g) + 1 paquete de papel higiénico (4 unidades) + 4 jabones (100 g c/u) + 1 bolsa de malanga (5 lb) + 1 bolsa de 10 cabezas de ajo', image: '/images/combo6.png', price: 65.99, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
-  { id: 73, name: 'Combo 7 ', category: 'combo', description: 'Arroz Grano Largo importado (10 lb), Frijol Negro Importado (4 lb), Azúcar Blanca Importada (4 lb), Aceite de Girasol 1 L (6 uds)', image: '/images/combo7.png', price: 30.99, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
-  { id: 74, name: 'Combo 8 ', category: 'combo', description: ' Chuleta de lomo deshuesado 2 lb (1 unid), Masas de cerdo 2 lb (1 unid), Yogurt de fresa 1 L (1 unid), Arroz Grano Largo 10 , Azúcar blanca 4 lb , Frijol negro 2 lb , Spaguetis 500 gr (2 unid), Pasta de tomate 400 g (1 unid), Café Dufiltro 250 gr (1 unid), Jabón 100 g (4 unid), Malta Guajira (6 unid), Leche condensada en cajita (2 unid), Aceite 1 L (2 unid)', image: '/images/combo8.png', price: 60.99, availableIn: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
-
-  // Electrodomésticos
-  { id: 76, name: "Olla reina Milexus ", category: "electro", description: "Olla reina de 6L Milexus", image: "/images/reina.png", price: 68, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27] },
-  { id: 77, name: "Olla Arrocera ", category: "electro", description: "Olla arrocera de 1,8 l Milexus", image: "/images/arrocera.png", price: 48, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27] },
-  { id: 80, name: "Fogon Infrarrojo  ", category: "electro", description: "Fogon Infrarrojo 1300 W  ", image: "/images/infra.png", price: 58, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27] },
-  { id: 81, name: "Lavadora Semiautomática Milexus 7 L  ", category: "electro", description: "Lavadora semiautomatica 7 L ", image: "/images/semi7.png", price: 210, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27] },
-  { id: 82, name: "Split milexus", category: "electro", description: "Milexus 1200 btu", image: "/images/split.png", price: 285, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27] },
-  { id: 83, name: "Frezeer 3.5 pies", category: "electro", description: "Milexus 3.5 pies", image: "/images/freezer4p.png", price: 215, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,23, 24, 25, 26, 27] },
-  { id: 84, name: "Frezeer 4.2 pies", category: "electro", description: "Milexus 4.2 pies", image: "/images/freezer6p.png", price: 230, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27] },
-  { id: 85, name: "Tv de 32", category: "electro", description: "Tv inteligente 32 pulgadas", image: "/images/32.png", price: 220, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27] },
-  { id: 86, name: "Batidora Milexus", category: "electro", description: "Batidora 1.5 Lt vaso de cristal", image: "/images/batidora.png", price: 45, availableIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27] },
-];
-
-// Función para obtener producto desde URL
+// --------------------------------------------
+// 2. FUNCIONES UTILITARIAS
+// --------------------------------------------
 function getProductFromURL() {
   const urlParams = new URLSearchParams(window.location.search);
   const productId = urlParams.get('product');
@@ -135,13 +33,11 @@ function getProductFromURL() {
   return null;
 }
 
-// Función para generar enlace compartible
 function generateShareableLink(productId) {
   const baseUrl = window.location.origin + window.location.pathname;
   return `${baseUrl}?product=${productId}`;
 }
 
-// Hook de debounce optimizado
 function useDebounce(value, delay) {
   const [debouncedValue, setDebouncedValue] = React.useState(value);
 
@@ -157,6 +53,10 @@ function useDebounce(value, delay) {
 
   return debouncedValue;
 }
+
+// --------------------------------------------
+// 3. COMPONENTES DE UI REUTILIZABLES
+// --------------------------------------------
 
 // Componente de imagen optimizado
 const OptimizedImage = React.memo(({ src, alt, className, ...props }) => {
@@ -190,7 +90,115 @@ const OptimizedImage = React.memo(({ src, alt, className, ...props }) => {
   );
 });
 
-// NUEVO COMPONENTE: Modal de Selección de Municipio
+// Toast de notificación
+const NotificationToast = React.memo(({ message, isVisible, onClose }) => {
+  React.useEffect(() => {
+    if (isVisible) {
+      const timer = setTimeout(() => {
+        onClose();
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [isVisible, onClose]);
+
+  if (!isVisible) return null;
+
+  return (
+    <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 animate-bounce">
+      <div className="bg-[var(--primary-color)] text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-2">
+        <div className="icon-check-circle text-lg"></div>
+        <span className="text-sm font-medium">{message}</span>
+      </div>
+    </div>
+  );
+});
+
+// Enlaces a redes sociales
+const SocialMediaLinks = React.memo(() => {
+  return (
+    <div className="flex items-center justify-center space-x-4 px-4 py-3 bg-white border-b">
+      <span className="text-xs text-[var(--text-secondary)]">Síguenos:</span>
+      <a 
+        href="https://whatsapp.com/channel/0029Vb89B2bBfxo2tGL8Fk0G" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center"
+      >
+        <div className="icon-message-circle text-sm text-white"></div>
+      </a>
+      <a 
+        href="https://www.instagram.com/tudespensa.25?igsh=MWt5dzZjcWh0NnF0MA==" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="w-8 h-8 rounded-full bg-pink-500 flex items-center justify-center"
+      >
+        <div className="icon-instagram text-sm text-white"></div>
+      </a>
+      <a 
+        href="https://www.facebook.com/share/16cchoNUTo/" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center"
+      >
+        <div className="icon-facebook text-sm text-white"></div>
+      </a>
+    </div>
+  );
+});
+
+// Banner móvil
+const MobileBanner = React.memo(() => {
+  return (
+    <div className="mobile-banner px-4 mb-6">
+      <OptimizedImage 
+        src="/images/oferta.png" 
+        alt="TuDespensa.25 - Ofertas"
+        className="w-full h-full object-cover rounded-xl shadow-md"
+      />
+    </div>
+  );
+});
+
+// Botones flotantes
+const FloatingWhatsAppButton = React.memo(() => {
+  const handleWhatsAppClick = () => {
+    const message = "¡Hola! Me interesa conocer más sobre los productos de TuDespensa.25";
+    const whatsappUrl = `https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
+  return (
+    <button
+      onClick={handleWhatsAppClick}
+      className="fixed bottom-6 right-6 w-14 h-14 bg-green-500 text-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-200 z-40 flex items-center justify-center"
+    >
+      <div className="icon-message-circle text-xl"></div>
+    </button>
+  );
+});
+
+const FloatingWishlistButton = React.memo(() => {
+  const handleWishlistClick = () => {
+    const message = "¡Hola! Tengo un deseo especial para mi despensa:\n\n[Describe aquí el producto que deseas que TuDespensa.25 tenga disponible]\n\n¡Gracias por considerar mis sugerencias!";
+    const whatsappUrl = `https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
+  return (
+    <button
+      onClick={handleWishlistClick}
+      className="fixed bottom-24 right-6 w-14 h-14 bg-purple-500 text-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-200 z-40 flex items-center justify-center"
+    >
+      <div className="icon-heart text-xl"></div>
+    </button>
+  );
+});
+
+// --------------------------------------------
+// 4. MODALES
+// --------------------------------------------
+
+// Modal de selección de municipio
 const MunicipalityModal = React.memo(({ isOpen, onClose, selectedMunicipality, setSelectedMunicipality }) => {
   if (!isOpen) return null;
 
@@ -278,41 +286,119 @@ const MunicipalityModal = React.memo(({ isOpen, onClose, selectedMunicipality, s
   );
 });
 
-// Components
-function MobileBanner() {
-  return (
-    <div className="mobile-banner px-4 mb-6">
-      <OptimizedImage 
-        src="/images/oferta.png" 
-        alt="TuDespensa.25 - Ofertas"
-        className="w-full h-full object-cover rounded-xl shadow-md"
-      />
-    </div>
-  );
-}
+// Modal de producto
+const ProductDetailModal = React.memo(({ isOpen, onClose, product, onAddToCart, likedProducts, onToggleLike }) => {
+  if (!isOpen || !product) return null;
 
-const NotificationToast = React.memo(({ message, isVisible, onClose }) => {
-  React.useEffect(() => {
-    if (isVisible) {
-      const timer = setTimeout(() => {
-        onClose();
-      }, 3000);
-      return () => clearTimeout(timer);
+  const isLiked = likedProducts.includes(product.id);
+  const categoryName = categories.find(c => c.id === product.category)?.name || 'Sin categoría';
+
+  const handleShare = () => {
+    if (product) {
+      const shareUrl = generateShareableLink(product.id);
+      
+      if (navigator.share) {
+        navigator.share({
+          title: product.name,
+          text: product.description,
+          url: shareUrl,
+        })
+        .catch(console.error);
+      } else {
+        navigator.clipboard.writeText(shareUrl).then(() => {
+          alert('¡Enlace copiado al portapapeles! Compártelo con quien quieras.');
+        }).catch(() => {
+          const tempInput = document.createElement('input');
+          tempInput.value = shareUrl;
+          document.body.appendChild(tempInput);
+          tempInput.select();
+          document.execCommand('copy');
+          document.body.removeChild(tempInput);
+          alert('¡Enlace copiado al portapapeles! Compártelo con quien quieras.');
+        });
+      }
     }
-  }, [isVisible, onClose]);
-
-  if (!isVisible) return null;
+  };
 
   return (
-    <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 animate-bounce">
-      <div className="bg-[var(--primary-color)] text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-2">
-        <div className="icon-check-circle text-lg"></div>
-        <span className="text-sm font-medium">{message}</span>
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end sm:items-center sm:justify-center">
+      <div className="bg-white w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-t-xl sm:rounded-xl product-detail-modal">
+        <div className="relative">
+          <OptimizedImage
+            src={product.image}
+            alt={product.name}
+            className="w-full h-auto max-h-[500px] object-contain bg-gray-50 p-4"
+          />
+          <button 
+            onClick={onClose}
+            className="absolute top-4 right-4 w-10 h-10 bg-white bg-opacity-90 rounded-full flex items-center justify-center shadow-sm"
+          >
+            <div className="icon-x text-lg text-gray-600"></div>
+          </button>
+          <button 
+            onClick={() => onToggleLike(product.id)}
+            className="absolute top-4 left-4 w-10 h-10 bg-white bg-opacity-90 rounded-full flex items-center justify-center shadow-sm"
+          >
+            <div className={`icon-heart text-lg ${isLiked ? 'text-red-500' : 'text-gray-400'}`}></div>
+          </button>
+        </div>
+        
+        <div className="p-6">
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex-1">
+              <h2 className="text-xl font-bold text-[var(--text-primary)] mb-2">{product.name}</h2>
+              <span className="inline-block px-3 py-1 bg-gray-100 text-[var(--text-primary)] rounded-full text-sm font-medium">
+                {categoryName}
+              </span>
+            </div>
+            <div className="text-right ml-4">
+              <div className="flex flex-col items-end">
+                <span className="text-2xl font-bold text-[var(--secondary-color)]">
+                  ${product.price.toFixed(2)} USD
+                </span>
+              </div>
+            </div>
+          </div>
+          
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">Descripción</h3>
+            <p className="text-[var(--text-secondary)] leading-relaxed">{product.description}</p>
+          </div>
+
+          <div className="space-y-3">
+            <button
+              onClick={() => {
+                onAddToCart(product);
+                onClose();
+              }}
+              className="w-full bg-[var(--primary-color)] text-white py-3 rounded-lg font-medium flex items-center justify-center space-x-2 hover:bg-opacity-90 transition-all"
+            >
+              <div className="icon-shopping-cart text-lg"></div>
+              <span>Añadir al carrito</span>
+            </button>
+            
+            <button
+              onClick={handleShare}
+              className="w-full bg-[var(--primary-color)] text-white py-3 rounded-lg font-medium flex items-center justify-center space-x-2 hover:bg-opacity-90 transition-all"
+            >
+              <div className="icon-share-2 text-lg"></div>
+              <span>Compartir Producto</span>
+            </button>
+            
+            <button
+              onClick={onClose}
+              className="w-full bg-gray-200 text-[var(--text-primary)] py-3 rounded-lg font-medium"
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
 });
 
+// Modal del carrito
 const CartModal = React.memo(({ isOpen, onClose, cart, setCart, onProcessOrder }) => {
   const [customerData, setCustomerData] = React.useState({
     name: '',
@@ -328,32 +414,24 @@ const CartModal = React.memo(({ isOpen, onClose, cart, setCart, onProcessOrder }
   const [discountError, setDiscountError] = React.useState('');
   const [discountPercentage, setDiscountPercentage] = React.useState(0);
 
-  // Códigos de descuento válidos (puedes agregar más)
-  const validDiscountCodes = {
-    'CLIENTEF': 5,   // 5% de descuento
-    'BIENVENIDOhoy': 10, // 10% de descuento
-    'PRIMERACOMPRAtd25.': 15 // 15% de descuento
+  const applyDiscount = () => {
+    const code = discountCode.trim();
+    
+    if (!code) {
+      setDiscountError('Por favor ingresa un código');
+      return;
+    }
+
+    if (APP_CONFIG.DISCOUNT_CODES[code]) {
+      setDiscountPercentage(APP_CONFIG.DISCOUNT_CODES[code]);
+      setDiscountApplied(true);
+      setDiscountError('');
+    } else {
+      setDiscountError('Código inválido o expirado');
+      setDiscountApplied(false);
+      setDiscountPercentage(0);
+    }
   };
-
- const applyDiscount = () => {
-  const code = discountCode.trim();
-  
-  if (!code) {
-    setDiscountError('Por favor ingresa un código');
-    return;
-  }
-
-  // Verifica el código exacto (case-sensitive)
-  if (validDiscountCodes[code]) {
-    setDiscountPercentage(validDiscountCodes[code]);
-    setDiscountApplied(true);
-    setDiscountError('');
-  } else {
-    setDiscountError('Código inválido o expirado');
-    setDiscountApplied(false);
-    setDiscountPercentage(0);
-  }
-};
 
   const removeDiscount = () => {
     setDiscountCode('');
@@ -599,38 +677,11 @@ const CartModal = React.memo(({ isOpen, onClose, cart, setCart, onProcessOrder }
   );
 });
 
-const SocialMediaLinks = React.memo(() => {
-  return (
-    <div className="flex items-center justify-center space-x-4 px-4 py-3 bg-white border-b">
-      <span className="text-xs text-[var(--text-secondary)]">Síguenos:</span>
-      <a 
-        href="https://whatsapp.com/channel/0029Vb89B2bBfxo2tGL8Fk0G" 
-        target="_blank" 
-        rel="noopener noreferrer"
-        className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center"
-      >
-        <div className="icon-message-circle text-sm text-white"></div>
-      </a>
-      <a 
-        href="https://www.instagram.com/tudespensa.25?igsh=MWt5dzZjcWh0NnF0MA==" 
-        target="_blank" 
-        rel="noopener noreferrer"
-        className="w-8 h-8 rounded-full bg-pink-500 flex items-center justify-center"
-      >
-        <div className="icon-instagram text-sm text-white"></div>
-      </a>
-      <a 
-        href="https://www.facebook.com/share/16cchoNUTo/" 
-        target="_blank" 
-        rel="noopener noreferrer"
-        className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center"
-      >
-        <div className="icon-facebook text-sm text-white"></div>
-      </a>
-    </div>
-  );
-});
+// --------------------------------------------
+// 5. COMPONENTES PRINCIPALES DE LA UI
+// --------------------------------------------
 
+// Header
 const Header = React.memo(({ searchTerm, setSearchTerm, selectedMunicipality, cartItems, onCartClick, onMunicipalityClick }) => {
   return (
     <header className="header-gradient text-white sticky top-0 z-50 shadow-lg">
@@ -685,6 +736,7 @@ const Header = React.memo(({ searchTerm, setSearchTerm, selectedMunicipality, ca
   );
 });
 
+// Grid de categorías
 const CategoryGrid = React.memo(({ selectedCategory, onCategorySelect }) => {
   return (
     <section className="px-4 py-4 sm:py-6 bg-white categories-section">
@@ -720,43 +772,9 @@ const CategoryGrid = React.memo(({ selectedCategory, onCategorySelect }) => {
   );
 });
 
-const FloatingWhatsAppButton = React.memo(() => {
-  const handleWhatsAppClick = () => {
-    const message = "¡Hola! Me interesa conocer más sobre los productos de TuDespensa.25";
-    const whatsappUrl = `https://wa.me/5354066204?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
-  };
-
-  return (
-    <button
-      onClick={handleWhatsAppClick}
-      className="fixed bottom-6 right-6 w-14 h-14 bg-green-500 text-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-200 z-40 flex items-center justify-center"
-    >
-      <div className="icon-message-circle text-xl"></div>
-    </button>
-  );
-});
-
-const FloatingWishlistButton = React.memo(() => {
-  const handleWishlistClick = () => {
-    const message = "¡Hola! Tengo un deseo especial para mi despensa:\n\n[Describe aquí el producto que deseas que TuDespensa.25 tenga disponible]\n\n¡Gracias por considerar mis sugerencias!";
-    const whatsappUrl = `https://wa.me/5354066204?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
-  };
-
-  return (
-    <button
-      onClick={handleWishlistClick}
-      className="fixed bottom-24 right-6 w-14 h-14 bg-purple-500 text-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-200 z-40 flex items-center justify-center"
-    >
-      <div className="icon-heart text-xl"></div>
-    </button>
-  );
-});
-
+// Tarjeta de producto
 const ProductCard = React.memo(({ product, onAddToCart, likedProducts, onToggleLike, onProductClick }) => {
   const isLiked = likedProducts.includes(product.id);
-  const originalPrice = product.price;
 
   const handleCardClick = (e) => {
     if (e.target.closest('button')) return;
@@ -822,7 +840,7 @@ const ProductCard = React.memo(({ product, onAddToCart, likedProducts, onToggleL
           </span>
           <div className="flex flex-col items-end">
             <span className="text-sm font-bold text-[var(--secondary-color)]">
-              ${originalPrice.toFixed(2)} USD
+              ${product.price.toFixed(2)} USD
             </span>
           </div>
         </div>
@@ -838,171 +856,7 @@ const ProductCard = React.memo(({ product, onAddToCart, likedProducts, onToggleL
   );
 });
 
-const ProductDetailModal = React.memo(({ isOpen, onClose, product, onAddToCart, likedProducts, onToggleLike }) => {
-  if (!isOpen || !product) return null;
-
-  const isLiked = likedProducts.includes(product.id);
-  const categoryName = categories.find(c => c.id === product.category)?.name || 'Sin categoría';
-
-  const handleShare = () => {
-    if (product) {
-      const shareUrl = generateShareableLink(product.id);
-      
-      if (navigator.share) {
-        navigator.share({
-          title: product.name,
-          text: product.description,
-          url: shareUrl,
-        })
-        .catch(console.error);
-      } else {
-        navigator.clipboard.writeText(shareUrl).then(() => {
-          alert('¡Enlace copiado al portapapeles! Compártelo con quien quieras.');
-        }).catch(() => {
-          const tempInput = document.createElement('input');
-          tempInput.value = shareUrl;
-          document.body.appendChild(tempInput);
-          tempInput.select();
-          document.execCommand('copy');
-          document.body.removeChild(tempInput);
-          alert('¡Enlace copiado al portapapeles! Compártelo con quien quieras.');
-        });
-      }
-    }
-  };
-
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end sm:items-center sm:justify-center">
-      <div className="bg-white w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-t-xl sm:rounded-xl product-detail-modal">
-        <div className="relative">
-          <OptimizedImage
-            src={product.image}
-            alt={product.name}
-            className="w-full h-auto max-h-[500px] object-contain bg-gray-50 p-4"
-          />
-          <button 
-            onClick={onClose}
-            className="absolute top-4 right-4 w-10 h-10 bg-white bg-opacity-90 rounded-full flex items-center justify-center shadow-sm"
-          >
-            <div className="icon-x text-lg text-gray-600"></div>
-          </button>
-          <button 
-            onClick={() => onToggleLike(product.id)}
-            className="absolute top-4 left-4 w-10 h-10 bg-white bg-opacity-90 rounded-full flex items-center justify-center shadow-sm"
-          >
-            <div className={`icon-heart text-lg ${isLiked ? 'text-red-500' : 'text-gray-400'}`}></div>
-          </button>
-        </div>
-        
-        <div className="p-6">
-          <div className="flex items-start justify-between mb-4">
-            <div className="flex-1">
-              <h2 className="text-xl font-bold text-[var(--text-primary)] mb-2">{product.name}</h2>
-              <span className="inline-block px-3 py-1 bg-gray-100 text-[var(--text-primary)] rounded-full text-sm font-medium">
-                {categoryName}
-              </span>
-            </div>
-            <div className="text-right ml-4">
-              <div className="flex flex-col items-end">
-                <span className="text-2xl font-bold text-[var(--secondary-color)]">
-                  ${product.price.toFixed(2)} USD
-                </span>
-              </div>
-            </div>
-          </div>
-          
-          <div className="mb-6">
-            <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">Descripción</h3>
-            <p className="text-[var(--text-secondary)] leading-relaxed">{product.description}</p>
-          </div>
-
-          <div className="space-y-3">
-            <button
-              onClick={() => {
-                onAddToCart(product);
-                onClose();
-              }}
-              className="w-full bg-[var(--primary-color)] text-white py-3 rounded-lg font-medium flex items-center justify-center space-x-2 hover:bg-opacity-90 transition-all"
-            >
-              <div className="icon-shopping-cart text-lg"></div>
-              <span>Añadir al carrito</span>
-            </button>
-            
-            <button
-              onClick={handleShare}
-              className="w-full bg-[var(--primary-color)] text-white py-3 rounded-lg font-medium flex items-center justify-center space-x-2 hover:bg-opacity-90 transition-all"
-            >
-              <div className="icon-share-2 text-lg"></div>
-              <span>Compartir Producto</span>
-            </button>
-            
-            <button
-              onClick={onClose}
-              className="w-full bg-gray-200 text-[var(--text-primary)] py-3 rounded-lg font-medium"
-            >
-              Cerrar
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-});
-
-const Footer = React.memo(() => {
-  return (
-    <footer className="bg-[var(--text-primary)] text-white mt-12 relative overflow-hidden">
-      <div className="px-4 py-8 relative z-10">
-        <div className="text-center mb-6">
-          <div className="flex items-center justify-center space-x-2 mb-4">
-            <div className="w-12 h-12 bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)] rounded-full flex items-center justify-center">
-              <div className="icon-shopping-cart text-xl text-white"></div>
-            </div>
-            <h3 className="text-2xl font-bold">TuDespensa.25</h3>
-          </div>
-          <p className="text-gray-300 text-sm mb-4">Tu despensa de confianza</p>
-        </div>
-        
-        <div className="space-y-4 text-center text-sm">
-          <div>
-            <h4 className="font-semibold text-[var(--secondary-color)] mb-2">Contacto</h4>
-            <p className="text-gray-300">📱 +1 (914) 621-8369</p>
-            <p className="text-gray-300">📧 ventas@tudespensa25.com</p>
-            <p className="text-gray-300">📍 Disponible en todos los municipios de Artemisa</p>
-          </div>
-          
-          <div>
-            <h4 className="font-semibold text-[var(--secondary-color)] mb-2">Horarios</h4>
-            <p className="text-gray-300">Las 24 h del día</p>
-            <p className="text-gray-300">Los 7 días de la semana</p>
-          </div>
-          
-          <div>
-            <h4 className="font-semibold text-[var(--secondary-color)] mb-2">Síguenos</h4>
-            <div className="flex items-center justify-center space-x-4">
-              <a href="https://wa.me/5354066204" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
-                <div className="icon-message-circle text-lg text-white"></div>
-              </a>
-              <a href="https://instagram.com/tudespensa25" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-pink-500 rounded-full flex items-center justify-center">
-                <div className="icon-instagram text-lg text-white"></div>
-              </a>
-              <a href="https://facebook.com/tudespensa25" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
-                <div className="icon-facebook text-lg text-white"></div>
-              </a>
-            </div>
-          </div>
-        </div>
-        
-        <div className="border-t border-gray-600 mt-8 pt-4 text-center">
-          <p className="text-xs text-gray-400">
-            © 2025 TuDespensa.25. Todos los derechos reservados.
-          </p>
-        </div>
-      </div>
-    </footer>
-  );
-});
-
+// Grid de productos
 const ProductGrid = React.memo(({ products, onAddToCart, likedProducts, onToggleLike, onProductClick }) => {
   if (products.length === 0) {
     return (
@@ -1032,7 +886,7 @@ const ProductGrid = React.memo(({ products, onAddToCart, likedProducts, onToggle
   );
 });
 
-// NUEVO COMPONENTE FAQ
+// Sección FAQ
 const FAQSection = React.memo(() => {
   const [openItems, setOpenItems] = React.useState([]);
 
@@ -1143,7 +997,7 @@ const FAQSection = React.memo(() => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a 
-              href="https://wa.me/5354066204"
+              href={`https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}`}
               target="_blank"
               rel="noopener noreferrer"
               className="bg-white text-[var(--primary-color)] px-8 py-4 rounded-xl font-bold flex items-center justify-center space-x-3 hover:scale-105 transition-transform shadow-lg"
@@ -1152,7 +1006,7 @@ const FAQSection = React.memo(() => {
               <span className="text-lg">WhatsApp Directo</span>
             </a>
             <a 
-              href="tel:+5354066204"
+              href={`tel:+${APP_CONFIG.WHATSAPP_NUMBER}`}
               className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-xl font-bold flex items-center justify-center space-x-3 hover:bg-white hover:text-[var(--primary-color)] transition-all"
             >
               <div className="icon-phone text-xl"></div>
@@ -1184,6 +1038,61 @@ const FAQSection = React.memo(() => {
         </div>
       </div>
     </section>
+  );
+});
+
+// Footer
+const Footer = React.memo(() => {
+  return (
+    <footer className="bg-[var(--text-primary)] text-white mt-12 relative overflow-hidden">
+      <div className="px-4 py-8 relative z-10">
+        <div className="text-center mb-6">
+          <div className="flex items-center justify-center space-x-2 mb-4">
+            <div className="w-12 h-12 bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)] rounded-full flex items-center justify-center">
+              <div className="icon-shopping-cart text-xl text-white"></div>
+            </div>
+            <h3 className="text-2xl font-bold">TuDespensa.25</h3>
+          </div>
+          <p className="text-gray-300 text-sm mb-4">Tu despensa de confianza</p>
+        </div>
+        
+        <div className="space-y-4 text-center text-sm">
+          <div>
+            <h4 className="font-semibold text-[var(--secondary-color)] mb-2">Contacto</h4>
+            <p className="text-gray-300">📱 +1 (914) 621-8369</p>
+            <p className="text-gray-300">📧 ventas@tudespensa25.com</p>
+            <p className="text-gray-300">📍 Disponible en todos los municipios de Artemisa</p>
+          </div>
+          
+          <div>
+            <h4 className="font-semibold text-[var(--secondary-color)] mb-2">Horarios</h4>
+            <p className="text-gray-300">Las 24 h del día</p>
+            <p className="text-gray-300">Los 7 días de la semana</p>
+          </div>
+          
+          <div>
+            <h4 className="font-semibold text-[var(--secondary-color)] mb-2">Síguenos</h4>
+            <div className="flex items-center justify-center space-x-4">
+              <a href={`https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
+                <div className="icon-message-circle text-lg text-white"></div>
+              </a>
+              <a href="https://instagram.com/tudespensa25" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-pink-500 rounded-full flex items-center justify-center">
+                <div className="icon-instagram text-lg text-white"></div>
+              </a>
+              <a href="https://facebook.com/tudespensa25" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+                <div className="icon-facebook text-lg text-white"></div>
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <div className="border-t border-gray-600 mt-8 pt-4 text-center">
+          <p className="text-xs text-gray-400">
+            © 2025 TuDespensa.25. Todos los derechos reservados.
+          </p>
+        </div>
+      </div>
+    </footer>
   );
 });
 
@@ -1223,11 +1132,13 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-// Main App
+// --------------------------------------------
+// 6. APLICACIÓN PRINCIPAL
+// --------------------------------------------
 function App() {
   const [selectedCategory, setSelectedCategory] = React.useState('todos');
   const [searchTerm, setSearchTerm] = React.useState('');
-  const [selectedMunicipality, setSelectedMunicipality] = React.useState(1);
+  const [selectedMunicipality, setSelectedMunicipality] = React.useState(APP_CONFIG.DEFAULT_MUNICIPALITY);
   const [cart, setCart] = React.useState([]);
   const [isCartOpen, setIsCartOpen] = React.useState(false);
   const [likedProducts, setLikedProducts] = React.useState([]);
@@ -1238,8 +1149,9 @@ function App() {
   const [showMunicipalityModal, setShowMunicipalityModal] = React.useState(true);
 
   // Debounce para búsqueda
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  const debouncedSearchTerm = useDebounce(searchTerm, APP_CONFIG.DEBOUNCE_DELAY);
 
+  // Efecto para producto desde URL
   React.useEffect(() => {
     const productFromURL = getProductFromURL();
     if (productFromURL) {
@@ -1248,6 +1160,7 @@ function App() {
     }
   }, []);
 
+  // Productos filtrados
   const filteredProducts = React.useMemo(() => {
     if (!selectedMunicipality) return [];
     
@@ -1270,6 +1183,7 @@ function App() {
     return filtered;
   }, [selectedCategory, debouncedSearchTerm, selectedMunicipality]);
 
+  // Manejadores
   const handleAddToCart = (product) => {
     setCart(prevCart => {
       const existingItem = prevCart.find(item => item.id === product.id);
@@ -1358,7 +1272,7 @@ function App() {
     
     orderMessage += `*DATOS DEL VENDEDOR:*\n`;
     orderMessage += `🏪 Tienda: TuDespensa.25\n`;
-    orderMessage += `📞 Contacto: +5354066204\n`;
+    orderMessage += `📞 Contacto: +${APP_CONFIG.WHATSAPP_NUMBER}\n`;
     orderMessage += `📧 Email: ventas@tudespensa25.com\n`;
     
     orderMessage += `\n*DATOS DE ENTREGA:*\n`;
@@ -1366,7 +1280,7 @@ function App() {
     orderMessage += `⏰ Tiempo estimado: 24 a 48 horas\n`;
     orderMessage += `💳 Pago: Transferencia Zelle\n`;
 
-    const whatsappUrl = `https://wa.me/5354066204?text=${encodeURIComponent(orderMessage)}`;
+    const whatsappUrl = `https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(orderMessage)}`;
     window.open(whatsappUrl, '_blank');
     
     setCart([]);
@@ -1452,7 +1366,9 @@ function App() {
   );
 }
 
-// Render
+// --------------------------------------------
+// 7. RENDERIZADO
+// --------------------------------------------
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <ErrorBoundary>

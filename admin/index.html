@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TuDespensa.25 - Panel de Administración</title>
+    
+    <!-- Recursos -->
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react@18/umd/react.production.min.js"></script>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://resource.trickle.so/vendor_lib/unpkg/lucide-static@0.516.0/font/lucide.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/admin/admin.css" rel="stylesheet">
+    
+    <style>
+        body {
+            background-color: #f3f4f6;
+        }
+    </style>
+</head>
+<body>
+    <div id="admin-root"></div>
+    
+    <!-- Datos -->
+    <script src="/js/data/products.js"></script>
+    <script src="/js/data/categories.js"></script>
+    <script src="/js/data/municipalities.js"></script>
+    
+    <!-- Admin JS -->
+    <script type="text/babel" src="/admin/admin.js"></script>
+</body>
+</html>

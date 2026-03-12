@@ -1,0 +1,125 @@
+/* ============================================
+   TuDespensa.25 - Estilos del Panel Admin
+   ============================================ */
+
+:root {
+    --admin-primary: #3b82f6;
+    --admin-success: #10b981;
+    --admin-warning: #f59e0b;
+    --admin-danger: #ef4444;
+    --admin-dark: #1f2937;
+    --admin-light: #f3f4f6;
+}
+
+.admin-sidebar {
+    background: linear-gradient(180deg, var(--admin-dark) 0%, #111827 100%);
+    min-height: 100vh;
+}
+
+.admin-card {
+    @apply bg-white rounded-xl shadow-sm border border-gray-200 p-6 transition-all hover:shadow-md;
+}
+
+.admin-table {
+    @apply min-w-full divide-y divide-gray-200;
+}
+
+.admin-table th {
+    @apply px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50;
+}
+
+.admin-table td {
+    @apply px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-b border-gray-200;
+}
+
+.admin-table tr:hover {
+    @apply bg-gray-50;
+}
+
+.admin-badge {
+    @apply px-2 py-1 text-xs font-medium rounded-full;
+}
+
+.admin-badge-success {
+    @apply bg-green-100 text-green-800;
+}
+
+.admin-badge-warning {
+    @apply bg-yellow-100 text-yellow-800;
+}
+
+.admin-badge-danger {
+    @apply bg-red-100 text-red-800;
+}
+
+.admin-badge-info {
+    @apply bg-blue-100 text-blue-800;
+}
+
+.admin-input {
+    @apply w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+}
+
+.admin-select {
+    @apply w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+}
+
+.admin-button {
+    @apply px-4 py-2 rounded-lg font-medium transition-all;
+}
+
+.admin-button-primary {
+    @apply bg-blue-600 text-white hover:bg-blue-700;
+}
+
+.admin-button-success {
+    @apply bg-green-600 text-white hover:bg-green-700;
+}
+
+.admin-button-danger {
+    @apply bg-red-600 text-white hover:bg-red-700;
+}
+
+.admin-modal {
+    @apply fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4;
+}
+
+.admin-modal-content {
+    @apply bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto;
+}
+
+/* Grid de municipios para edición */
+.municipality-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.5rem;
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 0.5rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+}
+
+.municipality-item {
+    @apply flex items-center space-x-2 p-2 border rounded-lg cursor-pointer hover:bg-gray-50;
+}
+
+.municipality-item.selected {
+    @apply bg-green-50 border-green-500;
+}
+
+/* Animaciones */
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.admin-slide-in {
+    animation: slideIn 0.3s ease-out;
+}

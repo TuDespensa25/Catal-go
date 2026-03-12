@@ -1,0 +1,370 @@
+/* ============================================
+   TuDespensa.25 - Estilos Profesionales
+   ============================================ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* --------------------------------------------
+   Variables CSS
+   -------------------------------------------- */
+:root {
+    --primary-color: #22c55e;
+    --secondary-color: #f97316;
+    --accent-color: #6b7280;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --background: #ffffff;
+    --card-background: #f9fafb;
+    --success: #10b981;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --info: #3b82f6;
+}
+
+/* --------------------------------------------
+   Reset y base
+   -------------------------------------------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--background);
+    color: var(--text-primary);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* --------------------------------------------
+   Utilidades de texto
+   -------------------------------------------- */
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* --------------------------------------------
+   Gradientes y efectos
+   -------------------------------------------- */
+.header-gradient {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+}
+
+.gradient-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+}
+
+.glass-effect {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+}
+
+/* --------------------------------------------
+   Tarjetas y componentes
+   -------------------------------------------- */
+.product-card {
+    @apply bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-200 cursor-pointer;
+}
+
+.product-card:hover {
+    @apply shadow-md transform -translate-y-1;
+}
+
+.product-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    padding: 1rem;
+    background-color: #fff;
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover img {
+    transform: scale(1.03);
+}
+
+@media (min-width: 768px) {
+    .product-card img {
+        height: 220px;
+    }
+}
+
+/* --------------------------------------------
+   Categorías
+   -------------------------------------------- */
+.category-card {
+    @apply bg-white rounded-xl shadow-sm border border-gray-100 p-3 sm:p-4 text-center transition-all duration-200 active:scale-95 relative overflow-hidden;
+}
+
+.category-card:hover {
+    @apply shadow-md border-[var(--primary-color)] border-opacity-30;
+}
+
+@media (max-width: 640px) {
+    .category-card {
+        @apply p-2;
+    }
+    
+    .category-card .category-icon {
+        @apply w-8 h-8 mb-1;
+    }
+    
+    .category-card .category-name {
+        @apply text-xs;
+    }
+}
+
+/* --------------------------------------------
+   Modal de producto
+   -------------------------------------------- */
+.product-detail-modal img {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    max-height: 500px;
+    object-fit: contain !important;
+    display: block;
+    margin: 0 auto;
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+}
+
+@media (max-width: 640px) {
+    .product-detail-modal img {
+        max-height: 350px;
+        padding: 1rem;
+    }
+}
+
+/* --------------------------------------------
+   Modal de municipio
+   -------------------------------------------- */
+.municipality-modal-container {
+    z-index: 60;
+}
+
+.municipality-modal-content {
+    max-height: 90vh;
+    overflow: hidden;
+}
+
+@media (max-width: 640px) {
+    .municipality-modal-container {
+        align-items: flex-end;
+        padding: 0;
+    }
+    
+    .municipality-modal-content {
+        max-height: 85vh;
+        border-radius: 1rem 1rem 0 0;
+        margin: 0;
+        width: 100%;
+    }
+    
+    .municipality-modal-content .max-h-96 {
+        max-height: 50vh;
+    }
+}
+
+/* --------------------------------------------
+   Animaciones
+   -------------------------------------------- */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.slide-in-up {
+    animation: slideInUp 0.3s ease-out;
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.animate-scale-in {
+    animation: scaleIn 0.2s ease-out;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fade-in 0.3s ease-out;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.animate-bounce {
+    animation: bounce 1s infinite;
+}
+
+/* --------------------------------------------
+   Estados de carga
+   -------------------------------------------- */
+.image-loading {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* --------------------------------------------
+   Scrollbar personalizado
+   -------------------------------------------- */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-color);
+}
+
+/* --------------------------------------------
+   Iconos (pseudo-elementos)
+   -------------------------------------------- */
+.icon-beef::before { content: "🥩"; }
+.icon-milk::before { content: "🥛"; }
+.icon-wheat::before { content: "🌾"; }
+.icon-can::before { content: "🥫"; }
+.icon-broom::before { content: "🧼"; }
+.icon-basket::before { content: "🛒"; }
+.icon-shopping-basket::before { content: "🛒"; }
+.icon-tag::before { content: "🏷️"; }
+.icon-package::before { content: "📦"; }
+.icon-arrow-right::before { content: "➡️"; }
+.icon-share-2::before { content: "🔗"; }
+.icon-map-pin::before { content: "📍"; }
+.icon-check::before { content: "✓"; }
+.icon-info::before { content: "ℹ️"; }
+.icon-minus::before { content: "−"; }
+.icon-plus::before { content: "+"; }
+.icon-x::before { content: "✕"; }
+.icon-shopping-cart::before { content: "🛒"; }
+.icon-search::before { content: "🔍"; }
+.icon-heart::before { content: "❤️"; }
+.icon-message-circle::before { content: "💬"; }
+.icon-instagram::before { content: "📷"; }
+.icon-facebook::before { content: "👤"; }
+.icon-check-circle::before { content: "✓"; }
+.icon-chevron-down::before { content: "▼"; }
+.icon-chevron-up::before { content: "▲"; }
+.icon-phone::before { content: "📞"; }
+.icon-truck::before { content: "🚚"; }
+.icon-shield::before { content: "🛡️"; }
+.icon-star::before { content: "⭐"; }
+.icon-help-circle::before { content: "❓"; }
+.icon-edit::before { content: "✎"; }
+.icon-trash::before { content: "🗑️"; }
+.icon-save::before { content: "💾"; }
+.icon-plus-circle::before { content: "+"; }
+
+/* --------------------------------------------
+   Responsive - Banner móvil
+   -------------------------------------------- */
+.mobile-banner {
+    display: block;
+}
+
+.mobile-banner img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+@media (min-width: 768px) {
+    .mobile-banner {
+        display: none;
+    }
+}
+
+/* --------------------------------------------
+   Mejoras de accesibilidad
+   -------------------------------------------- */
+button:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+a:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* --------------------------------------------
+   Impresión
+   -------------------------------------------- */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    body {
+        background: white;
+        color: black;
+    }
+}
