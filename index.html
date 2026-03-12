@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     
     <title>TuDespensa.25 - Tu tienda online en Artemisa</title>
     <meta name="description" content="Compra productos de primera necesidad, cárnicos, lácteos, aseo y más con entrega a domicilio en toda la provincia Artemisa.">
@@ -58,12 +58,25 @@
             0% { background-position: 200% 0; }
             100% { background-position: -200% 0; }
         }
+        
+        /* Mejoras para móvil */
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        input, select, textarea, button {
+            font-size: 16px; /* Evita zoom en iOS */
+        }
     </style>
 </head>
 <body>
     <div id="root"></div>
     
-    <!-- Scripts de datos (cargar primero) -->
+    <!-- SUPABASE - NUEVO -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/js/config/supabase.js"></script>
+    
+    <!-- Scripts de datos (respaldo local) -->
     <script src="/js/data/products.js"></script>
     <script src="/js/data/categories.js"></script>
     <script src="/js/data/municipalities.js"></script>

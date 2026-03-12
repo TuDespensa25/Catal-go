@@ -1,57 +1,59 @@
 // js/app.js
 // ============================================
 // TuDespensa.25 - Aplicación Principal
-// Versión Profesional - Todas las funcionalidades intactas
+// Versión con Supabase
 // ============================================
 
-// NOTA: Los datos (products, categories, municipalities)
-// se cargan desde archivos separados en index.html
+// NOTA: Los datos pueden venir de Supabase o de archivos locales
 
 // --------------------------------------------
 // 1. CONSTANTES Y CONFIGURACIÓN
 // --------------------------------------------
 const APP_CONFIG = {
-  WHATSAPP_NUMBER: '5354066204',
-  DEFAULT_MUNICIPALITY: 1,
-  DEBOUNCE_DELAY: 300,
-  DISCOUNT_CODES: {
-    'CLIENTEF': 5,
-    'BIENVENIDOhoy': 10,
-    'PRIMERACOMPRAtd25.': 15
-  }
+    WHATSAPP_NUMBER: '5354066204',
+    DEFAULT_MUNICIPALITY: 1,
+    DEBOUNCE_DELAY: 300,
+    DISCOUNT_CODES: {
+        'CLIENTEF': 5,
+        'BIENVENIDOhoy': 10,
+        'PRIMERACOMPRAtd25.': 15
+    }
 };
 
 // --------------------------------------------
 // 2. FUNCIONES UTILITARIAS
 // --------------------------------------------
 function getProductFromURL() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const productId = urlParams.get('product');
-  if (productId) {
-    return productData.find(p => p.id === parseInt(productId));
-  }
-  return null;
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('product');
+    if (productId) {
+        // Buscar en productos cargados
+        if (window.productData && window.productData.length) {
+            return window.productData.find(p => p.id === parseInt(productId));
+        }
+    }
+    return null;
 }
 
 function generateShareableLink(productId) {
-  const baseUrl = window.location.origin + window.location.pathname;
-  return `${baseUrl}?product=${productId}`;
+    const baseUrl = window.location.origin + window.location.pathname;
+    return `${baseUrl}?product=${productId}`;
 }
 
 function useDebounce(value, delay) {
-  const [debouncedValue, setDebouncedValue] = React.useState(value);
+    const [debouncedValue, setDebouncedValue] = React.useState(value);
 
-  React.useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedValue(value);
-    }, delay);
+    React.useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebouncedValue(value);
+        }, delay);
 
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [value, delay]);
+        return () => {
+            clearTimeout(handler);
+        };
+    }, [value, delay]);
 
-  return debouncedValue;
+    return debouncedValue;
 }
 
 // --------------------------------------------
@@ -60,138 +62,142 @@ function useDebounce(value, delay) {
 
 // Componente de imagen optimizado
 const OptimizedImage = React.memo(({ src, alt, className, ...props }) => {
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [hasError, setHasError] = React.useState(false);
+    const [isLoading, setIsLoading] = React.useState(true);
+    const [hasError, setHasError] = React.useState(false);
+    const [imgSrc, setImgSrc] = React.useState(src);
 
-  return (
-    <div className={`relative ${className}`}>
-      {isLoading && (
-        <div className="absolute inset-0 image-loading rounded" />
-      )}
-      <img
-        src={src}
-        alt={alt}
-        className={`${className} ${isLoading ? 'opacity-0' : 'opacity-100 fade-in'} transition-opacity duration-300`}
-        onLoad={() => setIsLoading(false)}
-        onError={(e) => {
-          setIsLoading(false);
-          setHasError(true);
-          e.target.style.display = 'none';
-        }}
-        loading="lazy"
-        {...props}
-      />
-      {hasError && (
-        <div className="absolute inset-0 bg-gray-100 flex items-center justify-center rounded">
-          <div className="icon-package text-gray-400 text-xl"></div>
+    // Si la imagen falla, mostrar placeholder pero mantener la ruta original
+    const handleError = () => {
+        setIsLoading(false);
+        setHasError(true);
+        // NO cambiar la ruta, solo mostrar placeholder visual
+    };
+
+    return (
+        <div className={`relative ${className}`}>
+            {isLoading && (
+                <div className="absolute inset-0 image-loading rounded" />
+            )}
+            <img
+                src={imgSrc}
+                alt={alt}
+                className={`${className} ${isLoading ? 'opacity-0' : 'opacity-100 fade-in'} transition-opacity duration-300`}
+                onLoad={() => setIsLoading(false)}
+                onError={handleError}
+                loading="lazy"
+                {...props}
+            />
+            {hasError && (
+                <div className="absolute inset-0 bg-gray-100 flex items-center justify-center rounded">
+                    <div className="icon-package text-gray-400 text-xl"></div>
+                </div>
+            )}
         </div>
-      )}
-    </div>
-  );
+    );
 });
 
 // Toast de notificación
 const NotificationToast = React.memo(({ message, isVisible, onClose }) => {
-  React.useEffect(() => {
-    if (isVisible) {
-      const timer = setTimeout(() => {
-        onClose();
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [isVisible, onClose]);
+    React.useEffect(() => {
+        if (isVisible) {
+            const timer = setTimeout(() => {
+                onClose();
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [isVisible, onClose]);
 
-  if (!isVisible) return null;
+    if (!isVisible) return null;
 
-  return (
-    <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 animate-bounce">
-      <div className="bg-[var(--primary-color)] text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-2">
-        <div className="icon-check-circle text-lg"></div>
-        <span className="text-sm font-medium">{message}</span>
-      </div>
-    </div>
-  );
+    return (
+        <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 animate-bounce">
+            <div className="bg-[var(--primary-color)] text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-2">
+                <div className="icon-check-circle text-lg"></div>
+                <span className="text-sm font-medium">{message}</span>
+            </div>
+        </div>
+    );
 });
 
 // Enlaces a redes sociales
 const SocialMediaLinks = React.memo(() => {
-  return (
-    <div className="flex items-center justify-center space-x-4 px-4 py-3 bg-white border-b">
-      <span className="text-xs text-[var(--text-secondary)]">Síguenos:</span>
-      <a 
-        href="https://whatsapp.com/channel/0029Vb89B2bBfxo2tGL8Fk0G" 
-        target="_blank" 
-        rel="noopener noreferrer"
-        className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center"
-      >
-        <div className="icon-message-circle text-sm text-white"></div>
-      </a>
-      <a 
-        href="https://www.instagram.com/tudespensa.25?igsh=MWt5dzZjcWh0NnF0MA==" 
-        target="_blank" 
-        rel="noopener noreferrer"
-        className="w-8 h-8 rounded-full bg-pink-500 flex items-center justify-center"
-      >
-        <div className="icon-instagram text-sm text-white"></div>
-      </a>
-      <a 
-        href="https://www.facebook.com/share/16cchoNUTo/" 
-        target="_blank" 
-        rel="noopener noreferrer"
-        className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center"
-      >
-        <div className="icon-facebook text-sm text-white"></div>
-      </a>
-    </div>
-  );
+    return (
+        <div className="flex items-center justify-center space-x-4 px-4 py-3 bg-white border-b">
+            <span className="text-xs text-[var(--text-secondary)]">Síguenos:</span>
+            <a 
+                href="https://whatsapp.com/channel/0029Vb89B2bBfxo2tGL8Fk0G" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center"
+            >
+                <div className="icon-message-circle text-sm text-white"></div>
+            </a>
+            <a 
+                href="https://www.instagram.com/tudespensa.25?igsh=MWt5dzZjcWh0NnF0MA==" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-full bg-pink-500 flex items-center justify-center"
+            >
+                <div className="icon-instagram text-sm text-white"></div>
+            </a>
+            <a 
+                href="https://www.facebook.com/share/16cchoNUTo/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center"
+            >
+                <div className="icon-facebook text-sm text-white"></div>
+            </a>
+        </div>
+    );
 });
 
 // Banner móvil
 const MobileBanner = React.memo(() => {
-  return (
-    <div className="mobile-banner px-4 mb-6">
-      <OptimizedImage 
-        src="/images/oferta.png" 
-        alt="TuDespensa.25 - Ofertas"
-        className="w-full h-full object-cover rounded-xl shadow-md"
-      />
-    </div>
-  );
+    return (
+        <div className="mobile-banner px-4 mb-6">
+            <OptimizedImage 
+                src="/images/oferta.png" 
+                alt="TuDespensa.25 - Ofertas"
+                className="w-full h-full object-cover rounded-xl shadow-md"
+            />
+        </div>
+    );
 });
 
 // Botones flotantes
 const FloatingWhatsAppButton = React.memo(() => {
-  const handleWhatsAppClick = () => {
-    const message = "¡Hola! Me interesa conocer más sobre los productos de TuDespensa.25";
-    const whatsappUrl = `https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
-  };
+    const handleWhatsAppClick = () => {
+        const message = "¡Hola! Me interesa conocer más sobre los productos de TuDespensa.25";
+        const whatsappUrl = `https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+        window.open(whatsappUrl, '_blank');
+    };
 
-  return (
-    <button
-      onClick={handleWhatsAppClick}
-      className="fixed bottom-6 right-6 w-14 h-14 bg-green-500 text-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-200 z-40 flex items-center justify-center"
-    >
-      <div className="icon-message-circle text-xl"></div>
-    </button>
-  );
+    return (
+        <button
+            onClick={handleWhatsAppClick}
+            className="fixed bottom-6 right-6 w-14 h-14 bg-green-500 text-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-200 z-40 flex items-center justify-center"
+        >
+            <div className="icon-message-circle text-xl"></div>
+        </button>
+    );
 });
 
 const FloatingWishlistButton = React.memo(() => {
-  const handleWishlistClick = () => {
-    const message = "¡Hola! Tengo un deseo especial para mi despensa:\n\n[Describe aquí el producto que deseas que TuDespensa.25 tenga disponible]\n\n¡Gracias por considerar mis sugerencias!";
-    const whatsappUrl = `https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
-  };
+    const handleWishlistClick = () => {
+        const message = "¡Hola! Tengo un deseo especial para mi despensa:\n\n[Describe aquí el producto que deseas que TuDespensa.25 tenga disponible]\n\n¡Gracias por considerar mis sugerencias!";
+        const whatsappUrl = `https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+        window.open(whatsappUrl, '_blank');
+    };
 
-  return (
-    <button
-      onClick={handleWishlistClick}
-      className="fixed bottom-24 right-6 w-14 h-14 bg-purple-500 text-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-200 z-40 flex items-center justify-center"
-    >
-      <div className="icon-heart text-xl"></div>
-    </button>
-  );
+    return (
+        <button
+            onClick={handleWishlistClick}
+            className="fixed bottom-24 right-6 w-14 h-14 bg-purple-500 text-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-200 z-40 flex items-center justify-center"
+        >
+            <div className="icon-heart text-xl"></div>
+        </button>
+    );
 });
 
 // --------------------------------------------
@@ -200,481 +206,481 @@ const FloatingWishlistButton = React.memo(() => {
 
 // Modal de selección de municipio
 const MunicipalityModal = React.memo(({ isOpen, onClose, selectedMunicipality, setSelectedMunicipality }) => {
-  if (!isOpen) return null;
+    if (!isOpen) return null;
 
-  const handleMunicipalitySelect = (municipalityId) => {
-    setSelectedMunicipality(municipalityId);
-    onClose();
-  };
+    const handleMunicipalitySelect = (municipalityId) => {
+        setSelectedMunicipality(municipalityId);
+        onClose();
+    };
 
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4 municipality-modal-container">
-      <div className="bg-white rounded-2xl max-w-md w-full overflow-hidden animate-scale-in municipality-modal-content">
-        <div className="bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)] p-6 text-white text-center">
-          <div className="w-16 h-16 mx-auto mb-4 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-            <div className="icon-map-pin text-2xl"></div>
-          </div>
-          <h2 className="text-2xl font-bold mb-2">Selecciona tu Municipio</h2>
-          <p className="text-white text-opacity-90">
-            Elige tu ubicación para ver los productos disponibles en tu área
-          </p>
-        </div>
-
-        <div className="p-6 max-h-96 overflow-y-auto">
-          <div className="space-y-3">
-            {municipalities.map(municipality => (
-              <button
-                key={municipality.id}
-                onClick={() => handleMunicipalitySelect(municipality.id)}
-                className={`w-full p-4 border-2 rounded-xl text-left transition-all flex items-center space-x-4 ${
-                  selectedMunicipality === municipality.id
-                    ? 'border-[var(--primary-color)] bg-green-50 ring-2 ring-[var(--primary-color)] ring-opacity-30'
-                    : 'border-gray-200 hover:border-[var(--primary-color)] hover:bg-gray-50'
-                }`}
-              >
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                  selectedMunicipality === municipality.id
-                    ? 'bg-[var(--primary-color)] text-white'
-                    : 'bg-gray-100 text-gray-600'
-                }`}>
-                  <div className="icon-map-pin text-lg"></div>
+    return (
+        <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4 municipality-modal-container">
+            <div className="bg-white rounded-2xl max-w-md w-full overflow-hidden animate-scale-in municipality-modal-content">
+                <div className="bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)] p-6 text-white text-center">
+                    <div className="w-16 h-16 mx-auto mb-4 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                        <div className="icon-map-pin text-2xl"></div>
+                    </div>
+                    <h2 className="text-2xl font-bold mb-2">Selecciona tu Municipio</h2>
+                    <p className="text-white text-opacity-90">
+                        Elige tu ubicación para ver los productos disponibles en tu área
+                    </p>
                 </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-[var(--text-primary)] text-lg">
-                    {municipality.name.split(', ')[1]}
-                  </h3>
-                  <p className="text-sm text-[var(--text-secondary)]">
-                    {municipality.name.split(', ')[0]}
-                  </p>
-                </div>
-                {selectedMunicipality === municipality.id && (
-                  <div className="w-6 h-6 bg-[var(--primary-color)] rounded-full flex items-center justify-center">
-                    <div className="icon-check text-xs text-white"></div>
-                  </div>
-                )}
-              </button>
-            ))}
-          </div>
-        </div>
 
-        <div className="border-t p-6">
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-            <div className="flex items-start space-x-3">
-              <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                <div className="icon-info text-xs text-white"></div>
-              </div>
-              <div>
-                <p className="text-sm text-blue-800 font-medium">
-                  Información importante
-                </p>
-                <p className="text-xs text-blue-700 mt-1">
-                  Los productos disponibles y precios pueden variar según tu municipio seleccionado.
-                </p>
-              </div>
+                <div className="p-6 max-h-96 overflow-y-auto">
+                    <div className="space-y-3">
+                        {municipalities.map(municipality => (
+                            <button
+                                key={municipality.id}
+                                onClick={() => handleMunicipalitySelect(municipality.id)}
+                                className={`w-full p-4 border-2 rounded-xl text-left transition-all flex items-center space-x-4 ${
+                                    selectedMunicipality === municipality.id
+                                        ? 'border-[var(--primary-color)] bg-green-50 ring-2 ring-[var(--primary-color)] ring-opacity-30'
+                                        : 'border-gray-200 hover:border-[var(--primary-color)] hover:bg-gray-50'
+                                }`}
+                            >
+                                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                                    selectedMunicipality === municipality.id
+                                        ? 'bg-[var(--primary-color)] text-white'
+                                        : 'bg-gray-100 text-gray-600'
+                                }`}>
+                                    <div className="icon-map-pin text-lg"></div>
+                                </div>
+                                <div className="flex-1">
+                                    <h3 className="font-semibold text-[var(--text-primary)] text-lg">
+                                        {municipality.name.split(', ')[1]}
+                                    </h3>
+                                    <p className="text-sm text-[var(--text-secondary)]">
+                                        {municipality.name.split(', ')[0]}
+                                    </p>
+                                </div>
+                                {selectedMunicipality === municipality.id && (
+                                    <div className="w-6 h-6 bg-[var(--primary-color)] rounded-full flex items-center justify-center">
+                                        <div className="icon-check text-xs text-white"></div>
+                                    </div>
+                                )}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="border-t p-6">
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                        <div className="flex items-start space-x-3">
+                            <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <div className="icon-info text-xs text-white"></div>
+                            </div>
+                            <div>
+                                <p className="text-sm text-blue-800 font-medium">
+                                    Información importante
+                                </p>
+                                <p className="text-xs text-blue-700 mt-1">
+                                    Los productos disponibles y precios pueden variar según tu municipio seleccionado.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button
+                        onClick={onClose}
+                        className="w-full bg-gray-100 text-[var(--text-primary)] py-3 rounded-lg font-medium hover:bg-gray-200 transition-all"
+                    >
+                        Cerrar
+                    </button>
+                </div>
             </div>
-          </div>
-          
-          <button
-            onClick={onClose}
-            className="w-full bg-gray-100 text-[var(--text-primary)] py-3 rounded-lg font-medium hover:bg-gray-200 transition-all"
-          >
-            Cerrar
-          </button>
         </div>
-      </div>
-    </div>
-  );
+    );
 });
 
 // Modal de producto
 const ProductDetailModal = React.memo(({ isOpen, onClose, product, onAddToCart, likedProducts, onToggleLike }) => {
-  if (!isOpen || !product) return null;
+    if (!isOpen || !product) return null;
 
-  const isLiked = likedProducts.includes(product.id);
-  const categoryName = categories.find(c => c.id === product.category)?.name || 'Sin categoría';
+    const isLiked = likedProducts.includes(product.id);
+    const categoryName = categories.find(c => c.id === product.category)?.name || 'Sin categoría';
 
-  const handleShare = () => {
-    if (product) {
-      const shareUrl = generateShareableLink(product.id);
-      
-      if (navigator.share) {
-        navigator.share({
-          title: product.name,
-          text: product.description,
-          url: shareUrl,
-        })
-        .catch(console.error);
-      } else {
-        navigator.clipboard.writeText(shareUrl).then(() => {
-          alert('¡Enlace copiado al portapapeles! Compártelo con quien quieras.');
-        }).catch(() => {
-          const tempInput = document.createElement('input');
-          tempInput.value = shareUrl;
-          document.body.appendChild(tempInput);
-          tempInput.select();
-          document.execCommand('copy');
-          document.body.removeChild(tempInput);
-          alert('¡Enlace copiado al portapapeles! Compártelo con quien quieras.');
-        });
-      }
-    }
-  };
-
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end sm:items-center sm:justify-center">
-      <div className="bg-white w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-t-xl sm:rounded-xl product-detail-modal">
-        <div className="relative">
-          <OptimizedImage
-            src={product.image}
-            alt={product.name}
-            className="w-full h-auto max-h-[500px] object-contain bg-gray-50 p-4"
-          />
-          <button 
-            onClick={onClose}
-            className="absolute top-4 right-4 w-10 h-10 bg-white bg-opacity-90 rounded-full flex items-center justify-center shadow-sm"
-          >
-            <div className="icon-x text-lg text-gray-600"></div>
-          </button>
-          <button 
-            onClick={() => onToggleLike(product.id)}
-            className="absolute top-4 left-4 w-10 h-10 bg-white bg-opacity-90 rounded-full flex items-center justify-center shadow-sm"
-          >
-            <div className={`icon-heart text-lg ${isLiked ? 'text-red-500' : 'text-gray-400'}`}></div>
-          </button>
-        </div>
-        
-        <div className="p-6">
-          <div className="flex items-start justify-between mb-4">
-            <div className="flex-1">
-              <h2 className="text-xl font-bold text-[var(--text-primary)] mb-2">{product.name}</h2>
-              <span className="inline-block px-3 py-1 bg-gray-100 text-[var(--text-primary)] rounded-full text-sm font-medium">
-                {categoryName}
-              </span>
-            </div>
-            <div className="text-right ml-4">
-              <div className="flex flex-col items-end">
-                <span className="text-2xl font-bold text-[var(--secondary-color)]">
-                  ${product.price.toFixed(2)} USD
-                </span>
-              </div>
-            </div>
-          </div>
-          
-          <div className="mb-6">
-            <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">Descripción</h3>
-            <p className="text-[var(--text-secondary)] leading-relaxed">{product.description}</p>
-          </div>
-
-          <div className="space-y-3">
-            <button
-              onClick={() => {
-                onAddToCart(product);
-                onClose();
-              }}
-              className="w-full bg-[var(--primary-color)] text-white py-3 rounded-lg font-medium flex items-center justify-center space-x-2 hover:bg-opacity-90 transition-all"
-            >
-              <div className="icon-shopping-cart text-lg"></div>
-              <span>Añadir al carrito</span>
-            </button>
+    const handleShare = () => {
+        if (product) {
+            const shareUrl = generateShareableLink(product.id);
             
-            <button
-              onClick={handleShare}
-              className="w-full bg-[var(--primary-color)] text-white py-3 rounded-lg font-medium flex items-center justify-center space-x-2 hover:bg-opacity-90 transition-all"
-            >
-              <div className="icon-share-2 text-lg"></div>
-              <span>Compartir Producto</span>
-            </button>
-            
-            <button
-              onClick={onClose}
-              className="w-full bg-gray-200 text-[var(--text-primary)] py-3 rounded-lg font-medium"
-            >
-              Cerrar
-            </button>
-          </div>
+            if (navigator.share) {
+                navigator.share({
+                    title: product.name,
+                    text: product.description,
+                    url: shareUrl,
+                })
+                .catch(console.error);
+            } else {
+                navigator.clipboard.writeText(shareUrl).then(() => {
+                    alert('¡Enlace copiado al portapapeles! Compártelo con quien quieras.');
+                }).catch(() => {
+                    const tempInput = document.createElement('input');
+                    tempInput.value = shareUrl;
+                    document.body.appendChild(tempInput);
+                    tempInput.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(tempInput);
+                    alert('¡Enlace copiado al portapapeles! Compártelo con quien quieras.');
+                });
+            }
+        }
+    };
+
+    return (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end sm:items-center sm:justify-center">
+            <div className="bg-white w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-t-xl sm:rounded-xl product-detail-modal">
+                <div className="relative">
+                    <OptimizedImage
+                        src={product.image}
+                        alt={product.name}
+                        className="w-full h-auto max-h-[500px] object-contain bg-gray-50 p-4"
+                    />
+                    <button 
+                        onClick={onClose}
+                        className="absolute top-4 right-4 w-10 h-10 bg-white bg-opacity-90 rounded-full flex items-center justify-center shadow-sm"
+                    >
+                        <div className="icon-x text-lg text-gray-600"></div>
+                    </button>
+                    <button 
+                        onClick={() => onToggleLike(product.id)}
+                        className="absolute top-4 left-4 w-10 h-10 bg-white bg-opacity-90 rounded-full flex items-center justify-center shadow-sm"
+                    >
+                        <div className={`icon-heart text-lg ${isLiked ? 'text-red-500' : 'text-gray-400'}`}></div>
+                    </button>
+                </div>
+                
+                <div className="p-6">
+                    <div className="flex items-start justify-between mb-4">
+                        <div className="flex-1">
+                            <h2 className="text-xl font-bold text-[var(--text-primary)] mb-2">{product.name}</h2>
+                            <span className="inline-block px-3 py-1 bg-gray-100 text-[var(--text-primary)] rounded-full text-sm font-medium">
+                                {categoryName}
+                            </span>
+                        </div>
+                        <div className="text-right ml-4">
+                            <div className="flex flex-col items-end">
+                                <span className="text-2xl font-bold text-[var(--secondary-color)]">
+                                    ${product.price.toFixed(2)} USD
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div className="mb-6">
+                        <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">Descripción</h3>
+                        <p className="text-[var(--text-secondary)] leading-relaxed">{product.description}</p>
+                    </div>
+
+                    <div className="space-y-3">
+                        <button
+                            onClick={() => {
+                                onAddToCart(product);
+                                onClose();
+                            }}
+                            className="w-full bg-[var(--primary-color)] text-white py-3 rounded-lg font-medium flex items-center justify-center space-x-2 hover:bg-opacity-90 transition-all"
+                        >
+                            <div className="icon-shopping-cart text-lg"></div>
+                            <span>Añadir al carrito</span>
+                        </button>
+                        
+                        <button
+                            onClick={handleShare}
+                            className="w-full bg-[var(--primary-color)] text-white py-3 rounded-lg font-medium flex items-center justify-center space-x-2 hover:bg-opacity-90 transition-all"
+                        >
+                            <div className="icon-share-2 text-lg"></div>
+                            <span>Compartir Producto</span>
+                        </button>
+                        
+                        <button
+                            onClick={onClose}
+                            className="w-full bg-gray-200 text-[var(--text-primary)] py-3 rounded-lg font-medium"
+                        >
+                            Cerrar
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 });
 
 // Modal del carrito
 const CartModal = React.memo(({ isOpen, onClose, cart, setCart, onProcessOrder }) => {
-  const [customerData, setCustomerData] = React.useState({
-    name: '',
-    phone: '',
-    beneficiaryName: '',
-    beneficiaryPhone: '',
-    address: '',
-    notes: ''
-  });
-  
-  const [discountCode, setDiscountCode] = React.useState('');
-  const [discountApplied, setDiscountApplied] = React.useState(false);
-  const [discountError, setDiscountError] = React.useState('');
-  const [discountPercentage, setDiscountPercentage] = React.useState(0);
-
-  const applyDiscount = () => {
-    const code = discountCode.trim();
-    
-    if (!code) {
-      setDiscountError('Por favor ingresa un código');
-      return;
-    }
-
-    if (APP_CONFIG.DISCOUNT_CODES[code]) {
-      setDiscountPercentage(APP_CONFIG.DISCOUNT_CODES[code]);
-      setDiscountApplied(true);
-      setDiscountError('');
-    } else {
-      setDiscountError('Código inválido o expirado');
-      setDiscountApplied(false);
-      setDiscountPercentage(0);
-    }
-  };
-
-  const removeDiscount = () => {
-    setDiscountCode('');
-    setDiscountApplied(false);
-    setDiscountPercentage(0);
-    setDiscountError('');
-  };
-
-  const updateQuantity = (productId, change) => {
-    setCart(prevCart => {
-      return prevCart.map(item => {
-        if (item.id === productId) {
-          const newQuantity = item.quantity + change;
-          return newQuantity > 0 ? { ...item, quantity: newQuantity } : null;
-        }
-        return item;
-      }).filter(Boolean);
+    const [customerData, setCustomerData] = React.useState({
+        name: '',
+        phone: '',
+        beneficiaryName: '',
+        beneficiaryPhone: '',
+        address: '',
+        notes: ''
     });
-  };
+    
+    const [discountCode, setDiscountCode] = React.useState('');
+    const [discountApplied, setDiscountApplied] = React.useState(false);
+    const [discountError, setDiscountError] = React.useState('');
+    const [discountPercentage, setDiscountPercentage] = React.useState(0);
 
-  const removeItem = (productId) => {
-    setCart(prevCart => prevCart.filter(item => item.id !== productId));
-  };
+    const applyDiscount = () => {
+        const code = discountCode.trim();
+        
+        if (!code) {
+            setDiscountError('Por favor ingresa un código');
+            return;
+        }
 
-  const getTotalItems = () => {
-    return cart.reduce((sum, item) => sum + item.quantity, 0);
-  };
+        if (APP_CONFIG.DISCOUNT_CODES[code]) {
+            setDiscountPercentage(APP_CONFIG.DISCOUNT_CODES[code]);
+            setDiscountApplied(true);
+            setDiscountError('');
+        } else {
+            setDiscountError('Código inválido o expirado');
+            setDiscountApplied(false);
+            setDiscountPercentage(0);
+        }
+    };
 
-  const getSubtotalPrice = () => {
-    return cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  };
+    const removeDiscount = () => {
+        setDiscountCode('');
+        setDiscountApplied(false);
+        setDiscountPercentage(0);
+        setDiscountError('');
+    };
 
-  const getDiscountAmount = () => {
-    const subtotal = getSubtotalPrice();
-    return (subtotal * discountPercentage) / 100;
-  };
+    const updateQuantity = (productId, change) => {
+        setCart(prevCart => {
+            return prevCart.map(item => {
+                if (item.id === productId) {
+                    const newQuantity = item.quantity + change;
+                    return newQuantity > 0 ? { ...item, quantity: newQuantity } : null;
+                }
+                return item;
+            }).filter(Boolean);
+        });
+    };
 
-  const getTotalPrice = () => {
-    const subtotal = getSubtotalPrice();
-    const discount = getDiscountAmount();
-    return subtotal - discount;
-  };
+    const removeItem = (productId) => {
+        setCart(prevCart => prevCart.filter(item => item.id !== productId));
+    };
 
-  const handleProcessOrder = () => {
-    if (!customerData.name || !customerData.phone || !customerData.beneficiaryName || !customerData.beneficiaryPhone || !customerData.address) {
-      alert('Por favor completa todos los campos requeridos del comprador, beneficiario y dirección');
-      return;
-    }
-    onProcessOrder(customerData, discountCode, discountPercentage, getDiscountAmount());
-  };
+    const getTotalItems = () => {
+        return cart.reduce((sum, item) => sum + item.quantity, 0);
+    };
 
-  if (!isOpen) return null;
+    const getSubtotalPrice = () => {
+        return cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    };
 
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end sm:items-center sm:justify-center">
-      <div className="bg-white w-full max-w-md max-h-[90vh] overflow-y-auto rounded-t-xl sm:rounded-xl">
-        <div className="sticky top-0 bg-white border-b p-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-[var(--text-primary)]">Mi Carrito ({getTotalItems()})</h2>
-          <button onClick={onClose} className="p-1">
-            <div className="icon-x text-xl text-[var(--text-secondary)]"></div>
-          </button>
-        </div>
+    const getDiscountAmount = () => {
+        const subtotal = getSubtotalPrice();
+        return (subtotal * discountPercentage) / 100;
+    };
 
-        {cart.length === 0 ? (
-          <div className="p-8 text-center">
-            <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
-              <div className="icon-shopping-cart text-2xl text-gray-400"></div>
-            </div>
-            <p className="text-[var(--text-secondary)]">Tu carrito está vacío</p>
-          </div>
-        ) : (
-          <>
-            <div className="p-4 space-y-3">
-              {cart.map(item => (
-                <div key={item.id} className="flex items-center space-x-3 bg-gray-50 rounded-lg p-3">
-                  <OptimizedImage src={item.image} alt={item.name} className="w-12 h-12 object-cover rounded-lg" />
-                  <div className="flex-1">
-                    <h3 className="text-sm font-medium text-[var(--text-secondary)]">{item.name}</h3>
-                    <p className="text-xs text-[var(--text-secondary)]">{item.description}</p>
-                    <p className="text-sm font-semibold text-[var(--secondary-color)]">
-                      ${item.price.toFixed(2)} USD
-                    </p>
-                  </div>
-                  <div className="flex flex-col items-center space-y-1">
-                    <div className="flex items-center space-x-2">
-                      <button onClick={() => updateQuantity(item.id, -1)} className="w-8 h-8 rounded-full bg-white border flex items-center justify-center">
-                        <div className="icon-minus text-sm text-[var(--text-secondary)]"></div>
-                      </button>
-                      <span className="text-sm font-medium w-8 text-center">{item.quantity}</span>
-                      <button onClick={() => updateQuantity(item.id, 1)} className="w-8 h-8 rounded-full bg-white border flex items-center justify-center">
-                        <div className="icon-plus text-sm text-[var(--text-secondary)]"></div>
-                      </button>
-                    </div>
-                    <p className="text-xs font-medium text-[var(--text-primary)]">
-                      ${(item.price * item.quantity).toFixed(2)}
-                    </p>
-                  </div>
-                </div>
-              ))}
-              
-              {/* Sección de Código de Descuento */}
-              <div className="border-t pt-4 mt-4">
-                <div className="mb-3">
-                  <h3 className="text-sm font-medium text-[var(--text-primary)] mb-2">Código de Descuento</h3>
-                  <div className="flex space-x-2">
-                    <input
-                      type="text"
-                      placeholder="Ingresa tu código"
-                      value={discountCode}
-                      onChange={(e) => setDiscountCode(e.target.value)}
-                      disabled={discountApplied}
-                      className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] disabled:bg-gray-100"
-                    />
-                    {!discountApplied ? (
-                      <button
-                        onClick={applyDiscount}
-                        className="bg-[var(--primary-color)] text-white px-4 py-2 rounded-lg font-medium hover:bg-opacity-90 transition-all"
-                      >
-                        Aplicar
-                      </button>
-                    ) : (
-                      <button
-                        onClick={removeDiscount}
-                        className="bg-red-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-600 transition-all"
-                      >
-                        Quitar
-                      </button>
-                    )}
-                  </div>
-                  {discountError && (
-                    <p className="text-red-500 text-xs mt-1">{discountError}</p>
-                  )}
-                  {discountApplied && (
-                    <p className="text-green-600 text-xs mt-1">
-                      ✅ Descuento del {discountPercentage}% aplicado correctamente
-                    </p>
-                  )}
+    const getTotalPrice = () => {
+        const subtotal = getSubtotalPrice();
+        const discount = getDiscountAmount();
+        return subtotal - discount;
+    };
+
+    const handleProcessOrder = () => {
+        if (!customerData.name || !customerData.phone || !customerData.beneficiaryName || !customerData.beneficiaryPhone || !customerData.address) {
+            alert('Por favor completa todos los campos requeridos del comprador, beneficiario y dirección');
+            return;
+        }
+        onProcessOrder(customerData, discountCode, discountPercentage, getDiscountAmount());
+    };
+
+    if (!isOpen) return null;
+
+    return (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end sm:items-center sm:justify-center">
+            <div className="bg-white w-full max-w-md max-h-[90vh] overflow-y-auto rounded-t-xl sm:rounded-xl">
+                <div className="sticky top-0 bg-white border-b p-4 flex items-center justify-between">
+                    <h2 className="text-lg font-semibold text-[var(--text-primary)]">Mi Carrito ({getTotalItems()})</h2>
+                    <button onClick={onClose} className="p-1">
+                        <div className="icon-x text-xl text-[var(--text-secondary)]"></div>
+                    </button>
                 </div>
 
-                {/* Resumen de Precios */}
-                <div className="space-y-2 bg-gray-50 rounded-lg p-3">
-                  <div className="flex justify-between text-sm">
-                    <span>Subtotal:</span>
-                    <span>${getSubtotalPrice().toFixed(2)} USD</span>
-                  </div>
-                  
-                  {discountApplied && (
-                    <>
-                      <div className="flex justify-between text-sm text-green-600">
-                        <span>Descuento ({discountPercentage}%):</span>
-                        <span>-${getDiscountAmount().toFixed(2)} USD</span>
-                      </div>
-                      <div className="border-t border-gray-200 pt-2 mt-2">
-                        <div className="flex justify-between items-center">
-                          <span className="text-lg font-semibold text-[var(--text-primary)]">Total:</span>
-                          <span className="text-xl font-bold text-[var(--secondary-color)]">
-                            ${getTotalPrice().toFixed(2)} USD
-                          </span>
+                {cart.length === 0 ? (
+                    <div className="p-8 text-center">
+                        <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+                            <div className="icon-shopping-cart text-2xl text-gray-400"></div>
                         </div>
-                      </div>
-                    </>
-                  )}
-                  
-                  {!discountApplied && (
-                    <div className="flex justify-between items-center">
-                      <span className="text-lg font-semibold text-[var(--text-primary)]">Total:</span>
-                      <span className="text-xl font-bold text-[var(--secondary-color)]">
-                        ${getSubtotalPrice().toFixed(2)} USD
-                      </span>
+                        <p className="text-[var(--text-secondary)]">Tu carrito está vacío</p>
                     </div>
-                  )}
-                </div>
-              </div>
-            </div>
+                ) : (
+                    <>
+                        <div className="p-4 space-y-3">
+                            {cart.map(item => (
+                                <div key={item.id} className="flex items-center space-x-3 bg-gray-50 rounded-lg p-3">
+                                    <OptimizedImage src={item.image} alt={item.name} className="w-12 h-12 object-cover rounded-lg" />
+                                    <div className="flex-1">
+                                        <h3 className="text-sm font-medium text-[var(--text-secondary)]">{item.name}</h3>
+                                        <p className="text-xs text-[var(--text-secondary)]">{item.description}</p>
+                                        <p className="text-sm font-semibold text-[var(--secondary-color)]">
+                                            ${item.price.toFixed(2)} USD
+                                        </p>
+                                    </div>
+                                    <div className="flex flex-col items-center space-y-1">
+                                        <div className="flex items-center space-x-2">
+                                            <button onClick={() => updateQuantity(item.id, -1)} className="w-8 h-8 rounded-full bg-white border flex items-center justify-center">
+                                                <div className="icon-minus text-sm text-[var(--text-secondary)]"></div>
+                                            </button>
+                                            <span className="text-sm font-medium w-8 text-center">{item.quantity}</span>
+                                            <button onClick={() => updateQuantity(item.id, 1)} className="w-8 h-8 rounded-full bg-white border flex items-center justify-center">
+                                                <div className="icon-plus text-sm text-[var(--text-secondary)]"></div>
+                                            </button>
+                                        </div>
+                                        <p className="text-xs font-medium text-[var(--text-primary)]">
+                                            ${(item.price * item.quantity).toFixed(2)}
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
+                            
+                            {/* Sección de Código de Descuento */}
+                            <div className="border-t pt-4 mt-4">
+                                <div className="mb-3">
+                                    <h3 className="text-sm font-medium text-[var(--text-primary)] mb-2">Código de Descuento</h3>
+                                    <div className="flex space-x-2">
+                                        <input
+                                            type="text"
+                                            placeholder="Ingresa tu código"
+                                            value={discountCode}
+                                            onChange={(e) => setDiscountCode(e.target.value)}
+                                            disabled={discountApplied}
+                                            className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] disabled:bg-gray-100"
+                                        />
+                                        {!discountApplied ? (
+                                            <button
+                                                onClick={applyDiscount}
+                                                className="bg-[var(--primary-color)] text-white px-4 py-2 rounded-lg font-medium hover:bg-opacity-90 transition-all"
+                                            >
+                                                Aplicar
+                                            </button>
+                                        ) : (
+                                            <button
+                                                onClick={removeDiscount}
+                                                className="bg-red-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-600 transition-all"
+                                            >
+                                                Quitar
+                                            </button>
+                                        )}
+                                    </div>
+                                    {discountError && (
+                                        <p className="text-red-500 text-xs mt-1">{discountError}</p>
+                                    )}
+                                    {discountApplied && (
+                                        <p className="text-green-600 text-xs mt-1">
+                                            ✅ Descuento del {discountPercentage}% aplicado correctamente
+                                        </p>
+                                    )}
+                                </div>
 
-            <div className="border-t p-4 space-y-3">
-              <h3 className="font-medium text-[var(--text-primary)]">Datos del comprador</h3>
-              <input
-                type="text"
-                placeholder="Nombre completo del comprador *"
-                value={customerData.name}
-                onChange={(e) => setCustomerData({...customerData, name: e.target.value})}
-                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]"
-              />
-              <input
-                type="tel"
-                placeholder="Teléfono del comprador *"
-                value={customerData.phone}
-                onChange={(e) => setCustomerData({...customerData, phone: e.target.value})}
-                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]"
-              />
-              
-              <h3 className="font-medium text-[var(--text-primary)] pt-4 border-t">Datos del beneficiario (quien recibe)</h3>
-              <input
-                type="text"
-                placeholder="Nombre completo del beneficiario *"
-                value={customerData.beneficiaryName}
-                onChange={(e) => setCustomerData({...customerData, beneficiaryName: e.target.value})}
-                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]"
-              />
-              <input
-                type="tel"
-                placeholder="Teléfono del beneficiario *"
-                value={customerData.beneficiaryPhone}
-                onChange={(e) => setCustomerData({...customerData, beneficiaryPhone: e.target.value})}
-                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]"
-              />
-              
-              <h3 className="font-medium text-[var(--text-primary)] pt-4 border-t">Entrega</h3>
-              <textarea
-                placeholder="Dirección de entrega *"
-                value={customerData.address}
-                onChange={(e) => setCustomerData({...customerData, address: e.target.value})}
-                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] h-20"
-              />
-              <textarea
-                placeholder="Notas adicionales (opcional)"
-                value={customerData.notes}
-                onChange={(e) => setCustomerData({...customerData, notes: e.target.value})}
-                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] h-16"
-              />
-            </div>
+                                {/* Resumen de Precios */}
+                                <div className="space-y-2 bg-gray-50 rounded-lg p-3">
+                                    <div className="flex justify-between text-sm">
+                                        <span>Subtotal:</span>
+                                        <span>${getSubtotalPrice().toFixed(2)} USD</span>
+                                    </div>
+                                    
+                                    {discountApplied && (
+                                        <>
+                                            <div className="flex justify-between text-sm text-green-600">
+                                                <span>Descuento ({discountPercentage}%):</span>
+                                                <span>-${getDiscountAmount().toFixed(2)} USD</span>
+                                            </div>
+                                            <div className="border-t border-gray-200 pt-2 mt-2">
+                                                <div className="flex justify-between items-center">
+                                                    <span className="text-lg font-semibold text-[var(--text-primary)]">Total:</span>
+                                                    <span className="text-xl font-bold text-[var(--secondary-color)]">
+                                                        ${getTotalPrice().toFixed(2)} USD
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </>
+                                    )}
+                                    
+                                    {!discountApplied && (
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-lg font-semibold text-[var(--text-primary)]">Total:</span>
+                                            <span className="text-xl font-bold text-[var(--secondary-color)]">
+                                                ${getSubtotalPrice().toFixed(2)} USD
+                                            </span>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
 
-            <div className="border-t p-4 space-y-3">
-              <button
-                onClick={handleProcessOrder}
-                className="w-full bg-[var(--primary-color)] text-white py-3 rounded-lg font-medium flex items-center justify-center space-x-2 hover:bg-opacity-90 transition-all"
-              >
-                <div className="icon-shopping-cart text-lg"></div>
-                <span>Procesar Pedido</span>
-              </button>
-              <button
-                onClick={onClose}
-                className="w-full bg-gray-200 text-[var(--text-primary)] py-3 rounded-lg font-medium"
-              >
-                Continuar Comprando
-              </button>
+                        <div className="border-t p-4 space-y-3">
+                            <h3 className="font-medium text-[var(--text-primary)]">Datos del comprador</h3>
+                            <input
+                                type="text"
+                                placeholder="Nombre completo del comprador *"
+                                value={customerData.name}
+                                onChange={(e) => setCustomerData({...customerData, name: e.target.value})}
+                                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]"
+                            />
+                            <input
+                                type="tel"
+                                placeholder="Teléfono del comprador *"
+                                value={customerData.phone}
+                                onChange={(e) => setCustomerData({...customerData, phone: e.target.value})}
+                                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]"
+                            />
+                            
+                            <h3 className="font-medium text-[var(--text-primary)] pt-4 border-t">Datos del beneficiario (quien recibe)</h3>
+                            <input
+                                type="text"
+                                placeholder="Nombre completo del beneficiario *"
+                                value={customerData.beneficiaryName}
+                                onChange={(e) => setCustomerData({...customerData, beneficiaryName: e.target.value})}
+                                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]"
+                            />
+                            <input
+                                type="tel"
+                                placeholder="Teléfono del beneficiario *"
+                                value={customerData.beneficiaryPhone}
+                                onChange={(e) => setCustomerData({...customerData, beneficiaryPhone: e.target.value})}
+                                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]"
+                            />
+                            
+                            <h3 className="font-medium text-[var(--text-primary)] pt-4 border-t">Entrega</h3>
+                            <textarea
+                                placeholder="Dirección de entrega *"
+                                value={customerData.address}
+                                onChange={(e) => setCustomerData({...customerData, address: e.target.value})}
+                                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] h-20"
+                            />
+                            <textarea
+                                placeholder="Notas adicionales (opcional)"
+                                value={customerData.notes}
+                                onChange={(e) => setCustomerData({...customerData, notes: e.target.value})}
+                                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] h-16"
+                            />
+                        </div>
+
+                        <div className="border-t p-4 space-y-3">
+                            <button
+                                onClick={handleProcessOrder}
+                                className="w-full bg-[var(--primary-color)] text-white py-3 rounded-lg font-medium flex items-center justify-center space-x-2 hover:bg-opacity-90 transition-all"
+                            >
+                                <div className="icon-shopping-cart text-lg"></div>
+                                <span>Procesar Pedido</span>
+                            </button>
+                            <button
+                                onClick={onClose}
+                                className="w-full bg-gray-200 text-[var(--text-primary)] py-3 rounded-lg font-medium"
+                            >
+                                Continuar Comprando
+                            </button>
+                        </div>
+                    </>
+                )}
             </div>
-          </>
-        )}
-      </div>
-    </div>
-  );
+        </div>
+    );
 });
 
 // --------------------------------------------
@@ -683,687 +689,742 @@ const CartModal = React.memo(({ isOpen, onClose, cart, setCart, onProcessOrder }
 
 // Header
 const Header = React.memo(({ searchTerm, setSearchTerm, selectedMunicipality, cartItems, onCartClick, onMunicipalityClick }) => {
-  return (
-    <header className="header-gradient text-white sticky top-0 z-50 shadow-lg">
-      <div className="px-4 py-4">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center space-x-2">
-            <OptimizedImage 
-              src="https://app.trickle.so/storage/public/images/usr_0b2efdb2f0000001/2fc53855-ded6-40ff-959b-7a5c6077e0e3.svg" 
-              alt="TuDespensa25 Logo" 
-              className="w-10 h-10 bg-white rounded-full p-2"
-            />
-            <h1 className="text-lg font-bold">TuDespensa25</h1>
-          </div>
-          <div className="flex items-center space-x-3">
-            <button 
-              onClick={onMunicipalityClick}
-              className="flex items-center space-x-2 bg-white bg-opacity-20 rounded-lg px-3 py-2 hover:bg-opacity-30 transition-all"
-            >
-              <div className="icon-map-pin text-sm text-white"></div>
-              <span className="text-sm max-w-24 truncate">
-                {municipalities.find(m => m.id === selectedMunicipality)?.name.split(', ')[1] || 'Municipio'}
-              </span>
-              <div className="icon-chevron-down text-sm text-white"></div>
-            </button>
-            <button
-              onClick={onCartClick}
-              className="relative w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center hover:bg-opacity-30 transition-all"
-            >
-              <div className="icon-shopping-cart text-lg text-white"></div>
-              {cartItems > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[var(--secondary-color)] text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-medium">
-                  {cartItems}
-                </span>
-              )}
-            </button>
-          </div>
-        </div>
-        <div className="relative">
-          <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
-            <div className="icon-search text-lg text-gray-400"></div>
-          </div>
-          <input
-            type="text"
-            placeholder="Buscar productos..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 rounded-xl bg-white text-[var(--text-primary)] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
-          />
-        </div>
-      </div>
-    </header>
-  );
+    return (
+        <header className="header-gradient text-white sticky top-0 z-50 shadow-lg">
+            <div className="px-4 py-4">
+                <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center space-x-2">
+                        <OptimizedImage 
+                            src="https://app.trickle.so/storage/public/images/usr_0b2efdb2f0000001/2fc53855-ded6-40ff-959b-7a5c6077e0e3.svg" 
+                            alt="TuDespensa25 Logo" 
+                            className="w-10 h-10 bg-white rounded-full p-2"
+                        />
+                        <h1 className="text-lg font-bold">TuDespensa25</h1>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                        <button 
+                            onClick={onMunicipalityClick}
+                            className="flex items-center space-x-2 bg-white bg-opacity-20 rounded-lg px-3 py-2 hover:bg-opacity-30 transition-all"
+                        >
+                            <div className="icon-map-pin text-sm text-white"></div>
+                            <span className="text-sm max-w-24 truncate">
+                                {municipalities.find(m => m.id === selectedMunicipality)?.name.split(', ')[1] || 'Municipio'}
+                            </span>
+                            <div className="icon-chevron-down text-sm text-white"></div>
+                        </button>
+                        <button
+                            onClick={onCartClick}
+                            className="relative w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center hover:bg-opacity-30 transition-all"
+                        >
+                            <div className="icon-shopping-cart text-lg text-white"></div>
+                            {cartItems > 0 && (
+                                <span className="absolute -top-1 -right-1 bg-[var(--secondary-color)] text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-medium">
+                                    {cartItems}
+                                </span>
+                            )}
+                        </button>
+                    </div>
+                </div>
+                <div className="relative">
+                    <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
+                        <div className="icon-search text-lg text-gray-400"></div>
+                    </div>
+                    <input
+                        type="text"
+                        placeholder="Buscar productos..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="w-full pl-10 pr-4 py-3 rounded-xl bg-white text-[var(--text-primary)] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
+                    />
+                </div>
+            </div>
+        </header>
+    );
 });
 
 // Grid de categorías
 const CategoryGrid = React.memo(({ selectedCategory, onCategorySelect }) => {
-  return (
-    <section className="px-4 py-4 sm:py-6 bg-white categories-section">
-      <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-3 sm:mb-4">Categorías</h2>
-      <div className="grid grid-cols-2 gap-2 sm:gap-3 sm:grid-cols-3 md:grid-cols-4">
-        {categories.map((category) => (
-          <button
-            key={category.id}
-            onClick={() => onCategorySelect(category.id)}
-            className={`relative rounded-lg overflow-hidden flex flex-col items-center justify-center p-4 
-              ${selectedCategory === category.id ? 'ring-2 ring-[var(--primary-color)]' : ''}`}
-            style={{
-              backgroundImage: `url(${category.backgroundImage})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center'
-            }}
-          >
-            <div className="bg-white bg-opacity-85 w-full h-full absolute inset-0"></div>
-            <div className="relative z-10 flex flex-col items-center">
-              <div className={`category-icon w-12 h-12 rounded-full flex items-center justify-center mb-2
-                ${selectedCategory === category.id ? 'bg-[var(--primary-color)]' : 'bg-[var(--secondary-color)] bg-opacity-20'}`}>
-                <div className={`${category.icon} text-xl ${selectedCategory === category.id ? 'text-white' : 'text-[var(--secondary-color)]'}`}></div>
-              </div>
-              <p className={`text-sm font-medium text-center 
-                ${selectedCategory === category.id ? 'text-[var(--primary-color)]' : 'text-[var(--text-primary)]'}`}>
-                {category.name}
-              </p>
+    return (
+        <section className="px-4 py-4 sm:py-6 bg-white categories-section">
+            <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-3 sm:mb-4">Categorías</h2>
+            <div className="grid grid-cols-2 gap-2 sm:gap-3 sm:grid-cols-3 md:grid-cols-4">
+                {categories.map((category) => (
+                    <button
+                        key={category.id}
+                        onClick={() => onCategorySelect(category.id)}
+                        className={`relative rounded-lg overflow-hidden flex flex-col items-center justify-center p-4 
+                            ${selectedCategory === category.id ? 'ring-2 ring-[var(--primary-color)]' : ''}`}
+                        style={{
+                            backgroundImage: `url(${category.backgroundImage})`,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center'
+                        }}
+                    >
+                        <div className="bg-white bg-opacity-85 w-full h-full absolute inset-0"></div>
+                        <div className="relative z-10 flex flex-col items-center">
+                            <div className={`category-icon w-12 h-12 rounded-full flex items-center justify-center mb-2
+                                ${selectedCategory === category.id ? 'bg-[var(--primary-color)]' : 'bg-[var(--secondary-color)] bg-opacity-20'}`}>
+                                <div className={`${category.icon} text-xl ${selectedCategory === category.id ? 'text-white' : 'text-[var(--secondary-color)]'}`}></div>
+                            </div>
+                            <p className={`text-sm font-medium text-center 
+                                ${selectedCategory === category.id ? 'text-[var(--primary-color)]' : 'text-[var(--text-primary)]'}`}>
+                                {category.name}
+                            </p>
+                        </div>
+                    </button>
+                ))}
             </div>
-          </button>
-        ))}
-      </div>
-    </section>
-  );
+        </section>
+    );
 });
 
 // Tarjeta de producto
 const ProductCard = React.memo(({ product, onAddToCart, likedProducts, onToggleLike, onProductClick }) => {
-  const isLiked = likedProducts.includes(product.id);
+    const isLiked = likedProducts.includes(product.id);
 
-  const handleCardClick = (e) => {
-    if (e.target.closest('button')) return;
-    onProductClick(product);
-  };
+    const handleCardClick = (e) => {
+        if (e.target.closest('button')) return;
+        onProductClick(product);
+    };
 
-  const handleLikeClick = (e) => {
-    e.stopPropagation();
-    onToggleLike(product.id);
-  };
+    const handleLikeClick = (e) => {
+        e.stopPropagation();
+        onToggleLike(product.id);
+    };
 
-  const handleAddToCart = (e) => {
-    e.stopPropagation();
-    onAddToCart(product);
-  };
+    const handleAddToCart = (e) => {
+        e.stopPropagation();
+        onAddToCart(product);
+    };
 
-  const handleShare = (e) => {
-    e.stopPropagation();
-    const shareUrl = generateShareableLink(product.id);
-    
-    navigator.clipboard.writeText(shareUrl).then(() => {
-      alert('¡Enlace copiado! Comparte este producto.');
-    }).catch(() => {
-      const tempInput = document.createElement('input');
-      tempInput.value = shareUrl;
-      document.body.appendChild(tempInput);
-      tempInput.select();
-      document.execCommand('copy');
-      document.body.removeChild(tempInput);
-      alert('¡Enlace copiado! Comparte este producto.');
-    });
-  };
-
-  return (
-    <div className="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-200 cursor-pointer" onClick={handleCardClick}>
-      <div className="aspect-square bg-gray-100 relative overflow-hidden">
-        <OptimizedImage
-          src={product.image}
-          alt={product.name}
-          className="w-full h-full object-contain p-4"
-        />
+    const handleShare = (e) => {
+        e.stopPropagation();
+        const shareUrl = generateShareableLink(product.id);
         
-        <div className="absolute top-2 right-2 flex flex-col space-y-1">
-          <button onClick={handleLikeClick} className="w-8 h-8 bg-white bg-opacity-90 rounded-full flex items-center justify-center shadow-sm hover:scale-110 transition">
-            <div className={`icon-heart text-lg ${isLiked ? 'text-red-500' : 'text-gray-400'}`}></div>
-          </button>
-          <button onClick={handleShare} className="w-8 h-8 bg-white bg-opacity-90 rounded-full flex items-center justify-center shadow-sm hover:scale-110 transition">
-            <div className="icon-share-2 text-lg text-gray-600"></div>
-          </button>
+        navigator.clipboard.writeText(shareUrl).then(() => {
+            alert('¡Enlace copiado! Comparte este producto.');
+        }).catch(() => {
+            const tempInput = document.createElement('input');
+            tempInput.value = shareUrl;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            alert('¡Enlace copiado! Comparte este producto.');
+        });
+    };
+
+    return (
+        <div className="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-200 cursor-pointer" onClick={handleCardClick}>
+            <div className="aspect-square bg-gray-100 relative overflow-hidden">
+                <OptimizedImage
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-full object-contain p-4"
+                />
+                
+                <div className="absolute top-2 right-2 flex flex-col space-y-1">
+                    <button onClick={handleLikeClick} className="w-8 h-8 bg-white bg-opacity-90 rounded-full flex items-center justify-center shadow-sm hover:scale-110 transition">
+                        <div className={`icon-heart text-lg ${isLiked ? 'text-red-500' : 'text-gray-400'}`}></div>
+                    </button>
+                    <button onClick={handleShare} className="w-8 h-8 bg-white bg-opacity-90 rounded-full flex items-center justify-center shadow-sm hover:scale-110 transition">
+                        <div className="icon-share-2 text-lg text-gray-600"></div>
+                    </button>
+                </div>
+            </div>
+            <div className="p-3">
+                <h3 className="font-medium text-[var(--text-primary)] text-sm mb-1 line-clamp-2">
+                    {product.name}
+                </h3>
+                <p className="text-xs text-[var(--text-secondary)] mb-2 line-clamp-2">
+                    {product.description}
+                </p>
+                
+                <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs px-2 py-1 bg-gray-100 text-gray-900 rounded-full">
+                        {categories.find(c => c.id === product.category)?.name}
+                    </span>
+                    <div className="flex flex-col items-end">
+                        <span className="text-sm font-bold text-[var(--secondary-color)]">
+                            ${product.price.toFixed(2)} USD
+                        </span>
+                    </div>
+                </div>
+                <button 
+                    onClick={handleAddToCart}
+                    className="w-full bg-[var(--primary-color)] text-white py-2 px-3 rounded-lg text-sm font-medium flex items-center justify-center space-x-1 hover:bg-opacity-90 transition-all"
+                >
+                    <div className="icon-shopping-cart text-sm"></div>
+                    <span>Añadir al carrito</span>
+                </button>
+            </div>
         </div>
-      </div>
-      <div className="p-3">
-        <h3 className="font-medium text-[var(--text-primary)] text-sm mb-1 line-clamp-2">
-          {product.name}
-        </h3>
-        <p className="text-xs text-[var(--text-secondary)] mb-2 line-clamp-2">
-          {product.description}
-        </p>
-        
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-xs px-2 py-1 bg-gray-100 text-gray-900 rounded-full">
-            {categories.find(c => c.id === product.category)?.name}
-          </span>
-          <div className="flex flex-col items-end">
-            <span className="text-sm font-bold text-[var(--secondary-color)]">
-              ${product.price.toFixed(2)} USD
-            </span>
-          </div>
-        </div>
-        <button 
-          onClick={handleAddToCart}
-          className="w-full bg-[var(--primary-color)] text-white py-2 px-3 rounded-lg text-sm font-medium flex items-center justify-center space-x-1 hover:bg-opacity-90 transition-all"
-        >
-          <div className="icon-shopping-cart text-sm"></div>
-          <span>Añadir al carrito</span>
-        </button>
-      </div>
-    </div>
-  );
+    );
 });
 
 // Grid de productos
 const ProductGrid = React.memo(({ products, onAddToCart, likedProducts, onToggleLike, onProductClick }) => {
-  if (products.length === 0) {
-    return (
-      <div className="text-center py-12">
-        <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
-          <div className="icon-search text-2xl text-gray-400"></div>
-        </div>
-        <p className="text-[var(--text-secondary)] text-lg">No se encontraron productos</p>
-        <p className="text-[var(--text-secondary)] text-sm mt-1">Intenta con otros términos de búsqueda o selecciona otro municipio</p>
-      </div>
-    );
-  }
+    if (products.length === 0) {
+        return (
+            <div className="text-center py-12">
+                <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+                    <div className="icon-search text-2xl text-gray-400"></div>
+                </div>
+                <p className="text-[var(--text-secondary)] text-lg">No se encontraron productos</p>
+                <p className="text-[var(--text-secondary)] text-sm mt-1">Intenta con otros términos de búsqueda o selecciona otro municipio</p>
+            </div>
+        );
+    }
 
-  return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-      {products.map((product) => (
-        <ProductCard 
-          key={product.id} 
-          product={product} 
-          onAddToCart={onAddToCart}
-          likedProducts={likedProducts}
-          onToggleLike={onToggleLike}
-          onProductClick={onProductClick}
-        />
-      ))}
-    </div>
-  );
+    return (
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+            {products.map((product) => (
+                <ProductCard 
+                    key={product.id} 
+                    product={product} 
+                    onAddToCart={onAddToCart}
+                    likedProducts={likedProducts}
+                    onToggleLike={onToggleLike}
+                    onProductClick={onProductClick}
+                />
+            ))}
+        </div>
+    );
 });
 
 // Sección FAQ
 const FAQSection = React.memo(() => {
-  const [openItems, setOpenItems] = React.useState([]);
+    const [openItems, setOpenItems] = React.useState([]);
 
-  const toggleItem = (index) => {
-    setOpenItems(prev => 
-      prev.includes(index) 
-        ? prev.filter(item => item !== index)
-        : [...prev, index]
+    const toggleItem = (index) => {
+        setOpenItems(prev => 
+            prev.includes(index) 
+                ? prev.filter(item => item !== index)
+                : [...prev, index]
+        );
+    };
+
+    const faqItems = [
+        {
+            question: "¿Qué métodos de pago aceptan?",
+            answer: "💳 **Solo Zelle** para clientes desde el exterior. El pago se verifica al instante, sin impuestos adicionales. Pagas seguro y al momento, desde donde estés."
+        },
+        {
+            question: "¿Cuál es el tiempo de entrega?",
+            answer: "🚚 **Entregas en menos de 48 horas**, y la mayoría de los pedidos llegan el mismo día. Esto aplica en toda la provincia Artemisa."
+        },
+        {
+            question: "¿Cuánto cuesta el envío?",
+            answer: `📦 **Tarifa de Envíos:**\n\n✅ **Municipios Gratis** (a partir de 30 USD, menos → 1.99 USD):\n• San Cristóbal\n• Candelaria\n• Guanajay\n\n✅ **Envío 3.99 USD fijo:**\n• Artemisa (cabecera)\n• Caimito\n• Mariel\n\n✅ **Envío 5 USD fijo:**\n• Bauta\n• Güira de Melena\n• San Antonio de los Baños\n• Bahía Honda\n• Alquízar`
+        },
+        {
+            question: "¿En qué municipios realizan entregas?",
+            answer: "📍 Cubrimos **toda la provincia Artemisa**: San Cristóbal, Candelaria, Mariel, Guanajay, Caimito, Bauta, Artemisa, Alquízar, Güira de Melena, San Antonio de los Baños y Bahía Honda."
+        },
+        {
+            question: "¿Qué categorías de productos ofrecen?",
+            answer: `🛍️ **Nuestras Categorías:**\n\n🥫 **Alimentos:** arroz, granos, carnes, lácteos, dulces, conservas\n🧼 **Productos de Aseo y Limpieza:** detergentes, jabones, higiene personal\n⚡ **Electrodomésticos:** lavadoras, batidoras, fogones, freezers\n🎁 **Combos especiales** con descuentos exclusivos`
+        },
+        {
+            question: "¿Tienen promociones especiales?",
+            answer: "🎯 **Promociones Activas:**\n\n🔥 **Combos Especiales:** 3 días a la semana mostramos combos con descuentos\n💥 **Zona Roja:** Productos con descuentos mayores para aprovechar\n📦 **Envío Gratis:** En municipios seleccionados a partir de 30 USD"
+        },
+        {
+            question: "¿Puedo hacer pedidos personalizados?",
+            answer: "✅ **¡Sí!** Ofrecemos la posibilidad de crear pedidos personalizados y combos especiales según tus necesidades. Contáctanos por WhatsApp para coordinar tu pedido a medida."
+        },
+        {
+            question: "¿Qué hago si un producto no está disponible?",
+            answer: "🔄 Si un producto no está disponible, te contactaremos inmediatamente para ofrecerte alternativas similares de igual o mejor calidad, o programar la entrega una vez que tengamos stock."
+        },
+        {
+            question: "¿Proveen comprobante de compra?",
+            answer: "🧾 **Sí, absolutamente.** Proveemos comprobante de venta por todos nuestros pedidos. Solo debes solicitarlo al momento de hacer tu pedido y te lo entregaremos con tu compra."
+        },
+        {
+            question: "¿Qué es TuDespensa.25?",
+            answer: "🏪 **TuDespensa.25** es tu tienda online de confianza en Artemisa, especializada en la venta y distribución de productos de primera necesidad con entrega a domicilio rápida y precios competitivos."
+        }
+    ];
+
+    return (
+        <section id="faq" className="px-4 py-12 bg-gradient-to-b from-gray-50 to-white">
+            <div className="max-w-4xl mx-auto">
+                {/* Header */}
+                <div className="text-center mb-12">
+                    <div className="flex items-center justify-center space-x-3 mb-4">
+                        <div className="w-16 h-16 bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)] rounded-full flex items-center justify-center shadow-lg">
+                            <div className="icon-help-circle text-2xl text-white"></div>
+                        </div>
+                        <div>
+                            <h2 className="text-3xl font-bold text-[var(--text-primary)]">Preguntas Frecuentes</h2>
+                            <p className="text-[var(--text-secondary)] mt-1">Todo lo que necesitas saber sobre TuDespensa.25</p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Grid de FAQ */}
+                <div className="grid gap-4 md:grid-cols-2">
+                    {faqItems.map((item, index) => (
+                        <div 
+                            key={index} 
+                            className="border border-gray-200 rounded-xl overflow-hidden transition-all duration-300 hover:shadow-md bg-white"
+                        >
+                            <button
+                                onClick={() => toggleItem(index)}
+                                className="w-full px-6 py-5 text-left flex items-center justify-between bg-white hover:bg-gray-50 transition-colors group"
+                            >
+                                <span className="font-semibold text-[var(--text-primary)] text-sm sm:text-base pr-4 group-hover:text-[var(--primary-color)] transition-colors">
+                                    {item.question}
+                                </span>
+                                <div className={`transform transition-transform duration-300 flex-shrink-0 ${
+                                    openItems.includes(index) ? 'rotate-180' : ''
+                                }`}>
+                                    <div className="icon-chevron-down text-[var(--primary-color)] text-lg"></div>
+                                </div>
+                            </button>
+                            
+                            {openItems.includes(index) && (
+                                <div className="px-6 py-5 bg-gradient-to-r from-gray-50 to-white border-t border-gray-100 animate-fade-in">
+                                    <div className="text-[var(--text-secondary)] text-sm sm:text-base leading-relaxed whitespace-pre-line">
+                                        {item.answer}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    ))}
+                </div>
+
+                {/* CTA */}
+                <div className="mt-12 text-center bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)] rounded-2xl p-8 text-white shadow-xl">
+                    <h3 className="text-2xl font-bold mb-3">¿No encontraste tu respuesta?</h3>
+                    <p className="text-white text-opacity-90 mb-6 text-lg">
+                        Estamos aquí para ayudarte personalmente
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a 
+                            href={`https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="bg-white text-[var(--primary-color)] px-8 py-4 rounded-xl font-bold flex items-center justify-center space-x-3 hover:scale-105 transition-transform shadow-lg"
+                        >
+                            <div className="icon-message-circle text-xl"></div>
+                            <span className="text-lg">WhatsApp Directo</span>
+                        </a>
+                        <a 
+                            href={`tel:+${APP_CONFIG.WHATSAPP_NUMBER}`}
+                            className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-xl font-bold flex items-center justify-center space-x-3 hover:bg-white hover:text-[var(--primary-color)] transition-all"
+                        >
+                            <div className="icon-phone text-xl"></div>
+                            <span className="text-lg">Llamar Ahora</span>
+                        </a>
+                    </div>
+                    <p className="text-white text-opacity-80 mt-4 text-sm">
+                        Horario de atención: 24/7 • Respuesta inmediata
+                    </p>
+                </div>
+
+                {/* Información Adicional */}
+                <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                    <div className="bg-white p-4 rounded-xl border border-gray-200">
+                        <div className="icon-truck text-2xl text-[var(--primary-color)] mb-2"></div>
+                        <h4 className="font-semibold text-[var(--text-primary)]">Entrega Rápida</h4>
+                        <p className="text-sm text-[var(--text-secondary)]">Menos de 48 horas</p>
+                    </div>
+                    <div className="bg-white p-4 rounded-xl border border-gray-200">
+                        <div className="icon-shield text-2xl text-[var(--primary-color)] mb-2"></div>
+                        <h4 className="font-semibold text-[var(--text-primary)]">Pago Seguro</h4>
+                        <p className="text-sm text-[var(--text-secondary)]">Verificación instantánea</p>
+                    </div>
+                    <div className="bg-white p-4 rounded-xl border border-gray-200">
+                        <div className="icon-star text-2xl text-[var(--primary-color)] mb-2"></div>
+                        <h4 className="font-semibold text-[var(--text-primary)]">Calidad Garantizada</h4>
+                        <p className="text-sm text-[var(--text-secondary)]">Productos frescos</p>
+                    </div>
+                </div>
+            </div>
+        </section>
     );
-  };
-
-  const faqItems = [
-    {
-      question: "¿Qué métodos de pago aceptan?",
-      answer: "💳 **Solo Zelle** para clientes desde el exterior. El pago se verifica al instante, sin impuestos adicionales. Pagas seguro y al momento, desde donde estés."
-    },
-    {
-      question: "¿Cuál es el tiempo de entrega?",
-      answer: "🚚 **Entregas en menos de 48 horas**, y la mayoría de los pedidos llegan el mismo día. Esto aplica en toda la provincia Artemisa."
-    },
-    {
-      question: "¿Cuánto cuesta el envío?",
-      answer: `📦 **Tarifa de Envíos:**\n\n✅ **Municipios Gratis** (a partir de 30 USD, menos → 1.99 USD):\n• San Cristóbal\n• Candelaria\n• Guanajay\n\n✅ **Envío 3.99 USD fijo:**\n• Artemisa (cabecera)\n• Caimito\n• Mariel\n\n✅ **Envío 5 USD fijo:**\n• Bauta\n• Güira de Melena\n• San Antonio de los Baños\n• Bahía Honda\n• Alquízar`
-    },
-    {
-      question: "¿En qué municipios realizan entregas?",
-      answer: "📍 Cubrimos **toda la provincia Artemisa**: San Cristóbal, Candelaria, Mariel, Guanajay, Caimito, Bauta, Artemisa, Alquízar, Güira de Melena, San Antonio de los Baños y Bahía Honda."
-    },
-    {
-      question: "¿Qué categorías de productos ofrecen?",
-      answer: `🛍️ **Nuestras Categorías:**\n\n🥫 **Alimentos:** arroz, granos, carnes, lácteos, dulces, conservas\n🧼 **Productos de Aseo y Limpieza:** detergentes, jabones, higiene personal\n⚡ **Electrodomésticos:** lavadoras, batidoras, fogones, freezers\n🎁 **Combos especiales** con descuentos exclusivos`
-    },
-    {
-      question: "¿Tienen promociones especiales?",
-      answer: "🎯 **Promociones Activas:**\n\n🔥 **Combos Especiales:** 3 días a la semana mostramos combos con descuentos\n💥 **Zona Roja:** Productos con descuentos mayores para aprovechar\n📦 **Envío Gratis:** En municipios seleccionados a partir de 30 USD"
-    },
-    {
-      question: "¿Puedo hacer pedidos personalizados?",
-      answer: "✅ **¡Sí!** Ofrecemos la posibilidad de crear pedidos personalizados y combos especiales según tus necesidades. Contáctanos por WhatsApp para coordinar tu pedido a medida."
-    },
-    {
-      question: "¿Qué hago si un producto no está disponible?",
-      answer: "🔄 Si un producto no está disponible, te contactaremos inmediatamente para ofrecerte alternativas similares de igual o mejor calidad, o programar la entrega una vez que tengamos stock."
-    },
-    {
-      question: "¿Proveen comprobante de compra?",
-      answer: "🧾 **Sí, absolutamente.** Proveemos comprobante de venta por todos nuestros pedidos. Solo debes solicitarlo al momento de hacer tu pedido y te lo entregaremos con tu compra."
-    },
-    {
-      question: "¿Qué es TuDespensa.25?",
-      answer: "🏪 **TuDespensa.25** es tu tienda online de confianza en Artemisa, especializada en la venta y distribución de productos de primera necesidad con entrega a domicilio rápida y precios competitivos."
-    }
-  ];
-
-  return (
-    <section id="faq" className="px-4 py-12 bg-gradient-to-b from-gray-50 to-white">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center space-x-3 mb-4">
-            <div className="w-16 h-16 bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)] rounded-full flex items-center justify-center shadow-lg">
-              <div className="icon-help-circle text-2xl text-white"></div>
-            </div>
-            <div>
-              <h2 className="text-3xl font-bold text-[var(--text-primary)]">Preguntas Frecuentes</h2>
-              <p className="text-[var(--text-secondary)] mt-1">Todo lo que necesitas saber sobre TuDespensa.25</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Grid de FAQ */}
-        <div className="grid gap-4 md:grid-cols-2">
-          {faqItems.map((item, index) => (
-            <div 
-              key={index} 
-              className="border border-gray-200 rounded-xl overflow-hidden transition-all duration-300 hover:shadow-md bg-white"
-            >
-              <button
-                onClick={() => toggleItem(index)}
-                className="w-full px-6 py-5 text-left flex items-center justify-between bg-white hover:bg-gray-50 transition-colors group"
-              >
-                <span className="font-semibold text-[var(--text-primary)] text-sm sm:text-base pr-4 group-hover:text-[var(--primary-color)] transition-colors">
-                  {item.question}
-                </span>
-                <div className={`transform transition-transform duration-300 flex-shrink-0 ${
-                  openItems.includes(index) ? 'rotate-180' : ''
-                }`}>
-                  <div className="icon-chevron-down text-[var(--primary-color)] text-lg"></div>
-                </div>
-              </button>
-              
-              {openItems.includes(index) && (
-                <div className="px-6 py-5 bg-gradient-to-r from-gray-50 to-white border-t border-gray-100 animate-fade-in">
-                  <div className="text-[var(--text-secondary)] text-sm sm:text-base leading-relaxed whitespace-pre-line">
-                    {item.answer}
-                  </div>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* CTA */}
-        <div className="mt-12 text-center bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)] rounded-2xl p-8 text-white shadow-xl">
-          <h3 className="text-2xl font-bold mb-3">¿No encontraste tu respuesta?</h3>
-          <p className="text-white text-opacity-90 mb-6 text-lg">
-            Estamos aquí para ayudarte personalmente
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a 
-              href={`https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-white text-[var(--primary-color)] px-8 py-4 rounded-xl font-bold flex items-center justify-center space-x-3 hover:scale-105 transition-transform shadow-lg"
-            >
-              <div className="icon-message-circle text-xl"></div>
-              <span className="text-lg">WhatsApp Directo</span>
-            </a>
-            <a 
-              href={`tel:+${APP_CONFIG.WHATSAPP_NUMBER}`}
-              className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-xl font-bold flex items-center justify-center space-x-3 hover:bg-white hover:text-[var(--primary-color)] transition-all"
-            >
-              <div className="icon-phone text-xl"></div>
-              <span className="text-lg">Llamar Ahora</span>
-            </a>
-          </div>
-          <p className="text-white text-opacity-80 mt-4 text-sm">
-            Horario de atención: 24/7 • Respuesta inmediata
-          </p>
-        </div>
-
-        {/* Información Adicional */}
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-          <div className="bg-white p-4 rounded-xl border border-gray-200">
-            <div className="icon-truck text-2xl text-[var(--primary-color)] mb-2"></div>
-            <h4 className="font-semibold text-[var(--text-primary)]">Entrega Rápida</h4>
-            <p className="text-sm text-[var(--text-secondary)]">Menos de 48 horas</p>
-          </div>
-          <div className="bg-white p-4 rounded-xl border border-gray-200">
-            <div className="icon-shield text-2xl text-[var(--primary-color)] mb-2"></div>
-            <h4 className="font-semibold text-[var(--text-primary)]">Pago Seguro</h4>
-            <p className="text-sm text-[var(--text-secondary)]">Verificación instantánea</p>
-          </div>
-          <div className="bg-white p-4 rounded-xl border border-gray-200">
-            <div className="icon-star text-2xl text-[var(--primary-color)] mb-2"></div>
-            <h4 className="font-semibold text-[var(--text-primary)]">Calidad Garantizada</h4>
-            <p className="text-sm text-[var(--text-secondary)]">Productos frescos</p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
 });
 
 // Footer
 const Footer = React.memo(() => {
-  return (
-    <footer className="bg-[var(--text-primary)] text-white mt-12 relative overflow-hidden">
-      <div className="px-4 py-8 relative z-10">
-        <div className="text-center mb-6">
-          <div className="flex items-center justify-center space-x-2 mb-4">
-            <div className="w-12 h-12 bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)] rounded-full flex items-center justify-center">
-              <div className="icon-shopping-cart text-xl text-white"></div>
+    return (
+        <footer className="bg-[var(--text-primary)] text-white mt-12 relative overflow-hidden">
+            <div className="px-4 py-8 relative z-10">
+                <div className="text-center mb-6">
+                    <div className="flex items-center justify-center space-x-2 mb-4">
+                        <div className="w-12 h-12 bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)] rounded-full flex items-center justify-center">
+                            <div className="icon-shopping-cart text-xl text-white"></div>
+                        </div>
+                        <h3 className="text-2xl font-bold">TuDespensa.25</h3>
+                    </div>
+                    <p className="text-gray-300 text-sm mb-4">Tu despensa de confianza</p>
+                </div>
+                
+                <div className="space-y-4 text-center text-sm">
+                    <div>
+                        <h4 className="font-semibold text-[var(--secondary-color)] mb-2">Contacto</h4>
+                        <p className="text-gray-300">📱 +1 (914) 621-8369</p>
+                        <p className="text-gray-300">📧 ventas@tudespensa25.com</p>
+                        <p className="text-gray-300">📍 Disponible en todos los municipios de Artemisa</p>
+                    </div>
+                    
+                    <div>
+                        <h4 className="font-semibold text-[var(--secondary-color)] mb-2">Horarios</h4>
+                        <p className="text-gray-300">Las 24 h del día</p>
+                        <p className="text-gray-300">Los 7 días de la semana</p>
+                    </div>
+                    
+                    <div>
+                        <h4 className="font-semibold text-[var(--secondary-color)] mb-2">Síguenos</h4>
+                        <div className="flex items-center justify-center space-x-4">
+                            <a href={`https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
+                                <div className="icon-message-circle text-lg text-white"></div>
+                            </a>
+                            <a href="https://instagram.com/tudespensa25" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-pink-500 rounded-full flex items-center justify-center">
+                                <div className="icon-instagram text-lg text-white"></div>
+                            </a>
+                            <a href="https://facebook.com/tudespensa25" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+                                <div className="icon-facebook text-lg text-white"></div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div className="border-t border-gray-600 mt-8 pt-4 text-center">
+                    <p className="text-xs text-gray-400">
+                        © 2025 TuDespensa.25. Todos los derechos reservados.
+                    </p>
+                </div>
             </div>
-            <h3 className="text-2xl font-bold">TuDespensa.25</h3>
-          </div>
-          <p className="text-gray-300 text-sm mb-4">Tu despensa de confianza</p>
-        </div>
-        
-        <div className="space-y-4 text-center text-sm">
-          <div>
-            <h4 className="font-semibold text-[var(--secondary-color)] mb-2">Contacto</h4>
-            <p className="text-gray-300">📱 +1 (914) 621-8369</p>
-            <p className="text-gray-300">📧 ventas@tudespensa25.com</p>
-            <p className="text-gray-300">📍 Disponible en todos los municipios de Artemisa</p>
-          </div>
-          
-          <div>
-            <h4 className="font-semibold text-[var(--secondary-color)] mb-2">Horarios</h4>
-            <p className="text-gray-300">Las 24 h del día</p>
-            <p className="text-gray-300">Los 7 días de la semana</p>
-          </div>
-          
-          <div>
-            <h4 className="font-semibold text-[var(--secondary-color)] mb-2">Síguenos</h4>
-            <div className="flex items-center justify-center space-x-4">
-              <a href={`https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
-                <div className="icon-message-circle text-lg text-white"></div>
-              </a>
-              <a href="https://instagram.com/tudespensa25" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-pink-500 rounded-full flex items-center justify-center">
-                <div className="icon-instagram text-lg text-white"></div>
-              </a>
-              <a href="https://facebook.com/tudespensa25" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
-                <div className="icon-facebook text-lg text-white"></div>
-              </a>
-            </div>
-          </div>
-        </div>
-        
-        <div className="border-t border-gray-600 mt-8 pt-4 text-center">
-          <p className="text-xs text-gray-400">
-            © 2025 TuDespensa.25. Todos los derechos reservados.
-          </p>
-        </div>
-      </div>
-    </footer>
-  );
+        </footer>
+    );
 });
 
 // Error Boundary
 class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
-
-  static getDerivedStateFromError(error) {
-    return { hasError: true, error };
-  }
-
-  componentDidCatch(error, errorInfo) {
-    console.error('ErrorBoundary caught an error:', error, errorInfo.componentStack);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Algo salió mal</h1>
-            <p className="text-gray-600 mb-4">Lo sentimos, ocurrió un error inesperado.</p>
-            <button
-              onClick={() => window.location.reload()}
-              className="px-6 py-2 bg-[var(--primary-color)] text-white rounded-lg"
-            >
-              Recargar Página
-            </button>
-          </div>
-        </div>
-      );
+    constructor(props) {
+        super(props);
+        this.state = { hasError: false, error: null };
     }
-    return this.props.children;
-  }
+
+    static getDerivedStateFromError(error) {
+        return { hasError: true, error };
+    }
+
+    componentDidCatch(error, errorInfo) {
+        console.error('ErrorBoundary caught an error:', error, errorInfo.componentStack);
+    }
+
+    render() {
+        if (this.state.hasError) {
+            return (
+                <div className="min-h-screen flex items-center justify-center bg-gray-50">
+                    <div className="text-center">
+                        <h1 className="text-2xl font-bold text-gray-900 mb-4">Algo salió mal</h1>
+                        <p className="text-gray-600 mb-4">Lo sentimos, ocurrió un error inesperado.</p>
+                        <button
+                            onClick={() => window.location.reload()}
+                            className="px-6 py-2 bg-[var(--primary-color)] text-white rounded-lg"
+                        >
+                            Recargar Página
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+        return this.props.children;
+    }
 }
 
 // --------------------------------------------
-// 6. APLICACIÓN PRINCIPAL
+// 6. APLICACIÓN PRINCIPAL - VERSIÓN SUPABASE
 // --------------------------------------------
 function App() {
-  const [selectedCategory, setSelectedCategory] = React.useState('todos');
-  const [searchTerm, setSearchTerm] = React.useState('');
-  const [selectedMunicipality, setSelectedMunicipality] = React.useState(APP_CONFIG.DEFAULT_MUNICIPALITY);
-  const [cart, setCart] = React.useState([]);
-  const [isCartOpen, setIsCartOpen] = React.useState(false);
-  const [likedProducts, setLikedProducts] = React.useState([]);
-  const [notification, setNotification] = React.useState({ message: '', isVisible: false });
-  const [selectedProduct, setSelectedProduct] = React.useState(null);
-  
-  // Estado: Modal de municipio
-  const [showMunicipalityModal, setShowMunicipalityModal] = React.useState(true);
-
-  // Debounce para búsqueda
-  const debouncedSearchTerm = useDebounce(searchTerm, APP_CONFIG.DEBOUNCE_DELAY);
-
-  // Efecto para producto desde URL
-  React.useEffect(() => {
-    const productFromURL = getProductFromURL();
-    if (productFromURL) {
-      setSelectedProduct(productFromURL);
-      setSelectedCategory(productFromURL.category);
-    }
-  }, []);
-
-  // Productos filtrados
-  const filteredProducts = React.useMemo(() => {
-    if (!selectedMunicipality) return [];
+    const [selectedCategory, setSelectedCategory] = React.useState('todos');
+    const [searchTerm, setSearchTerm] = React.useState('');
+    const [selectedMunicipality, setSelectedMunicipality] = React.useState(APP_CONFIG.DEFAULT_MUNICIPALITY);
+    const [cart, setCart] = React.useState([]);
+    const [isCartOpen, setIsCartOpen] = React.useState(false);
+    const [likedProducts, setLikedProducts] = React.useState([]);
+    const [notification, setNotification] = React.useState({ message: '', isVisible: false });
+    const [selectedProduct, setSelectedProduct] = React.useState(null);
+    const [products, setProducts] = React.useState([]);
+    const [loading, setLoading] = React.useState(true);
     
-    let filtered = productData.filter(product => 
-      product.availableIn.includes(selectedMunicipality)
-    );
-    
-    if (selectedCategory !== 'todos') {
-      filtered = filtered.filter(product => product.category === selectedCategory);
-    }
-    
-    if (debouncedSearchTerm.trim()) {
-      const term = debouncedSearchTerm.toLowerCase().trim();
-      filtered = filtered.filter(product =>
-        product.name.toLowerCase().includes(term) ||
-        product.description.toLowerCase().includes(term)
-      );
-    }
-    
-    return filtered;
-  }, [selectedCategory, debouncedSearchTerm, selectedMunicipality]);
+    // Estado: Modal de municipio
+    const [showMunicipalityModal, setShowMunicipalityModal] = React.useState(true);
 
-  // Manejadores
-  const handleAddToCart = (product) => {
-    setCart(prevCart => {
-      const existingItem = prevCart.find(item => item.id === product.id);
-      if (existingItem) {
-        return prevCart.map(item => 
-          item.id === product.id 
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
+    // Debounce para búsqueda
+    const debouncedSearchTerm = useDebounce(searchTerm, APP_CONFIG.DEBOUNCE_DELAY);
+
+    // Cargar productos desde Supabase
+    React.useEffect(() => {
+        const loadProducts = async () => {
+            try {
+                setLoading(true);
+                
+                // Intentar cargar de Supabase
+                if (typeof ProductService !== 'undefined') {
+                    const supabaseProducts = await ProductService.getAllProducts();
+                    if (supabaseProducts && supabaseProducts.length > 0) {
+                        setProducts(supabaseProducts);
+                        window.productData = supabaseProducts; // Para compatibilidad
+                        
+                        // Verificar producto desde URL
+                        const productFromURL = getProductFromURL();
+                        if (productFromURL) {
+                            setSelectedProduct(productFromURL);
+                            setSelectedCategory(productFromURL.category);
+                        }
+                        
+                        setLoading(false);
+                        return;
+                    }
+                }
+                
+                // Fallback: cargar de archivo local
+                console.log('Cargando productos desde archivo local');
+                setProducts(productData);
+                window.productData = productData;
+                
+                // Verificar producto desde URL
+                const productFromURL = getProductFromURL();
+                if (productFromURL) {
+                    setSelectedProduct(productFromURL);
+                    setSelectedCategory(productFromURL.category);
+                }
+                
+            } catch (error) {
+                console.error('Error cargando productos:', error);
+                // Fallback a datos locales
+                setProducts(productData);
+                window.productData = productData;
+            } finally {
+                setLoading(false);
+            }
+        };
+        
+        loadProducts();
+    }, []);
+
+    // Productos filtrados
+    const filteredProducts = React.useMemo(() => {
+        if (!selectedMunicipality || !products.length) return [];
+        
+        let filtered = products.filter(product => 
+            product.availableIn && product.availableIn.includes(selectedMunicipality)
         );
-      }
-      return [...prevCart, { ...product, quantity: 1 }];
-    });
-    
-    setNotification({
-      message: `${product.name} ha sido añadido al carrito`,
-      isVisible: true
-    });
-  };
-
-  const handleToggleLike = (productId) => {
-    setLikedProducts(prevLiked => {
-      if (prevLiked.includes(productId)) {
-        return prevLiked.filter(id => id !== productId);
-      }
-      return [...prevLiked, productId];
-    });
-  };
-
-  const handleProductClick = (product) => {
-    setSelectedProduct(product);
-  };
-
-  const handleCloseProductModal = () => {
-    setSelectedProduct(null);
-  };
-
-  const handleProcessOrder = (customerData, discountCode = '', discountPercentage = 0, discountAmount = 0) => {
-    const selectedMunicipalityName = municipalities.find(m => m.id === selectedMunicipality)?.name || '';
-    
-    let orderMessage = `*NUEVO PEDIDO - TuDespensa.25*\n\n`;
-    orderMessage += `*DATOS DEL COMPRADOR:*\n`;
-    orderMessage += `👤 Nombre: ${customerData.name}\n`;
-    orderMessage += `📱 Teléfono: ${customerData.phone}\n\n`;
-    
-    orderMessage += `*DATOS DEL BENEFICIARIO (QUIEN RECIBE):*\n`;
-    orderMessage += `👤 Nombre: ${customerData.beneficiaryName}\n`;
-    orderMessage += `📱 Teléfono: ${customerData.beneficiaryPhone}\n\n`;
-    
-    orderMessage += `*DATOS DE ENTREGA:*\n`;
-    orderMessage += `📍 Dirección: ${customerData.address}\n`;
-    orderMessage += `🏘️ Municipio: ${selectedMunicipalityName}\n`;
-    if (customerData.notes) {
-      orderMessage += `📝 Notas: ${customerData.notes}\n`;
-    }
-    
-    if (discountCode && discountPercentage > 0) {
-      orderMessage += `\n*🎫 DESCUENTO APLICADO:*\n`;
-      orderMessage += `Código: ${discountCode}\n`;
-      orderMessage += `Descuento: ${discountPercentage}%\n`;
-      orderMessage += `💵 Ahorro: $${discountAmount.toFixed(2)} USD\n\n`;
-    }
-    
-    orderMessage += `\n*PRODUCTOS SOLICITADOS:*\n`;
-    let subtotal = 0;
-    
-    cart.forEach((item, index) => {
-      const itemTotal = item.price * item.quantity;
-      subtotal += itemTotal;
-      
-      orderMessage += `${index + 1}. ${item.name}\n`;
-      orderMessage += `   💰 Precio: $${item.price.toFixed(2)} USD\n`;
-      orderMessage += `   📦 Cantidad: ${item.quantity}\n`;
-      orderMessage += `   💵 Subtotal: $${itemTotal.toFixed(2)} USD\n\n`;
-    });
-    
-    orderMessage += `*RESUMEN DE PAGO:*\n`;
-    
-    if (discountPercentage > 0) {
-      orderMessage += `🛒 Subtotal: $${subtotal.toFixed(2)} USD\n`;
-      orderMessage += `🎫 Descuento (${discountPercentage}%): -$${discountAmount.toFixed(2)} USD\n`;
-      const finalTotal = subtotal - discountAmount;
-      orderMessage += `💰 *TOTAL FINAL: $${finalTotal.toFixed(2)} USD*\n\n`;
-    } else {
-      orderMessage += `💰 *TOTAL: $${subtotal.toFixed(2)} USD*\n\n`;
-    }
-    
-    orderMessage += `*DATOS DEL VENDEDOR:*\n`;
-    orderMessage += `🏪 Tienda: TuDespensa.25\n`;
-    orderMessage += `📞 Contacto: +${APP_CONFIG.WHATSAPP_NUMBER}\n`;
-    orderMessage += `📧 Email: ventas@tudespensa25.com\n`;
-    
-    orderMessage += `\n*DATOS DE ENTREGA:*\n`;
-    orderMessage += `🚚 Entrega a domicilio\n`;
-    orderMessage += `⏰ Tiempo estimado: 24 a 48 horas\n`;
-    orderMessage += `💳 Pago: Transferencia Zelle\n`;
-
-    const whatsappUrl = `https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(orderMessage)}`;
-    window.open(whatsappUrl, '_blank');
-    
-    setCart([]);
-    setIsCartOpen(false);
-  };
-
-  const getTotalCartItems = () => {
-    return cart.reduce((sum, item) => sum + item.quantity, 0);
-  };
-
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <Header 
-        searchTerm={searchTerm} 
-        setSearchTerm={setSearchTerm}
-        selectedMunicipality={selectedMunicipality}
-        cartItems={getTotalCartItems()}
-        onCartClick={() => setIsCartOpen(true)}
-        onMunicipalityClick={() => setShowMunicipalityModal(true)}
-      />
-      
-      <SocialMediaLinks />
-      
-      <MobileBanner />
-      
-      <main className="pb-20">
-        <CategoryGrid 
-          selectedCategory={selectedCategory}
-          onCategorySelect={setSelectedCategory}
-        />
-        <div className="px-4 mt-6 products-section">
-          <h2 className="text-xl font-semibold text-[var(--text-primary)] mb-4">
-            {selectedCategory === 'todos' ? 'Todos los Productos' : categories.find(c => c.id === selectedCategory)?.name}
-          </h2>
-          <ProductGrid 
-            products={filteredProducts} 
-            onAddToCart={handleAddToCart}
-            likedProducts={likedProducts}
-            onToggleLike={handleToggleLike}
-            onProductClick={handleProductClick}
-          />
-        </div>
-
-        <FAQSection />
-      </main>
-      
-      <Footer />
-      <FloatingWhatsAppButton />
-      <FloatingWishlistButton />
-      
-      <NotificationToast
-        message={notification.message}
-        isVisible={notification.isVisible}
-        onClose={() => setNotification({ message: '', isVisible: false })}
-      />
-      
-      <CartModal 
-        isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
-        cart={cart}
-        setCart={setCart}
-        onProcessOrder={(customerData, discountCode, discountPercentage, discountAmount) => 
-          handleProcessOrder(customerData, discountCode, discountPercentage, discountAmount)
+        
+        if (selectedCategory !== 'todos') {
+            filtered = filtered.filter(product => product.category === selectedCategory);
         }
-      />
-      
-      <ProductDetailModal
-        isOpen={!!selectedProduct}
-        onClose={handleCloseProductModal}
-        product={selectedProduct}
-        onAddToCart={handleAddToCart}
-        likedProducts={likedProducts}
-        onToggleLike={handleToggleLike}
-      />
-      
-      <MunicipalityModal
-        isOpen={showMunicipalityModal}
-        onClose={() => setShowMunicipalityModal(false)}
-        selectedMunicipality={selectedMunicipality}
-        setSelectedMunicipality={setSelectedMunicipality}
-      />
-    </div>
-  );
+        
+        if (debouncedSearchTerm.trim()) {
+            const term = debouncedSearchTerm.toLowerCase().trim();
+            filtered = filtered.filter(product =>
+                (product.name && product.name.toLowerCase().includes(term)) ||
+                (product.description && product.description.toLowerCase().includes(term))
+            );
+        }
+        
+        return filtered;
+    }, [selectedCategory, debouncedSearchTerm, selectedMunicipality, products]);
+
+    // Manejadores
+    const handleAddToCart = (product) => {
+        setCart(prevCart => {
+            const existingItem = prevCart.find(item => item.id === product.id);
+            if (existingItem) {
+                return prevCart.map(item => 
+                    item.id === product.id 
+                        ? { ...item, quantity: item.quantity + 1 }
+                        : item
+                );
+            }
+            return [...prevCart, { ...product, quantity: 1 }];
+        });
+        
+        setNotification({
+            message: `${product.name} ha sido añadido al carrito`,
+            isVisible: true
+        });
+    };
+
+    const handleToggleLike = (productId) => {
+        setLikedProducts(prevLiked => {
+            if (prevLiked.includes(productId)) {
+                return prevLiked.filter(id => id !== productId);
+            }
+            return [...prevLiked, productId];
+        });
+    };
+
+    const handleProductClick = (product) => {
+        setSelectedProduct(product);
+    };
+
+    const handleCloseProductModal = () => {
+        setSelectedProduct(null);
+    };
+
+    const handleProcessOrder = (customerData, discountCode = '', discountPercentage = 0, discountAmount = 0) => {
+        const selectedMunicipalityName = municipalities.find(m => m.id === selectedMunicipality)?.name || '';
+        
+        let orderMessage = `*NUEVO PEDIDO - TuDespensa.25*\n\n`;
+        orderMessage += `*DATOS DEL COMPRADOR:*\n`;
+        orderMessage += `👤 Nombre: ${customerData.name}\n`;
+        orderMessage += `📱 Teléfono: ${customerData.phone}\n\n`;
+        
+        orderMessage += `*DATOS DEL BENEFICIARIO (QUIEN RECIBE):*\n`;
+        orderMessage += `👤 Nombre: ${customerData.beneficiaryName}\n`;
+        orderMessage += `📱 Teléfono: ${customerData.beneficiaryPhone}\n\n`;
+        
+        orderMessage += `*DATOS DE ENTREGA:*\n`;
+        orderMessage += `📍 Dirección: ${customerData.address}\n`;
+        orderMessage += `🏘️ Municipio: ${selectedMunicipalityName}\n`;
+        if (customerData.notes) {
+            orderMessage += `📝 Notas: ${customerData.notes}\n`;
+        }
+        
+        if (discountCode && discountPercentage > 0) {
+            orderMessage += `\n*🎫 DESCUENTO APLICADO:*\n`;
+            orderMessage += `Código: ${discountCode}\n`;
+            orderMessage += `Descuento: ${discountPercentage}%\n`;
+            orderMessage += `💵 Ahorro: $${discountAmount.toFixed(2)} USD\n\n`;
+        }
+        
+        orderMessage += `\n*PRODUCTOS SOLICITADOS:*\n`;
+        let subtotal = 0;
+        
+        cart.forEach((item, index) => {
+            const itemTotal = item.price * item.quantity;
+            subtotal += itemTotal;
+            
+            orderMessage += `${index + 1}. ${item.name}\n`;
+            orderMessage += `   💰 Precio: $${item.price.toFixed(2)} USD\n`;
+            orderMessage += `   📦 Cantidad: ${item.quantity}\n`;
+            orderMessage += `   💵 Subtotal: $${itemTotal.toFixed(2)} USD\n\n`;
+        });
+        
+        orderMessage += `*RESUMEN DE PAGO:*\n`;
+        
+        if (discountPercentage > 0) {
+            orderMessage += `🛒 Subtotal: $${subtotal.toFixed(2)} USD\n`;
+            orderMessage += `🎫 Descuento (${discountPercentage}%): -$${discountAmount.toFixed(2)} USD\n`;
+            const finalTotal = subtotal - discountAmount;
+            orderMessage += `💰 *TOTAL FINAL: $${finalTotal.toFixed(2)} USD*\n\n`;
+        } else {
+            orderMessage += `💰 *TOTAL: $${subtotal.toFixed(2)} USD*\n\n`;
+        }
+        
+        orderMessage += `*DATOS DEL VENDEDOR:*\n`;
+        orderMessage += `🏪 Tienda: TuDespensa.25\n`;
+        orderMessage += `📞 Contacto: +${APP_CONFIG.WHATSAPP_NUMBER}\n`;
+        orderMessage += `📧 Email: ventas@tudespensa25.com\n`;
+        
+        orderMessage += `\n*DATOS DE ENTREGA:*\n`;
+        orderMessage += `🚚 Entrega a domicilio\n`;
+        orderMessage += `⏰ Tiempo estimado: 24 a 48 horas\n`;
+        orderMessage += `💳 Pago: Transferencia Zelle\n`;
+
+        const whatsappUrl = `https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(orderMessage)}`;
+        window.open(whatsappUrl, '_blank');
+        
+        setCart([]);
+        setIsCartOpen(false);
+    };
+
+    const getTotalCartItems = () => {
+        return cart.reduce((sum, item) => sum + item.quantity, 0);
+    };
+
+    // Renderizado condicional para carga
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+                <div className="text-center">
+                    <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-gray-300 border-t-green-600 mb-4"></div>
+                    <p className="text-gray-600">Cargando productos...</p>
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div className="min-h-screen bg-gray-50">
+            <Header 
+                searchTerm={searchTerm} 
+                setSearchTerm={setSearchTerm}
+                selectedMunicipality={selectedMunicipality}
+                cartItems={getTotalCartItems()}
+                onCartClick={() => setIsCartOpen(true)}
+                onMunicipalityClick={() => setShowMunicipalityModal(true)}
+            />
+            
+            <SocialMediaLinks />
+            
+            <MobileBanner />
+            
+            <main className="pb-20">
+                <CategoryGrid 
+                    selectedCategory={selectedCategory}
+                    onCategorySelect={setSelectedCategory}
+                />
+                <div className="px-4 mt-6 products-section">
+                    <h2 className="text-xl font-semibold text-[var(--text-primary)] mb-4">
+                        {selectedCategory === 'todos' ? 'Todos los Productos' : categories.find(c => c.id === selectedCategory)?.name}
+                    </h2>
+                    <ProductGrid 
+                        products={filteredProducts} 
+                        onAddToCart={handleAddToCart}
+                        likedProducts={likedProducts}
+                        onToggleLike={handleToggleLike}
+                        onProductClick={handleProductClick}
+                    />
+                </div>
+
+                <FAQSection />
+            </main>
+            
+            <Footer />
+            <FloatingWhatsAppButton />
+            <FloatingWishlistButton />
+            
+            <NotificationToast
+                message={notification.message}
+                isVisible={notification.isVisible}
+                onClose={() => setNotification({ message: '', isVisible: false })}
+            />
+            
+            <CartModal 
+                isOpen={isCartOpen}
+                onClose={() => setIsCartOpen(false)}
+                cart={cart}
+                setCart={setCart}
+                onProcessOrder={(customerData, discountCode, discountPercentage, discountAmount) => 
+                    handleProcessOrder(customerData, discountCode, discountPercentage, discountAmount)
+                }
+            />
+            
+            <ProductDetailModal
+                isOpen={!!selectedProduct}
+                onClose={handleCloseProductModal}
+                product={selectedProduct}
+                onAddToCart={handleAddToCart}
+                likedProducts={likedProducts}
+                onToggleLike={handleToggleLike}
+            />
+            
+            <MunicipalityModal
+                isOpen={showMunicipalityModal}
+                onClose={() => setShowMunicipalityModal(false)}
+                selectedMunicipality={selectedMunicipality}
+                setSelectedMunicipality={setSelectedMunicipality}
+            />
+        </div>
+    );
 }
 
 // --------------------------------------------
@@ -1371,7 +1432,7 @@ function App() {
 // --------------------------------------------
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <ErrorBoundary>
-    <App />
-  </ErrorBoundary>
+    <ErrorBoundary>
+        <App />
+    </ErrorBoundary>
 );

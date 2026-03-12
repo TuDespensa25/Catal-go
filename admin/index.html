@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>TuDespensa.25 - Panel de Administración</title>
     
+    <!-- Preconexiones -->
+    <link rel="preconnect" href="https://resource.trickle.so">
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    
+    <!-- Meta tags -->
+    <meta name="theme-color" content="#3b82f6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    
     <!-- Recursos -->
     <script src="https://resource.trickle.so/vendor_lib/unpkg/react@18/umd/react.production.min.js"></script>
     <script src="https://resource.trickle.so/vendor_lib/unpkg/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -31,12 +40,31 @@
         input, select, textarea, button {
             font-size: 16px; /* Evita zoom en iOS */
         }
+        
+        /* Loading spinner */
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
     <div id="admin-root"></div>
     
-    <!-- Datos -->
+    <!-- SUPABASE - NUEVO -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/js/config/supabase.js"></script>
+    
+    <!-- Datos locales (respaldo) -->
     <script src="/js/data/products.js"></script>
     <script src="/js/data/categories.js"></script>
     <script src="/js/data/municipalities.js"></script>

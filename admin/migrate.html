@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Migrar a Supabase - TuDespensa.25</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .stat-card .label {
+            color: #64748b;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        
+        .stat-card .value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #1e293b;
+        }
+        
+        .stat-card .value.success {
+            color: #10b981;
+        }
+        
+        .stat-card .value.error {
+            color: #ef4444;
+        }
+        
+        .progress-container {
+            background: #f1f5f9;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .progress-bar {
+            height: 30px;
+            background: #e2e8f0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            width: 0%;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        
+        .progress-text {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #1e293b;
+            font-weight: 500;
+        }
+        
+        .log-container {
+            background: #0f172a;
+            color: #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 30px;
+        }
+        
+        .log-line {
+            padding: 4px 0;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            align-items: center;
+        }
+        
+        .log-line.success {
+            color: #4ade80;
+        }
+        
+        .log-line.error {
+            color: #f87171;
+        }
+        
+        .log-line.warning {
+            color: #fbbf24;
+        }
+        
+        .log-icon {
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .button {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 200px;
+            justify-content: center;
+        }
+        
+        .button-primary {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+        
+        .button-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+        }
+        
+        .button-secondary {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+        
+        .button-secondary:hover:not(:disabled) {
+            background: #cbd5e1;
+            transform: translateY(-2px);
+        }
+        
+        .button-danger {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .button-danger:hover:not(:disabled) {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+        
+        .button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .warning-box {
+            background: #fff7ed;
+            border-left: 4px solid #f97316;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            color: #9a3412;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .warning-icon {
+            font-size: 2rem;
+        }
+        
+        .checkbox-group {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 12px;
+        }
+        
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #1e293b;
+        }
+        
+        .checkbox-label input {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .summary {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .summary-item {
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .summary-label {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        
+        .summary-value {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #1e293b;
+        }
+        
+        @media (max-width: 640px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .button {
+                width: 100%;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    
+    <!-- Scripts necesarios -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/js/data/products.js"></script>
+    <script src="/js/data/categories.js"></script>
+    <script src="/js/data/municipalities.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Migración a Supabase</h1>
+            <p>Sube todos tus productos a la base de datos en la nube</p>
+        </div>
+        
+        <div class="content">
+            <!-- Advertencia -->
+            <div class="warning-box">
+                <div class="warning-icon">⚠️</div>
+                <div>
+                    <strong>¡Importante!</strong> Esta acción subirá todos los productos a Supabase. 
+                    Asegúrate de tener configurado correctamente el archivo <code>/js/config/supabase.js</code>
+                </div>
+            </div>
+            
+            <!-- Estadísticas rápidas -->
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="label">Productos Locales</div>
+                    <div class="value" id="total-local">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Migrados</div>
+                    <div class="value success" id="total-success">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Errores</div>
+                    <div class="value error" id="total-error">0</div>
+                </div>
+            </div>
+            
+            <!-- Barra de progreso -->
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 0%;">0%</div>
+                </div>
+                <div class="progress-text" id="progress-text">
+                    Listo para migrar
+                </div>
+            </div>
+            
+            <!-- Opciones de migración -->
+            <div class="checkbox-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="clear-existing" checked>
+                    <span>Limpiar productos existentes en Supabase antes de migrar (recomendado)</span>
+                </label>
+                <p style="color: #64748b; font-size: 0.9rem; margin-top: 8px; margin-left: 30px;">
+                    Si marcas esta opción, se eliminarán todos los productos actuales en Supabase antes de insertar los nuevos.
+                </p>
+            </div>
+            
+            <!-- Log de migración -->
+            <div class="log-container" id="log">
+                <div class="log-line">
+                    <span class="log-icon">ℹ️</span>
+                    <span>Esperando inicio de migración...</span>
+                </div>
+            </div>
+            
+            <!-- Botones de acción -->
+            <div class="button-group">
+                <button class="button button-primary" id="btn-migrate" onclick="startMigration()">
+                    <span>🚀</span>
+                    <span>Iniciar Migración</span>
+                </button>
+                <button class="button button-secondary" id="btn-verify" onclick="verifyConnection()">
+                    <span>🔍</span>
+                    <span>Verificar Conexión</span>
+                </button>
+                <button class="button button-danger" id="btn-clear" onclick="clearSupabase()">
+                    <span>🗑️</span>
+                    <span>Limpiar Todo</span>
+                </button>
+            </div>
+            
+            <!-- Resumen final -->
+            <div class="summary" id="summary" style="display: none;">
+                <div class="summary-item">
+                    <div class="summary-label">Tiempo total</div>
+                    <div class="summary-value" id="total-time">0s</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Velocidad</div>
+                    <div class="summary-value" id="speed">0 prod/s</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Configuración de Supabase (usando la misma que ya tienes)
+        const SUPABASE_CONFIG = {
+            url: 'https://ivbpblfwasphqczhkfpi.supabase.co',
+            anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml2YnBibGZ3YXNwaHFjemhrZnBpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMzAyMjAsImV4cCI6MjA4ODkwNjIyMH0.SXZhgi4w3IiTseZXvbhbp7FlYEHMv-hZZm_f67srA7o'
+        };
+        
+        const supabase = supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
+        
+        // Variables de estado
+        let isMigrating = false;
+        let startTime = null;
+        let successCount = 0;
+        let errorCount = 0;
+        
+        // Elementos del DOM
+        const logEl = document.getElementById('log');
+        const totalLocalEl = document.getElementById('total-local');
+        const totalSuccessEl = document.getElementById('total-success');
+        const totalErrorEl = document.getElementById('total-error');
+        const progressFill = document.getElementById('progress-fill');
+        const progressText = document.getElementById('progress-text');
+        const btnMigrate = document.getElementById('btn-migrate');
+        const btnVerify = document.getElementById('btn-verify');
+        const btnClear = document.getElementById('btn-clear');
+        const summaryEl = document.getElementById('summary');
+        const totalTimeEl = document.getElementById('total-time');
+        const speedEl = document.getElementById('speed');
+        
+        // Mostrar total de productos locales
+        totalLocalEl.textContent = productData.length;
+        
+        // Función para agregar líneas al log
+        function addLog(message, type = 'info') {
+            const logLine = document.createElement('div');
+            logLine.className = `log-line ${type}`;
+            
+            let icon = 'ℹ️';
+            if (type === 'success') icon = '✅';
+            if (type === 'error') icon = '❌';
+            if (type === 'warning') icon = '⚠️';
+            
+            logLine.innerHTML = `<span class="log-icon">${icon}</span><span>${message}</span>`;
+            logEl.appendChild(logLine);
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+        
+        // Función para actualizar estadísticas
+        function updateStats() {
+            totalSuccessEl.textContent = successCount;
+            totalErrorEl.textContent = errorCount;
+            
+            const total = successCount + errorCount;
+            const percent = (total / productData.length) * 100;
+            progressFill.style.width = percent + '%';
+            progressFill.textContent = Math.round(percent) + '%';
+            
+            if (total === productData.length) {
+                const endTime = Date.now();
+                const totalSeconds = ((endTime - startTime) / 1000).toFixed(1);
+                const speed = (total / totalSeconds).toFixed(1);
+                
+                totalTimeEl.textContent = totalSeconds + 's';
+                speedEl.textContent = speed + ' prod/s';
+                summaryEl.style.display = 'grid';
+                
+                progressText.textContent = '✅ Migración completada';
+                btnMigrate.disabled = false;
+                isMigrating = false;
+            }
+        }
+        
+        // Función para verificar conexión
+        async function verifyConnection() {
+            addLog('Verificando conexión con Supabase...', 'info');
+            btnVerify.disabled = true;
+            
+            try {
+                const { data, error } = await supabase
+                    .from('products')
+                    .select('count', { count: 'exact', head: true });
+                
+                if (error) throw error;
+                
+                addLog('✅ Conexión exitosa con Supabase', 'success');
+                
+                // Verificar tablas
+                const { count, error: countError } = await supabase
+                    .from('products')
+                    .select('*', { count: 'exact', head: true });
+                
+                addLog(`📊 Productos actuales en Supabase: ${count}`, 'info');
+                
+            } catch (error) {
+                addLog(`❌ Error de conexión: ${error.message}`, 'error');
+                console.error(error);
+            } finally {
+                btnVerify.disabled = false;
+            }
+        }
+        
+        // Función para limpiar Supabase
+        async function clearSupabase() {
+            if (!confirm('¿Estás SEGURO? Esto eliminará TODOS los productos de Supabase. Esta acción no se puede deshacer.')) {
+                return;
+            }
+            
+            addLog('🗑️ Limpiando productos de Supabase...', 'warning');
+            btnClear.disabled = true;
+            
+            try {
+                // Obtener todos los productos
+                const { data: products, error: fetchError } = await supabase
+                    .from('products')
+                    .select('id');
+                
+                if (fetchError) throw fetchError;
+                
+                if (products && products.length > 0) {
+                    // Eliminar uno por uno
+                    for (const product of products) {
+                        const { error: deleteError } = await supabase
+                            .from('products')
+                            .delete()
+                            .eq('id', product.id);
+                        
+                        if (deleteError) throw deleteError;
+                    }
+                    
+                    addLog(`✅ Eliminados ${products.length} productos`, 'success');
+                } else {
+                    addLog('ℹ️ No hay productos para eliminar', 'info');
+                }
+                
+            } catch (error) {
+                addLog(`❌ Error al limpiar: ${error.message}`, 'error');
+            } finally {
+                btnClear.disabled = false;
+            }
+        }
+        
+        // Función principal de migración
+        async function startMigration() {
+            if (isMigrating) return;
+            
+            const clearExisting = document.getElementById('clear-existing').checked;
+            
+            if (!confirm(`¿Iniciar migración de ${productData.length} productos a Supabase?`)) {
+                return;
+            }
+            
+            // Resetear estados
+            isMigrating = true;
+            startTime = Date.now();
+            successCount = 0;
+            errorCount = 0;
+            btnMigrate.disabled = true;
+            logEl.innerHTML = '';
+            summaryEl.style.display = 'none';
+            
+            updateStats();
+            addLog('🚀 Iniciando migración...', 'info');
+            
+            try {
+                // Si se solicitó limpiar, eliminar productos existentes
+                if (clearExisting) {
+                    addLog('🗑️ Limpiando productos existentes...', 'warning');
+                    
+                    const { data: existingProducts, error: fetchError } = await supabase
+                        .from('products')
+                        .select('id');
+                    
+                    if (fetchError) throw fetchError;
+                    
+                    if (existingProducts && existingProducts.length > 0) {
+                        for (const product of existingProducts) {
+                            const { error: deleteError } = await supabase
+                                .from('products')
+                                .delete()
+                                .eq('id', product.id);
+                            
+                            if (deleteError) throw deleteError;
+                        }
+                        addLog(`✅ Eliminados ${existingProducts.length} productos existentes`, 'success');
+                    }
+                }
+                
+                // Migrar productos
+                for (let i = 0; i < productData.length; i++) {
+                    const product = productData[i];
+                    
+                    try {
+                        addLog(`⏳ (${i+1}/${productData.length}) Migrando: ${product.name}...`, 'info');
+                        
+                        // Preparar datos para insertar
+                        const { id, availableIn, ...productDataForDb } = product;
+                        
+                        // Insertar producto
+                        const { data: newProduct, error: insertError } = await supabase
+                            .from('products')
+                            .insert([{
+                                ...productDataForDb,
+                                price: parseFloat(product.price)
+                            }])
+                            .select();
+                        
+                        if (insertError) throw insertError;
+                        
+                        // Insertar disponibilidad si existe
+                        if (availableIn && availableIn.length > 0 && newProduct && newProduct[0]) {
+                            const availabilityData = availableIn.map(mId => ({
+                                product_id: newProduct[0].id,
+                                municipality_id: mId
+                            }));
+                            
+                            const { error: availError } = await supabase
+                                .from('product_availability')
+                                .insert(availabilityData);
+                            
+                            if (availError) throw availError;
+                        }
+                        
+                        successCount++;
+                        addLog(`✅ Migrado: ${product.name} (ID: ${newProduct ? newProduct[0].id : 'nuevo'})`, 'success');
+                        
+                    } catch (error) {
+                        errorCount++;
+                        addLog(`❌ Error en ${product.name}: ${error.message}`, 'error');
+                        console.error('Error detallado:', error);
+                    }
+                    
+                    updateStats();
+                    
+                    // Pequeña pausa para no saturar
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                }
+                
+                addLog('✨ Migración completada', 'success');
+                
+                // Verificar resultado final
+                const { count, error: countError } = await supabase
+                    .from('products')
+                    .select('*', { count: 'exact', head: true });
+                
+                if (!countError) {
+                    addLog(`📊 Total productos en Supabase: ${count}`, 'info');
+                }
+                
+            } catch (error) {
+                addLog(`❌ Error fatal: ${error.message}`, 'error');
+                console.error(error);
+            } finally {
+                isMigrating = false;
+                btnMigrate.disabled = false;
+            }
+        }
+        
+        // Agregar funciones al objeto window para los onclick
+        window.startMigration = startMigration;
+        window.verifyConnection = verifyConnection;
+        window.clearSupabase = clearSupabase;
+        
+        // Verificar conexión al cargar
+        window.addEventListener('load', () => {
+            setTimeout(verifyConnection, 500);
+        });
+    </script>
+</body>
+</html>
