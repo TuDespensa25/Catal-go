@@ -1,6 +1,7 @@
 // admin/admin.js
 // ============================================
 // TuDespensa.25 - Panel de Administración
+// Versión Responsive para Móvil
 // ============================================
 
 // --------------------------------------------
@@ -36,7 +37,7 @@ const StorageService = {
         window.productData = products;
     },
     
-    // Reset a productos originales
+    // Reset a productos originales (solo superadmin)
     resetToOriginal: () => {
         localStorage.setItem(ADMIN_CONFIG.STORAGE_KEY, JSON.stringify(productData));
         window.productData = productData;
@@ -68,7 +69,7 @@ const LoginForm = ({ onLogin }) => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-8">
+            <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 sm:p-8">
                 <div className="text-center mb-8">
                     <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
                         <div className="icon-shield text-3xl text-white"></div>
@@ -86,7 +87,7 @@ const LoginForm = ({ onLogin }) => {
                             type="text"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-base"
                             placeholder="Ingresa tu usuario"
                             required
                         />
@@ -100,7 +101,7 @@ const LoginForm = ({ onLogin }) => {
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-base"
                             placeholder="Ingresa tu contraseña"
                             required
                         />
@@ -114,7 +115,7 @@ const LoginForm = ({ onLogin }) => {
                     
                     <button
                         type="submit"
-                        className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-all"
+                        className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-all text-base min-h-[44px]"
                     >
                         Iniciar Sesión
                     </button>
@@ -176,20 +177,24 @@ const ProductEditModal = ({ isOpen, onClose, product, onSave, categories, munici
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-            <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-                <div className="sticky top-0 bg-white border-b p-6 flex items-center justify-between">
-                    <h2 className="text-xl font-bold text-gray-900">
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-2 sm:p-4">
+            <div className="bg-white rounded-xl max-w-4xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
+                <div className="sticky top-0 bg-white border-b p-4 sm:p-6 flex items-center justify-between">
+                    <h2 className="text-lg sm:text-xl font-bold text-gray-900">
                         {product ? 'Editar Producto' : 'Nuevo Producto'}
                     </h2>
-                    <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full">
+                    <button 
+                        onClick={onClose} 
+                        className="p-2 hover:bg-gray-100 rounded-full min-h-[44px] min-w-[44px] flex items-center justify-center"
+                        aria-label="Cerrar"
+                    >
                         <div className="icon-x text-xl"></div>
                     </button>
                 </div>
                 
-                <form onSubmit={handleSubmit} className="p-6 space-y-6">
+                <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-6">
                     {/* Datos básicos */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Nombre del Producto *
@@ -198,7 +203,7 @@ const ProductEditModal = ({ isOpen, onClose, product, onSave, categories, munici
                                 type="text"
                                 value={formData.name}
                                 onChange={(e) => setFormData({...formData, name: e.target.value})}
-                                className="admin-input"
+                                className="admin-input text-base"
                                 required
                             />
                         </div>
@@ -210,7 +215,7 @@ const ProductEditModal = ({ isOpen, onClose, product, onSave, categories, munici
                             <select
                                 value={formData.category}
                                 onChange={(e) => setFormData({...formData, category: e.target.value})}
-                                className="admin-select"
+                                className="admin-select text-base"
                                 required
                             >
                                 {categories.map(cat => (
@@ -229,7 +234,7 @@ const ProductEditModal = ({ isOpen, onClose, product, onSave, categories, munici
                                 min="0"
                                 value={formData.price}
                                 onChange={(e) => setFormData({...formData, price: parseFloat(e.target.value)})}
-                                className="admin-input"
+                                className="admin-input text-base"
                                 required
                             />
                         </div>
@@ -242,8 +247,8 @@ const ProductEditModal = ({ isOpen, onClose, product, onSave, categories, munici
                                 type="text"
                                 value={formData.image}
                                 onChange={(e) => setFormData({...formData, image: e.target.value})}
-                                className="admin-input"
-                                placeholder="/images/producto.png"
+                                className="admin-input text-base"
+                                placeholder="/images/default.png"
                             />
                         </div>
                     </div>
@@ -256,14 +261,14 @@ const ProductEditModal = ({ isOpen, onClose, product, onSave, categories, munici
                             value={formData.description}
                             onChange={(e) => setFormData({...formData, description: e.target.value})}
                             rows="3"
-                            className="admin-input"
+                            className="admin-input text-base"
                             placeholder="Descripción del producto"
                         />
                     </div>
                     
                     {/* Selección de municipios */}
                     <div>
-                        <div className="flex items-center justify-between mb-4">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-2">
                             <label className="block text-sm font-medium text-gray-700">
                                 Disponible en municipios:
                             </label>
@@ -271,7 +276,7 @@ const ProductEditModal = ({ isOpen, onClose, product, onSave, categories, munici
                                 <button
                                     type="button"
                                     onClick={selectAllMunicipalities}
-                                    className="text-sm text-blue-600 hover:text-blue-800"
+                                    className="text-sm text-blue-600 hover:text-blue-800 p-2 min-h-[44px]"
                                 >
                                     Seleccionar todos
                                 </button>
@@ -279,7 +284,7 @@ const ProductEditModal = ({ isOpen, onClose, product, onSave, categories, munici
                                 <button
                                     type="button"
                                     onClick={clearAllMunicipalities}
-                                    className="text-sm text-red-600 hover:text-red-800"
+                                    className="text-sm text-red-600 hover:text-red-800 p-2 min-h-[44px]"
                                 >
                                     Limpiar
                                 </button>
@@ -297,9 +302,9 @@ const ProductEditModal = ({ isOpen, onClose, product, onSave, categories, munici
                                         type="checkbox"
                                         checked={formData.availableIn.includes(muni.id)}
                                         onChange={() => {}}
-                                        className="w-4 h-4 text-blue-600"
+                                        className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600"
                                     />
-                                    <span className="text-sm">{muni.name.split(', ')[1]}</span>
+                                    <span className="text-sm sm:text-base">{muni.name.split(', ')[1]}</span>
                                 </div>
                             ))}
                         </div>
@@ -317,13 +322,13 @@ const ProductEditModal = ({ isOpen, onClose, product, onSave, categories, munici
                                 <img
                                     src={formData.image}
                                     alt="Vista previa"
-                                    className="w-20 h-20 object-contain bg-white rounded border"
+                                    className="w-16 h-16 sm:w-20 sm:h-20 object-contain bg-white rounded border"
                                     onError={(e) => {
                                         e.target.src = '/images/default.png';
                                     }}
                                 />
                                 <div>
-                                    <p className="font-medium">{formData.name || 'Nombre del producto'}</p>
+                                    <p className="font-medium text-sm sm:text-base">{formData.name || 'Nombre del producto'}</p>
                                     <p className="text-sm text-gray-600">${formData.price.toFixed(2)} USD</p>
                                     <p className="text-xs text-gray-500">{formData.availableIn.length} municipios</p>
                                 </div>
@@ -331,17 +336,17 @@ const ProductEditModal = ({ isOpen, onClose, product, onSave, categories, munici
                         </div>
                     )}
                     
-                    <div className="flex justify-end space-x-3 pt-4 border-t">
+                    <div className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-3 pt-4 border-t">
                         <button
                             type="button"
                             onClick={onClose}
-                            className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+                            className="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 min-h-[44px]"
                         >
                             Cancelar
                         </button>
                         <button
                             type="submit"
-                            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 min-h-[44px]"
                         >
                             {product ? 'Actualizar' : 'Crear'} Producto
                         </button>
@@ -364,6 +369,7 @@ const AdminApp = () => {
     const [editingProduct, setEditingProduct] = React.useState(null);
     const [isModalOpen, setIsModalOpen] = React.useState(false);
     const [showDeleteConfirm, setShowDeleteConfirm] = React.useState(null);
+    const [menuOpen, setMenuOpen] = React.useState(false);
 
     // Cargar productos al iniciar
     React.useEffect(() => {
@@ -388,6 +394,13 @@ const AdminApp = () => {
         
         setFilteredProducts(filtered);
     }, [products, searchTerm, selectedCategory]);
+
+    // Cerrar menú al cambiar de categoría en móvil
+    React.useEffect(() => {
+        if (window.innerWidth <= 768) {
+            setMenuOpen(false);
+        }
+    }, [selectedCategory]);
 
     // Guardar producto (nuevo o editado)
     const handleSaveProduct = (productData) => {
@@ -435,36 +448,48 @@ const AdminApp = () => {
     const isSuperAdmin = user.role === 'superadmin';
 
     return (
-        <div className="flex h-screen bg-gray-100">
-            {/* Sidebar */}
-            <div className="admin-sidebar w-64 text-white flex flex-col">
-                <div className="p-6">
-                    <div className="flex items-center space-x-3 mb-8">
-                        <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center">
-                            <div className="icon-shopping-cart text-xl"></div>
+        <div className="flex flex-col md:flex-row h-screen bg-gray-100">
+            {/* Sidebar con menú hamburguesa */}
+            <div className={`admin-sidebar text-white flex flex-col ${menuOpen ? 'menu-open' : ''}`}>
+                <div className="p-4 sm:p-6">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                            <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center">
+                                <div className="icon-shopping-cart text-xl"></div>
+                            </div>
+                            <div>
+                                <h2 className="font-bold text-base sm:text-lg">TuDespensa.25</h2>
+                                <p className="text-xs opacity-75">Admin Panel</p>
+                            </div>
                         </div>
-                        <div>
-                            <h2 className="font-bold">TuDespensa.25</h2>
-                            <p className="text-xs opacity-75">Admin Panel</p>
-                        </div>
+                        <button 
+                            className="menu-toggle" 
+                            onClick={() => setMenuOpen(!menuOpen)}
+                            aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
+                        >
+                            {menuOpen ? '✕' : '☰'}
+                        </button>
                     </div>
                     
-                    <div className="space-y-2">
+                    <div className="space-y-2 mt-4">
                         <div className="flex items-center space-x-3 p-3 bg-white bg-opacity-10 rounded-lg">
-                            <div className="icon-user"></div>
-                            <div>
-                                <p className="text-sm font-medium">{user.username}</p>
-                                <p className="text-xs opacity-75">{user.role === 'superadmin' ? 'Administrador' : 'Editor'}</p>
+                            <div className="icon-user text-lg"></div>
+                            <div className="flex-1 min-w-0">
+                                <p className="text-sm font-medium truncate">{user.username}</p>
+                                <p className="text-xs opacity-75 truncate">{user.role === 'superadmin' ? 'Administrador' : 'Editor'}</p>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <div className="flex-1 p-6 overflow-y-auto">
+                <div className="flex-1 p-4 sm:p-6 overflow-y-auto">
                     <div className="space-y-2">
                         <button
-                            onClick={() => setSelectedCategory('todos')}
-                            className={`w-full text-left p-3 rounded-lg transition ${
+                            onClick={() => {
+                                setSelectedCategory('todos');
+                                setMenuOpen(false);
+                            }}
+                            className={`w-full text-left p-3 rounded-lg transition text-sm sm:text-base ${
                                 selectedCategory === 'todos' 
                                     ? 'bg-white bg-opacity-20' 
                                     : 'hover:bg-white hover:bg-opacity-10'
@@ -478,52 +503,56 @@ const AdminApp = () => {
                             return (
                                 <button
                                     key={cat.id}
-                                    onClick={() => setSelectedCategory(cat.id)}
-                                    className={`w-full text-left p-3 rounded-lg transition ${
+                                    onClick={() => {
+                                        setSelectedCategory(cat.id);
+                                        setMenuOpen(false);
+                                    }}
+                                    className={`w-full text-left p-3 rounded-lg transition text-sm sm:text-base ${
                                         selectedCategory === cat.id 
                                             ? 'bg-white bg-opacity-20' 
                                             : 'hover:bg-white hover:bg-opacity-10'
                                     }`}
                                 >
                                     <span className="mr-2">{cat.icon.replace('icon-', '')}</span>
-                                    {cat.name} ({count})
+                                    <span className="truncate">{cat.name}</span>
+                                    <span className="ml-2 text-xs opacity-75">({count})</span>
                                 </button>
                             );
                         })}
                     </div>
                 </div>
                 
-                <div className="p-6 border-t border-white border-opacity-10">
+                <div className="p-4 sm:p-6 border-t border-white border-opacity-10">
                     <button
                         onClick={() => setUser(null)}
-                        className="w-full p-3 text-left hover:bg-white hover:bg-opacity-10 rounded-lg transition"
+                        className="w-full p-3 text-left hover:bg-white hover:bg-opacity-10 rounded-lg transition text-sm sm:text-base flex items-center space-x-2"
                     >
-                        <div className="icon-log-out inline mr-2"></div>
-                        Cerrar sesión
+                        <div className="icon-log-out"></div>
+                        <span>Cerrar sesión</span>
                     </button>
                 </div>
             </div>
             
             {/* Contenido principal */}
             <div className="flex-1 overflow-auto">
-                <div className="p-8">
+                <div className="p-4 sm:p-6 md:p-8">
                     {/* Header */}
-                    <div className="flex items-center justify-between mb-8">
-                        <div>
-                            <h1 className="text-3xl font-bold text-gray-900">Productos</h1>
-                            <p className="text-gray-600 mt-1">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 gap-4">
+                        <div className="w-full sm:w-auto">
+                            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Productos</h1>
+                            <p className="text-gray-600 mt-1 text-sm sm:text-base">
                                 {filteredProducts.length} productos encontrados
                                 {selectedCategory !== 'todos' && ` en ${categories.find(c => c.id === selectedCategory)?.name}`}
                             </p>
                         </div>
                         
-                        <div className="flex space-x-3">
+                        <div className="flex space-x-3 w-full sm:w-auto">
                             {isSuperAdmin && (
                                 <button
                                     onClick={handleReset}
-                                    className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+                                    className="flex-1 sm:flex-none px-4 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 text-sm min-h-[44px]"
                                 >
-                                    Resetear Datos
+                                    Resetear
                                 </button>
                             )}
                             <button
@@ -531,9 +560,9 @@ const AdminApp = () => {
                                     setEditingProduct(null);
                                     setIsModalOpen(true);
                                 }}
-                                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center space-x-2"
+                                className="flex-1 sm:flex-none px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center space-x-2 text-sm min-h-[44px]"
                             >
-                                <div className="icon-plus-circle"></div>
+                                <div className="icon-plus-circle text-lg"></div>
                                 <span>Nuevo Producto</span>
                             </button>
                         </div>
@@ -546,86 +575,88 @@ const AdminApp = () => {
                             placeholder="Buscar productos por nombre o descripción..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full max-w-md p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-base"
                         />
                     </div>
                     
                     {/* Tabla de productos */}
                     <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                        <table className="admin-table">
-                            <thead>
-                                <tr>
-                                    <th>Imagen</th>
-                                    <th>ID</th>
-                                    <th>Nombre</th>
-                                    <th>Categoría</th>
-                                    <th>Precio</th>
-                                    <th>Municipios</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {filteredProducts.map(product => (
-                                    <tr key={product.id}>
-                                        <td className="px-6 py-4">
-                                            <img
-                                                src={product.image}
-                                                alt={product.name}
-                                                className="w-12 h-12 object-contain"
-                                                onError={(e) => {
-                                                    e.target.src = '/images/default.png';
-                                                }}
-                                            />
-                                        </td>
-                                        <td className="px-6 py-4 font-mono text-sm">
-                                            #{product.id}
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="font-medium">{product.name}</div>
-                                            <div className="text-xs text-gray-500 line-clamp-1">
-                                                {product.description}
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <span className="admin-badge admin-badge-success">
-                                                {categories.find(c => c.id === product.category)?.name || product.category}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4 font-medium">
-                                            ${product.price.toFixed(2)}
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <span className="admin-badge admin-badge-info">
-                                                {product.availableIn.length} municipios
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center space-x-2">
-                                                <button
-                                                    onClick={() => {
-                                                        setEditingProduct(product);
-                                                        setIsModalOpen(true);
-                                                    }}
-                                                    className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg"
-                                                    title="Editar producto"
-                                                >
-                                                    <div className="icon-edit"></div>
-                                                </button>
-                                                {isSuperAdmin && (
-                                                    <button
-                                                        onClick={() => setShowDeleteConfirm(product.id)}
-                                                        className="p-2 text-red-600 hover:bg-red-50 rounded-lg"
-                                                        title="Eliminar producto"
-                                                    >
-                                                        <div className="icon-trash"></div>
-                                                    </button>
-                                                )}
-                                            </div>
-                                        </td>
+                        <div className="overflow-x-auto">
+                            <table className="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th className="px-4 sm:px-6 py-3">Imagen</th>
+                                        <th className="hidden md:table-cell px-4 sm:px-6 py-3">ID</th>
+                                        <th className="px-4 sm:px-6 py-3">Nombre</th>
+                                        <th className="px-4 sm:px-6 py-3">Categoría</th>
+                                        <th className="px-4 sm:px-6 py-3">Precio</th>
+                                        <th className="px-4 sm:px-6 py-3">Municipios</th>
+                                        <th className="px-4 sm:px-6 py-3">Acciones</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {filteredProducts.map(product => (
+                                        <tr key={product.id}>
+                                            <td className="px-4 sm:px-6 py-4">
+                                                <img
+                                                    src={product.image}
+                                                    alt={product.name}
+                                                    className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
+                                                    onError={(e) => {
+                                                        e.target.src = '/images/default.png';
+                                                    }}
+                                                />
+                                            </td>
+                                            <td className="hidden md:table-cell px-4 sm:px-6 py-4 font-mono text-sm">
+                                                #{product.id}
+                                            </td>
+                                            <td className="px-4 sm:px-6 py-4">
+                                                <div className="font-medium text-sm sm:text-base">{product.name}</div>
+                                                <div className="text-xs text-gray-500 line-clamp-1 sm:line-clamp-2">
+                                                    {product.description}
+                                                </div>
+                                            </td>
+                                            <td className="px-4 sm:px-6 py-4">
+                                                <span className="admin-badge admin-badge-success text-xs sm:text-sm">
+                                                    {categories.find(c => c.id === product.category)?.name || product.category}
+                                                </span>
+                                            </td>
+                                            <td className="px-4 sm:px-6 py-4 font-medium text-sm sm:text-base">
+                                                ${product.price.toFixed(2)}
+                                            </td>
+                                            <td className="px-4 sm:px-6 py-4">
+                                                <span className="admin-badge admin-badge-info text-xs sm:text-sm">
+                                                    {product.availableIn.length} municipios
+                                                </span>
+                                            </td>
+                                            <td className="px-4 sm:px-6 py-4">
+                                                <div className="flex items-center space-x-2">
+                                                    <button
+                                                        onClick={() => {
+                                                            setEditingProduct(product);
+                                                            setIsModalOpen(true);
+                                                        }}
+                                                        className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center"
+                                                        title="Editar producto"
+                                                    >
+                                                        <div className="icon-edit text-lg"></div>
+                                                    </button>
+                                                    {isSuperAdmin && (
+                                                        <button
+                                                            onClick={() => setShowDeleteConfirm(product.id)}
+                                                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center"
+                                                            title="Eliminar producto"
+                                                        >
+                                                            <div className="icon-trash text-lg"></div>
+                                                        </button>
+                                                    )}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                         
                         {filteredProducts.length === 0 && (
                             <div className="text-center py-12">
@@ -636,7 +667,7 @@ const AdminApp = () => {
                                         setSearchTerm('');
                                         setSelectedCategory('todos');
                                     }}
-                                    className="mt-4 text-blue-600 hover:text-blue-800"
+                                    className="mt-4 text-blue-600 hover:text-blue-800 p-3 min-h-[44px]"
                                 >
                                     Limpiar filtros
                                 </button>
@@ -667,16 +698,16 @@ const AdminApp = () => {
                         <p className="text-gray-600 mb-6">
                             ¿Estás seguro de que deseas eliminar este producto? Esta acción no se puede deshacer.
                         </p>
-                        <div className="flex justify-end space-x-3">
+                        <div className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-3">
                             <button
                                 onClick={() => setShowDeleteConfirm(null)}
-                                className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+                                className="px-4 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 min-h-[44px]"
                             >
                                 Cancelar
                             </button>
                             <button
                                 onClick={() => handleDeleteProduct(showDeleteConfirm)}
-                                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                                className="px-4 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 min-h-[44px]"
                             >
                                 Eliminar
                             </button>

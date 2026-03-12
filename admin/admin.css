@@ -14,6 +14,7 @@
 .admin-sidebar {
     background: linear-gradient(180deg, var(--admin-dark) 0%, #111827 100%);
     min-height: 100vh;
+    transition: all 0.3s ease;
 }
 
 .admin-card {
@@ -108,6 +109,29 @@
     @apply bg-green-50 border-green-500;
 }
 
+/* Menú hamburguesa */
+.menu-toggle {
+    display: none;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 0.5rem;
+    min-width: 44px;
+    min-height: 44px;
+    border-radius: 8px;
+}
+
+.menu-toggle:focus {
+    outline: 2px solid white;
+    outline-offset: 2px;
+}
+
+.menu-toggle:active {
+    background: rgba(255, 255, 255, 0.1);
+}
+
 /* Animaciones */
 @keyframes slideIn {
     from {
@@ -122,4 +146,256 @@
 
 .admin-slide-in {
     animation: slideIn 0.3s ease-out;
+}
+
+/* ============================================
+   RESPONSIVE PARA MÓVIL - PANEL ADMIN
+   ============================================ */
+
+@media (max-width: 768px) {
+    /* Cambiar sidebar a menú superior en móvil */
+    .admin-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        min-height: auto;
+        z-index: 50;
+        background: linear-gradient(180deg, var(--admin-dark) 0%, #1f2937 100%);
+        padding: 0.5rem 1rem;
+    }
+
+    /* Mostrar menú hamburguesa */
+    .menu-toggle {
+        display: block !important;
+    }
+
+    /* Ocultar menú de navegación en móvil por defecto */
+    .admin-sidebar .flex-1 {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: linear-gradient(180deg, var(--admin-dark) 0%, #111827 100%);
+        padding: 1rem;
+        max-height: 70vh;
+        overflow-y: auto;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Mostrar menú cuando está abierto */
+    .admin-sidebar.menu-open .flex-1 {
+        display: block;
+    }
+
+    /* Ajustar contenido principal */
+    .flex-1.overflow-auto {
+        margin-top: 80px;
+        padding: 1rem !important;
+    }
+
+    /* Hacer tabla scrolleable horizontalmente */
+    .bg-white.rounded-xl {
+        overflow-x: auto;
+        margin: 0 -0.5rem;
+        border-radius: 0.5rem;
+    }
+
+    .admin-table {
+        min-width: 700px;
+    }
+
+    /* Ajustar cabecera de acciones */
+    .flex.items-center.justify-between.mb-8 {
+        flex-direction: column;
+        align-items: stretch !important;
+        gap: 1rem;
+    }
+
+    .flex.space-x-3 {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+    }
+
+    .flex.space-x-3 button {
+        width: 100%;
+        margin: 0;
+        padding: 0.75rem !important;
+    }
+
+    /* Ajustar búsqueda */
+    .mb-6 input {
+        max-width: 100% !important;
+        padding: 0.75rem !important;
+        font-size: 16px; /* Evita zoom en iOS */
+    }
+
+    /* Ajustar modales para móvil */
+    .admin-modal-content {
+        margin: 0.5rem;
+        max-height: calc(100vh - 1rem);
+        width: calc(100% - 1rem);
+    }
+
+    /* Grid de municipios más compacto */
+    .municipality-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        max-height: 250px;
+    }
+
+    .municipality-item {
+        padding: 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    .municipality-item input {
+        width: 18px;
+        height: 18px;
+    }
+
+    /* Botones más grandes para touch */
+    .admin-button, 
+    .admin-table button {
+        min-height: 44px;
+        min-width: 44px;
+        padding: 0.75rem !important;
+    }
+
+    /* Ajustar tabla para móvil */
+    .admin-table td {
+        white-space: normal;
+        word-break: break-word;
+        padding: 0.75rem 0.5rem;
+    }
+
+    /* Ocultar columnas menos importantes en móvil */
+    .admin-table th:nth-child(2), /* ID */
+    .admin-table td:nth-child(2) {
+        display: none;
+    }
+
+    /* Ajustar imágenes en tabla */
+    .admin-table td img {
+        width: 40px;
+        height: 40px;
+    }
+
+    /* Mejorar visibilidad de badges */
+    .admin-badge {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+        white-space: nowrap;
+    }
+
+    /* Ajustar títulos */
+    h1.text-3xl {
+        font-size: 1.5rem !important;
+    }
+
+    /* Mejorar touch targets */
+    .admin-table button {
+        margin: 0 0.25rem;
+    }
+
+    /* Ajustar modal de confirmación */
+    .fixed.inset-0.bg-black.bg-opacity-50 .bg-white {
+        margin: 1rem;
+        width: calc(100% - 2rem);
+        max-width: none;
+    }
+}
+
+/* Ajustes para tablets */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .admin-sidebar {
+        width: 220px;
+    }
+
+    .admin-table th:nth-child(2), /* ID */
+    .admin-table td:nth-child(2) {
+        display: none;
+    }
+
+    .admin-table td, 
+    .admin-table th {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    .flex.items-center.justify-between.mb-8 {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+}
+
+/* Mejoras para touch en móvil */
+@media (max-width: 768px) {
+    button, 
+    .admin-button,
+    .municipality-item {
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    button:active,
+    .admin-button:active,
+    .municipality-item:active {
+        opacity: 0.7;
+        transform: scale(0.98);
+    }
+
+    /* Prevenir zoom en inputs */
+    input, select, textarea {
+        font-size: 16px !important;
+    }
+
+    /* Mejorar scroll */
+    .overflow-y-auto {
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Ajustar padding del contenido */
+    .p-8 {
+        padding: 1rem !important;
+    }
+
+    /* Ajustar espacio entre elementos */
+    .space-y-6 > :not([hidden]) ~ :not([hidden]) {
+        margin-top: 1rem;
+    }
+}
+
+/* Landscape mode en móvil */
+@media (max-width: 896px) and (orientation: landscape) {
+    .admin-sidebar .flex-1 {
+        max-height: 50vh;
+    }
+
+    .municipality-grid {
+        max-height: 150px;
+    }
+
+    .admin-modal-content {
+        max-height: 85vh;
+    }
+}
+
+/* Pantallas muy pequeñas */
+@media (max-width: 380px) {
+    .admin-table {
+        min-width: 600px;
+    }
+
+    .flex.space-x-3 {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-badge {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.4rem;
+    }
 }
