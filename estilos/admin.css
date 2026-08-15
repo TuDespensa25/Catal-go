@@ -9,6 +9,11 @@
   justify-content: center;
   padding: var(--margen);
 }
+/* El [hidden] del navegador y esta clase pesan igual (una sola clase cada
+   una), y esta hoja carga despues: sin esto, `entrar.hidden = true` no
+   ocultaba nada y el login se quedaba pegado encima de la lista de
+   productos. Con el selector [hidden] aqui, la especificidad ya no empata. */
+.entrar[hidden] { display: none; }
 
 .entrar__caja {
   width: min(380px, 100%);
@@ -119,6 +124,25 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
+
+.admin__ojo {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: var(--radio);
+  background: transparent;
+  color: var(--texto-suave);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.admin__ojo:hover { background: var(--tarjeta-media); color: var(--marca); }
+.admin__ojo:disabled { opacity: 0.4; cursor: default; }
+/* El ojo tachado marca "esto esta oculto ahora mismo", en rojo para que se
+   distinga de un vistazo de las decenas de filas visibles. */
+.admin__fila--oculto .admin__ojo { color: var(--alerta); }
 
 /* --- cajon de edicion ---------------------------------------------- */
 

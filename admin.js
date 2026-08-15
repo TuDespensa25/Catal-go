@@ -81,6 +81,13 @@
             : "") +
           (p.visible ? "" : '<span class="admin__oculto">Oculto</span>') +
         '</div>' +
+        '<button class="admin__ojo" type="button" data-ocultar="' + p.id + '"' +
+                ' aria-label="' + (p.visible ? "Ocultar de la tienda" : "Volver a mostrar en la tienda") + '"' +
+                ' title="' + (p.visible ? "Ocultar de la tienda" : "Volver a mostrar") + '">' +
+          (p.visible
+            ? '<svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 5c-5 0-9.27 3.11-11 7.5 1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5C21.27 8.11 17 5 12 5Zm0 12.5a5 5 0 1 1 0-10 5 5 0 0 1 0 10Zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" fill="currentColor"/></svg>'
+            : '<svg viewBox="0 0 24 24" width="20" height="20"><path d="M2 4.27 3.28 3 21 20.72 19.73 22l-3.06-3.06c-1.44.5-2.99.79-4.67.79-5 0-9.27-3.11-11-7.5a12.5 12.5 0 0 1 4.09-5.5L2 4.27ZM12 7c-.5 0-.98.08-1.43.22l1.9 1.9A3 3 0 0 1 15 11.53l1.9 1.9C17.6 12.5 18 11.3 18 10a3 3 0 0 0-3-3 5 5 0 0 0 0 0M12 5c5 0 9.27 3.11 11 7.5a12.6 12.6 0 0 1-2.6 3.94l-1.42-1.42A10.6 10.6 0 0 0 21.06 12.5 10.98 10.98 0 0 0 12 7c-.66 0-1.3.05-1.93.14L8.62 5.7A13 13 0 0 1 12 5Z" fill="currentColor"/></svg>') +
+        '</button>' +
       '</article>';
   }
 
@@ -118,9 +125,41 @@
   $("buscar-admin").addEventListener("input", pintar);
 
   $("lista-admin").addEventListener("click", function (e) {
+    var ojo = e.target.closest(".admin__ojo");
+    if (ojo) { alternarVisible(Number(ojo.dataset.ocultar), ojo); return; }
     var f = e.target.closest(".admin__fila");
     if (f) abrir(Number(f.dataset.id));
   });
+
+  /**
+   * Oculta o vuelve a mostrar un producto sin abrir la ficha. Es lo mismo
+   * que el interruptor "Visible en la tienda" de dentro, pero en un toque:
+   * es la accion del dia a dia ("hoy no hay pollo") y abrir/bajar/guardar
+   * cada vez era demasiado para algo que se hace varias veces al dia.
+   */
+  async function alternarVisible(id, boton) {
+    var p = productos.filter(function (x) { return x.id === id; })[0];
+    if (!p || boton.disabled) return;
+    var nuevoValor = !p.visible;
+
+    boton.disabled = true;
+    try {
+      var res = await fetch(window.SUPABASE_URL + "/rest/v1/productos?id=eq." + id, {
+        method: "PATCH",
+        headers: Object.assign(await sesion.cabeceras(), { Prefer: "return=representation" }),
+        body: JSON.stringify({ visible: nuevoValor }),
+      });
+      var datos = await res.json();
+      if (!res.ok || !datos.length) throw new Error("no se pudo cambiar");
+
+      p.visible = nuevoValor;
+      pintar();
+    } catch (e) {
+      console.error(e);
+      alert("No se pudo " + (nuevoValor ? "mostrar" : "ocultar") + " el producto. Inténtalo de nuevo.");
+      boton.disabled = false;
+    }
+  }
 
   // --- editar ---
 
