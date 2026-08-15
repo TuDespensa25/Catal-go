@@ -80,6 +80,12 @@
 
   /* Minimo de zona tactil. Mucha gente compra de pie y con prisa. */
   --tactil: 48px;
+
+  /* Elevacion en vez de bordes. Un borde de 1px en cada elemento hace que
+     todo parezca un boceto; la sombra suave separa sin dibujar la caja.
+     Se reservan los bordes para donde significan algo (campos de texto). */
+  --sombra:       0 1px 3px rgba(35, 25, 20, 0.06), 0 1px 2px rgba(35, 25, 20, 0.04);
+  --sombra-alta:  0 4px 16px rgba(35, 25, 20, 0.08);
 }
 
 /* El display baja en movil para que no parta en lineas raras. */

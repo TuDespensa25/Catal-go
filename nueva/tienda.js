@@ -36,8 +36,8 @@
 
     return '' +
       '<article class="producto">' +
-        '<a class="producto__enlace" href="producto.html?id=' + p.id + '">' +
         '<div class="producto__foto">' +
+          '<a class="producto__enlace" href="producto.html?id=' + p.id + '" aria-label="Ver ' + escapar(p.nombre) + '">' +
           '<img src="' + escapar(foto) + '"' +
                (srcset ? ' srcset="' + escapar(srcset) + '"' : "") +
                ' alt="' + escapar(p.nombre) + '" loading="lazy" width="400" height="400"' +
@@ -46,18 +46,22 @@
             ? '<span class="producto__descuento">-' + Math.round(p.descuento_pct) + '%</span>'
             : "") +
         '</div>' +
+        '<button class="td-boton producto__agregar" data-id="' + p.id + '"' +
+               ' aria-label="Añadir ' + escapar(p.nombre) + ' al carrito">+</button>' +
         '<div class="producto__datos">' +
           '<span class="producto__categoria">' + escapar(nombreCorto(p.categorias && p.categorias.nombre)) + '</span>' +
-          '<h3 class="producto__nombre">' + escapar(p.nombre) + '</h3>' +
+          '<a class="producto__enlace" href="producto.html?id=' + p.id + '">' +
+            '<h3 class="producto__nombre">' + escapar(p.nombre) + '</h3>' +
           '</a>' +
-          '<div class="producto__precios">' +
-            (hayDescuento
-              ? '<div class="td-precio-antes">USD ' + Number(p.precio_usd).toFixed(2) + '</div>'
-              : "") +
-            '<div class="td-precio producto__precio">USD ' + final.toFixed(2) + '</div>' +
-            '<div class="td-precio-cup">' + milesCUP(enCUP(final, TASA)) + ' CUP</div>' +
+          '<div class="producto__pie">' +
+            '<div class="producto__precios">' +
+              (hayDescuento
+                ? '<div class="td-precio-antes">USD ' + Number(p.precio_usd).toFixed(2) + '</div>'
+                : "") +
+              '<div class="td-precio producto__precio">USD ' + final.toFixed(2) + '</div>' +
+              '<div class="td-precio-cup">' + milesCUP(enCUP(final, TASA)) + ' CUP</div>' +
+            '</div>' +
           '</div>' +
-          '<button class="td-boton producto__agregar" data-id="' + p.id + '">Agregar</button>' +
         '</div>' +
       '</article>';
   }
@@ -245,8 +249,14 @@
     if (!b) return;
     carrito.agregar(Number(b.dataset.id));
     contador();
-    b.textContent = "Agregado";
-    setTimeout(function () { b.textContent = "Agregar"; }, 900);
+    // Confirmacion breve en el propio boton: se ve sin apartar la vista
+    // de la tarjeta que se acaba de tocar.
+    b.textContent = "✓";
+    b.classList.add("producto__agregar--hecho");
+    setTimeout(function () {
+      b.textContent = "+";
+      b.classList.remove("producto__agregar--hecho");
+    }, 900);
   });
 
   $("btn-lugar").addEventListener("click", function () { $("hoja-lugar").showModal(); });
