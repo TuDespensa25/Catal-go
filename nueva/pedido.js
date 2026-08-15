@@ -7,7 +7,6 @@
 (function () {
   "use strict";
 
-  var TASA = 340;
   // +53 53933247 -> wa.me lo quiere sin el mas y sin espacios: 53 (Cuba) +
   // los 8 digitos del movil.
   var WHATSAPP = "5353933247";
@@ -85,7 +84,6 @@
     $("fila-ahorro").hidden = t.ahorro <= 0;
     $("ahorro").textContent = "-USD " + t.ahorro.toFixed(2);
     $("total").textContent = "USD " + t.total.toFixed(2);
-    $("total-cup").textContent = milesCUP(enCUP(t.total, TASA)) + " CUP";
   }
 
   function pintarProvincias() {
@@ -116,7 +114,7 @@
       partes.push("• " + l.cantidad + "x " + l.producto.nombre + " — USD " + l.subtotal.toFixed(2));
     });
     partes.push("");
-    partes.push("*Total: USD " + t.total.toFixed(2) + "* (" + milesCUP(enCUP(t.total, TASA)) + " CUP)");
+    partes.push("*Total: USD " + t.total.toFixed(2) + "*");
     partes.push("");
     partes.push("Entrega: " + $("provincia").value + ", " +
                 $("municipio").options[$("municipio").selectedIndex].text);

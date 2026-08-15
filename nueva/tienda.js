@@ -3,8 +3,6 @@
 (function () {
   "use strict";
 
-  var TASA = 340; // se movera a la tabla ajustes cuando el panel la edite
-
   var estado = {
     productos: [],
     categorias: [],
@@ -59,7 +57,6 @@
                 ? '<div class="td-precio-antes">USD ' + Number(p.precio_usd).toFixed(2) + '</div>'
                 : "") +
               '<div class="td-precio producto__precio">USD ' + final.toFixed(2) + '</div>' +
-              '<div class="td-precio-cup">' + milesCUP(enCUP(final, TASA)) + ' CUP</div>' +
             '</div>' +
           '</div>' +
         '</div>' +

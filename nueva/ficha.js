@@ -3,7 +3,6 @@
 (function () {
   "use strict";
 
-  var TASA = 340;
   var $ = function (id) { return document.getElementById(id); };
 
   var producto = null;
@@ -54,7 +53,6 @@
     }
 
     $("precio").textContent = "USD " + final.toFixed(2);
-    $("precio-cup").textContent = milesCUP(enCUP(final, TASA)) + " CUP";
 
     pintarCantidad();
     $("cargando").hidden = true;
