@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    
+    <title>TuDespensa.25 - Tu tienda online en Artemisa</title>
+    <meta name="description" content="Compra productos de primera necesidad, cárnicos, lácteos, aseo y más con entrega a domicilio en toda la provincia Artemisa.">
+    <meta name="keywords" content="despensa, artemisa, compras online, cárnicos, lácteos, electrodomésticos, entrega a domicilio">
+    <meta name="author" content="TuDespensa.25">
+    
+    <!-- Preconexiones y recursos -->
+    <link rel="preconnect" href="https://resource.trickle.so">
+    <link rel="dns-prefetch" href="https://resource.trickle.so">
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    
+    <!-- Meta tags para móvil y PWA -->
+    <meta name="theme-color" content="#22c55e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="format-detection" content="telephone=no">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tudespensa25.com">
+    <meta property="og:title" content="TuDespensa.25 - Tu tienda online en Artemisa">
+    <meta property="og:description" content="Compra productos de primera necesidad con entrega a domicilio en toda la provincia Artemisa.">
+    <meta property="og:image" content="/images/og-image.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://tudespensa25.com">
+    <meta property="twitter:title" content="TuDespensa.25 - Tu tienda online en Artemisa">
+    <meta property="twitter:description" content="Compra productos de primera necesidad con entrega a domicilio en toda la provincia Artemisa.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="apple-touch-icon" href="/icon-192.png">
+    
+    <!-- Estilos y librerías -->
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react@18/umd/react.production.min.js"></script>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://resource.trickle.so/vendor_lib/unpkg/lucide-static@0.516.0/font/lucide.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    
+    <!-- CSS crítico inline -->
+    <style>
+        .header-gradient { background: linear-gradient(135deg, #22c55e 0%, #f97316 100%); }
+        .product-card { background: white; border-radius: 0.75rem; overflow: hidden; }
+        .image-loading { 
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        /* Mejoras para móvil */
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        input, select, textarea, button {
+            font-size: 16px; /* Evita zoom en iOS */
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <!-- SUPABASE - NUEVO -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/js/config/supabase.js"></script>
+    
+    <!-- Scripts de datos (respaldo local) -->
+    <script src="/js/data/products.js"></script>
+    <script src="/js/data/categories.js"></script>
+    <script src="/js/data/municipalities.js"></script>
+    
+    <!-- Script principal de la aplicación -->
+    <script type="text/babel" src="/js/app.js"></script>
+    
+    <!-- Link al panel de administración (solo visible para admins) -->
+    <div class="fixed bottom-6 left-6 z-40 opacity-30 hover:opacity-100 transition-opacity">
+        <a href="/admin/" class="text-xs text-gray-500 bg-white px-2 py-1 rounded shadow">
+            Admin
+        </a>
+    </div>
+</body>
+</html>
