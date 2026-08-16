@@ -128,8 +128,11 @@ svg { fill: currentColor; flex: none; }
 
 .categoria {
   flex: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
   height: 40px;
-  padding: 0 14px;
+  padding: 0 14px 0 12px;
   border: 0;
   border-radius: 999px;
   background: var(--tarjeta);
@@ -141,11 +144,22 @@ svg { fill: currentColor; flex: none; }
   white-space: nowrap;
   cursor: pointer;
 }
+.categoria svg { flex: none; opacity: 0.8; }
 .categoria[aria-pressed="true"] { background: var(--marca); color: #fff; }
+.categoria[aria-pressed="true"] svg { opacity: 1; }
 
 /* --- seccion ------------------------------------------------------- */
 
 .seccion { padding: 0 var(--margen); }
+
+/* Marca donde termina lo curado (Combos/Ofertas/Recien llegados) y empieza
+   el catalogo entero: sin esto las cuatro secciones se leian como una sola
+   lista continua, sin decir cual es una seleccion y cual es todo. */
+#sec-todos {
+  margin-top: var(--e-lg);
+  padding-top: var(--e-md);
+  border-top: 1px solid var(--borde);
+}
 
 .seccion__titulo {
   display: flex;
@@ -577,50 +591,58 @@ body.con-pie { padding-bottom: calc(150px + env(safe-area-inset-bottom)); }
   text-decoration: none;
 }
 
-/* --- banners -------------------------------------------------------- */
+/* --- encabezado (hero) ------------------------------------------------ */
 
-.banners { position: relative; margin: var(--e-sm) 0 var(--e-xs); }
-
-/* Deslizar con el dedo y anclar en cada anuncio. Sin temporizador: un
-   carrusel que se mueve solo mientras alguien lee es una molestia, y aqui
-   ademas gasta datos moviles en imagenes que no ha pedido. */
-.banners__pista {
-  display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-}
-.banners__pista::-webkit-scrollbar { display: none; }
-
-.banner {
-  flex: 0 0 100%;
-  scroll-snap-align: start;
-  display: block;
-}
-.banner img {
-  width: 100%;
-  height: auto;
-  display: block;
-  background: var(--hundido);
+/* Terracota solida, sin degradado: el propio sistema de diseno lo pide asi
+   ("No Gradients... mantener la estetica de mercado de barrio"). El acento
+   naranja de accion no aparece aqui: esta reservado para "toca para
+   comprar", y usarlo de fondo le quitaria ese significado. */
+.hero {
+  margin: 0 0 var(--e-sm);
+  padding: var(--e-lg) var(--margen) var(--e-md);
+  background: var(--marca);
+  text-align: center;
 }
 
-.banners__puntos {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  padding: var(--e-sm) 0 0;
+.hero__marca {
+  margin: 0 0 4px;
+  font-family: var(--f-titulo);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--marca-suave);
 }
-.punto {
-  width: 8px;
-  height: 8px;
-  padding: 0;
-  border: 0;
-  border-radius: 50%;
-  background: var(--borde);
-  cursor: pointer;
+
+.hero__titulo {
+  margin: 0;
+  font-family: var(--f-titulo);
+  font-size: clamp(1.6rem, 6vw, var(--t-display));
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--fondo);
+  text-wrap: balance;
 }
-.punto[aria-current="true"] { background: var(--marca); width: 22px; border-radius: 4px; }
+
+.hero__texto {
+  margin: var(--e-sm) auto 0;
+  max-width: 46ch;
+  color: var(--marca-suave);
+  font-size: var(--t-etiqueta);
+  line-height: 1.5;
+}
+
+.hero__cobertura {
+  display: inline-flex;
+  margin: var(--e-sm) 0 0;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--fondo);
+  font-size: 12px;
+  font-weight: 600;
+}
 
 /* --- carruseles de seccion ------------------------------------------ */
 

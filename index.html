@@ -6,7 +6,7 @@
        la foto para leer el gramaje. El export de Stitch los traia puestos. -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TuDespensa25 — Comida y productos del hogar a domicilio</title>
-  <meta name="description" content="Compra alimentos, cárnicos, granos, enlatados y productos del hogar con entrega a domicilio en Artemisa y Pinar del Río.">
+  <meta name="description" content="Compra alimentos, cárnicos, granos, enlatados y productos del hogar con entrega a domicilio en Artemisa.">
 
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -41,10 +41,17 @@
 
 <main>
 
-  <div class="banners" id="banners" aria-label="Ofertas destacadas">
-    <div class="banners__pista" id="banners-pista"></div>
-    <div class="banners__puntos" id="banners-puntos"></div>
-  </div>
+  <!-- El banner anterior era una imagen de 1000x1000 de la marca abandonada
+       (mockup verde, tipografia de comic) forzada a ancho completo: ocupaba
+       toda la primera pantalla con publicidad de otra marca. Este es un
+       encabezado construido con el propio sistema de diseño, sin imagen que
+       pueda volver a romperse ni quedarse desactualizada. -->
+  <section class="hero">
+    <p class="hero__marca">Tu Despensa</p>
+    <h1 class="hero__titulo">Todo lo que necesitas, en un click</h1>
+    <p class="hero__texto">Alimentos, cárnicos, granos y productos del hogar. Pide por WhatsApp y te lo llevamos hasta la puerta.</p>
+    <p class="hero__cobertura" id="hero-cobertura">Entrega a domicilio en Artemisa</p>
+  </section>
 
   <div class="buscador">
     <svg viewBox="0 0 24 24" aria-hidden="true" width="20" height="20">

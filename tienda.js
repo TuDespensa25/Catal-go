@@ -120,45 +120,42 @@
     }
   }
 
-  // --- banners ---
+  // --- categorias ---
 
-  // Cada numero es una campana distinta, con su version ancha y su version
-  // vertical. La tienda vieja las cruzaba: ensenaba banner17 en escritorio y
-  // banner16m en movil, que son anuncios diferentes.
-  // La tienda real no tiene carrusel: ensena un unico anuncio. El de cuatro
-  // pases venia del catalogo equivocado.
-  //
-  // OJO: en produccion este banner apunta a /images/oferta.png, que NO existe
-  // en el repositorio y da 404. La imagen buena se llama oferta-especial.png.
-  var BANNERS = [
-    { id: "oferta-especial", movil: "oferta-especial", alt: "Ofertas de TuDespensa25" },
+  // SVG en vez de emoji (ui-ux-pro-max: los emoji no son iconos, se ven
+  // distinto en cada telefono). Se busca por coincidencia en el nombre real
+  // de la categoria, asi que sigue funcionando si el admin la renombra a
+  // algo parecido, y cae en el icono generico si no reconoce nada.
+  var ICONOS_CATEGORIA = [
+    [/c[aá]rnic/i,
+      '<circle cx="9" cy="9" r="6"/><rect x="13" y="13" width="4" height="9" rx="2" transform="rotate(35 13 13)"/>'],
+    [/l[aá]cte|huevo/i,
+      '<path d="M9 2h6l1 4-1 1v13a1 1 0 0 1-1 1H10a1 1 0 0 1-1-1V7L8 6Z"/>'],
+    [/cereal|grano|pasta/i,
+      '<path d="M4 11a8 4 0 0 0 16 0Z"/><circle cx="9" cy="7" r="1.3"/><circle cx="13" cy="6" r="1.3"/><circle cx="16" cy="8" r="1.3"/>'],
+    [/conserva|enlatad/i,
+      '<rect x="6" y="7" width="12" height="14" rx="1.5"/><rect x="5" y="4" width="14" height="3" rx="1"/>'],
+    [/l[ií]quid|bebida/i,
+      '<path d="M12 2c4 6 7 10 7 13a7 7 0 0 1-14 0c0-3 3-7 7-13Z"/>'],
+    [/aseo/i,
+      '<rect x="9" y="8" width="6" height="13" rx="1.5"/><rect x="10" y="3" width="4" height="6" rx="1"/><circle cx="16" cy="6" r="1.4"/>'],
+    [/agr[oi]|vegetal|fruta/i,
+      '<path d="M12 3c5 1 8 5 8 10a8 8 0 0 1-16 0c0-5 3-9 8-10Z"/><path d="M12 5v16" stroke="var(--fondo)" stroke-width="1.4" fill="none"/>'],
+    [/electrodom/i,
+      '<rect x="4" y="4" width="16" height="16" rx="2.5"/><circle cx="12" cy="13" r="4" fill="var(--fondo)"/><rect x="7" y="6" width="3" height="1.6" rx="0.8" fill="var(--fondo)"/>'],
+    [/combo/i,
+      '<rect x="4" y="9" width="16" height="11" rx="1.5"/><rect x="3" y="5" width="18" height="4.5" rx="1.5"/><rect x="11" y="5" width="2" height="15"/>'],
   ];
+  var ICONO_TODAS =
+    '<rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/>' +
+    '<rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/>';
+  var ICONO_GENERICO = '<circle cx="12" cy="12" r="9"/>';
 
-
-  function pintarBanners() {
-    var base = "tudespensa25/catalogo/";
-    $("banners-pista").innerHTML = BANNERS.map(function (b, i) {
-      return '<a class="banner" href="#sec-ofertas">' +
-               "<picture>" +
-                 '<source media="(max-width: 700px)" srcset="' +
-                   escapar(urlImagen(base + b.movil, 800)) + '">' +
-                 '<img src="' + escapar(urlImagen(base + b.id, 1000)) + '"' +
-                      ' alt="' + escapar(b.alt) + '"' +
-                      (i === 0 ? ' fetchpriority="high"' : ' loading="lazy"') + ">" +
-               "</picture>" +
-             "</a>";
-    }).join("");
-
-    if (BANNERS.length < 2) { $("banners-puntos").innerHTML = ""; return; }
-    $("banners-puntos").innerHTML = BANNERS.map(function (b, i) {
-      return '<button class="punto" data-i="' + i + '" aria-label="Ver anuncio ' + (i + 1) + '"' +
-             (i === 0 ? ' aria-current="true"' : "") + "></button>";
-    }).join("");
-  }
-
-  function moverBanner(i) {
-    var pista = $("banners-pista");
-    pista.scrollTo({ left: i * pista.clientWidth, behavior: "smooth" });
+  function iconoCategoria(nombre) {
+    for (var i = 0; i < ICONOS_CATEGORIA.length; i++) {
+      if (ICONOS_CATEGORIA[i][0].test(nombre)) return ICONOS_CATEGORIA[i][1];
+    }
+    return ICONO_GENERICO;
   }
 
   function pintarCategorias() {
@@ -168,12 +165,16 @@
     });
 
     var botones = ['<button class="categoria" data-cat="" aria-pressed="' +
-                   (estado.categoria ? "false" : "true") + '">Todas</button>'];
+      (estado.categoria ? "false" : "true") + '">' +
+      '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">' + ICONO_TODAS + '</svg>' +
+      'Todas</button>'];
 
     estado.categorias.forEach(function (c) {
       if (!usadas[c.nombre]) return; // no ofrecer categorias vacias en este municipio
       botones.push('<button class="categoria" data-cat="' + escapar(c.nombre) + '" aria-pressed="' +
-        (estado.categoria === c.nombre ? "true" : "false") + '">' + escapar(nombreCorto(c.nombre)) + "</button>");
+        (estado.categoria === c.nombre ? "true" : "false") + '">' +
+        '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">' + iconoCategoria(c.nombre) + '</svg>' +
+        escapar(nombreCorto(c.nombre)) + "</button>");
     });
 
     $("categorias").innerHTML = botones.join("");
@@ -268,29 +269,22 @@
     cargar();
   });
 
-  $("banners-puntos").addEventListener("click", function (e) {
-    var b = e.target.closest(".punto");
-    if (b) moverBanner(Number(b.dataset.i));
-  });
-
-  // El punto activo se saca de donde esta la pista, no de un temporizador:
-  // asi sigue al dedo cuando el cliente desliza a mano.
-  $("banners-pista").addEventListener("scroll", function () {
-    var pista = $("banners-pista");
-    var i = Math.round(pista.scrollLeft / pista.clientWidth);
-    [].forEach.call($("banners-puntos").children, function (p, j) {
-      if (j === i) p.setAttribute("aria-current", "true");
-      else p.removeAttribute("aria-current");
-    });
-  }, { passive: true });
-
   // --- arranque ---
 
   guardarRef();
   contador();
-  pintarBanners();
   cargarMunicipios()
-    .then(function (m) { estado.municipios = m; pintarMunicipios(); })
+    .then(function (m) {
+      estado.municipios = m;
+      pintarMunicipios();
+      // El numero de municipios en el encabezado sale de la base, nunca
+      // escrito a mano: el dato viejo ("Artemisa y Pinar del Río") llevaba
+      // meses mal porque nadie lo actualizo cuando cambio la cobertura real.
+      if (m.length) {
+        $("hero-cobertura").textContent = "Entrega a domicilio en los " +
+          m.length + " municipios de " + m[0].provincia;
+      }
+    })
     .catch(function (e) { console.error(e); });
   cargar();
 })();
