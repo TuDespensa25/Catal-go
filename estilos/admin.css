@@ -296,6 +296,74 @@
   cursor: pointer;
 }
 
+/* --- lista agrupada por categoria ------------------------------------ */
+
+.admin__grupo {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px var(--margen);
+  background: var(--hundido);
+  color: var(--texto-suave);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.admin__grupo-n {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+.admin__grupo-oculta {
+  padding: 1px 6px;
+  border-radius: var(--radio-chico);
+  background: var(--alerta-fondo);
+  color: var(--alerta);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+}
+
+/* --- dialogo de categorias -------------------------------------------- */
+
+.cat-lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-xs);
+  margin-bottom: var(--e-md);
+}
+
+.cat-fila {
+  display: flex;
+  align-items: center;
+  gap: var(--e-xs);
+}
+/* Una categoria oculta se apaga entera: se ve de un vistazo entre las 10. */
+.cat-fila--oculta { opacity: 0.55; }
+
+.cat-nombre { flex: 1; min-width: 0; }
+
+.cat-acciones { display: flex; align-items: center; gap: 2px; flex: none; }
+
+.cat-flecha {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-chico);
+  background: var(--tarjeta);
+  color: var(--texto-suave);
+  font-size: 16px;
+  cursor: pointer;
+}
+.cat-flecha:hover { background: var(--tarjeta-suave); color: var(--marca); }
+
+.cat-nueva { display: flex; gap: var(--e-xs); }
+.cat-nueva .td-campo { flex: 1; min-width: 0; }
+.cat-nueva__boton { flex: none; min-height: var(--tactil); padding: 0 var(--e-sm); }
+
 /* Borrar va abajo del todo y sin relleno: no debe competir con Guardar. */
 .borrar {
   width: 100%;

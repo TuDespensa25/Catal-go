@@ -55,6 +55,7 @@
       <input id="buscar-admin" class="buscador__campo" type="search" placeholder="Buscar producto..." autocomplete="off">
     </div>
     <span class="admin__cuenta" id="cuenta-admin"></span>
+    <button class="td-boton td-boton--suave admin__nuevo" id="btn-categorias" type="button">Categorías</button>
     <button class="td-boton admin__nuevo" id="btn-nuevo" type="button">+ Nuevo</button>
   </div>
 
@@ -127,6 +128,33 @@
       <button class="td-boton" type="button" id="guardar">Guardar</button>
     </div>
   </form>
+</dialog>
+
+<!-- Categorías -->
+<dialog class="cajon" id="dialogo-categorias">
+  <div class="cajon__cuerpo">
+    <div class="cajon__cabecera">
+      <h2 class="td-titulo cajon__titulo">Categorías</h2>
+      <button class="cajon__cerrar" type="button" id="categorias-x" aria-label="Cerrar">×</button>
+    </div>
+
+    <div class="cajon__scroll">
+      <p class="ayuda">Toca el nombre para cambiarlo. La flecha reordena, el ojo la oculta de la tienda sin borrar sus productos.</p>
+
+      <div class="cat-lista" id="cat-lista"></div>
+
+      <form class="cat-nueva" id="form-cat-nueva">
+        <input class="td-campo" id="cat-nombre-nueva" type="text" placeholder="Nombre de la categoría nueva" required>
+        <button class="td-boton cat-nueva__boton" type="submit">Añadir</button>
+      </form>
+
+      <p class="cajon__error" id="error-categorias" hidden></p>
+    </div>
+
+    <div class="cajon__pie">
+      <button class="td-boton" type="button" id="categorias-listo">Listo</button>
+    </div>
+  </div>
 </dialog>
 
 <script src="utils/config.js"></script>

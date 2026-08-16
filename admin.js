@@ -91,13 +91,48 @@
       '</article>';
   }
 
+  /**
+   * Agrupada por categoria, en el orden en que el dueno las puso (el mismo
+   * "orden" que decide como se ven en la tienda). Antes era una lista plana
+   * y encontrar todo lo de "Cárnicos" era leerse las 75 filas.
+   */
   function pintar() {
     var texto = $("buscar-admin").value.trim().toLowerCase();
     var lista = productos.filter(function (p) {
       return !texto || p.nombre.toLowerCase().indexOf(texto) !== -1;
     });
-    $("lista-admin").innerHTML = lista.map(fila).join("");
+
+    var porCategoria = {};
+    lista.forEach(function (p) {
+      (porCategoria[p.categoria_id] = porCategoria[p.categoria_id] || []).push(p);
+    });
+
+    var ordenadas = categorias.slice().sort(function (a, b) { return a.orden - b.orden; });
+    var html = "";
+    ordenadas.forEach(function (c) {
+      var grupo = porCategoria[c.id];
+      if (!grupo || !grupo.length) return;
+      html += '<div class="admin__grupo">' + escapar(c.nombre) +
+              (c.activa ? "" : ' <span class="admin__grupo-oculta">oculta</span>') +
+              '<span class="admin__grupo-n">' + grupo.length + "</span></div>";
+      html += grupo.map(fila).join("");
+    });
+
+    $("lista-admin").innerHTML = html || '<p class="vacio">Sin resultados.</p>';
     $("cuenta-admin").textContent = lista.length + " de " + productos.length;
+  }
+
+  async function pedirCategorias() {
+    var res = await fetch(window.SUPABASE_URL + "/rest/v1/categorias?select=id,nombre,orden,activa&order=orden",
+                          { headers: await sesion.cabeceras() });
+    return res.json();
+  }
+
+  function pintarSelectCategorias() {
+    $("e-categoria").innerHTML = categorias.map(function (c) {
+      return '<option value="' + c.id + '">' + escapar(c.nombre) +
+             (c.activa ? "" : " (oculta)") + "</option>";
+    }).join("");
   }
 
   async function cargar() {
@@ -106,15 +141,13 @@
         fetch(window.SUPABASE_URL + "/rest/v1/productos?select=id,nombre,descripcion," +
               "precio_usd,descuento_pct,imagen_id,visible,categoria_id,categorias(nombre)&order=nombre",
               { headers: await sesion.cabeceras() }).then(function (r) { return r.json(); }),
-        cargarCategorias(),
+        pedirCategorias(),
         cargarMunicipios(),
       ]);
       productos = res[0];
       categorias = res[1];
       municipios = res[2];
-      $("e-categoria").innerHTML = categorias.map(function (c) {
-        return '<option value="' + c.id + '">' + escapar(c.nombre) + "</option>";
-      }).join("");
+      pintarSelectCategorias();
       pintar();
     } catch (e) {
       console.error(e);
@@ -160,6 +193,163 @@
       boton.disabled = false;
     }
   }
+
+  // --- categorias ---
+  //
+  // Sin borrar de verdad: categoria_id en productos es "on delete restrict",
+  // asi que borrar una categoria con productos dentro fallaria con un error
+  // de base de datos feo. En vez de eso se oculta (activa=false), igual que
+  // el ojo de los productos: sigue existiendo, deja de ofrecerse, y se puede
+  // reactivar cuando haga falta.
+
+  function filaCategoria(c) {
+    return '' +
+      '<div class="cat-fila' + (c.activa ? "" : " cat-fila--oculta") + '" data-id="' + c.id + '">' +
+        '<input class="td-campo cat-nombre" type="text" value="' + escapar(c.nombre) + '" data-id="' + c.id + '">' +
+        '<div class="cat-acciones">' +
+          '<button class="cat-flecha" type="button" data-subir="' + c.id + '" aria-label="Subir">↑</button>' +
+          '<button class="cat-flecha" type="button" data-bajar="' + c.id + '" aria-label="Bajar">↓</button>' +
+          '<button class="admin__ojo" type="button" data-cat-ojo="' + c.id + '"' +
+                  ' aria-label="' + (c.activa ? "Ocultar categoría" : "Mostrar categoría") + '">' +
+            (c.activa
+              ? '<svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 5c-5 0-9.27 3.11-11 7.5 1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5C21.27 8.11 17 5 12 5Zm0 12.5a5 5 0 1 1 0-10 5 5 0 0 1 0 10Zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" fill="currentColor"/></svg>'
+              : '<svg viewBox="0 0 24 24" width="20" height="20"><path d="M2 4.27 3.28 3 21 20.72 19.73 22l-3.06-3.06c-1.44.5-2.99.79-4.67.79-5 0-9.27-3.11-11-7.5a12.5 12.5 0 0 1 4.09-5.5L2 4.27ZM12 7c-.5 0-.98.08-1.43.22l1.9 1.9A3 3 0 0 1 15 11.53l1.9 1.9C17.6 12.5 18 11.3 18 10a3 3 0 0 0-3-3 5 5 0 0 0 0 0M12 5c5 0 9.27 3.11 11 7.5a12.6 12.6 0 0 1-2.6 3.94l-1.42-1.42A10.6 10.6 0 0 0 21.06 12.5 10.98 10.98 0 0 0 12 7c-.66 0-1.3.05-1.93.14L8.62 5.7A13 13 0 0 1 12 5Z" fill="currentColor"/></svg>') +
+          '</button>' +
+        '</div>' +
+      '</div>';
+  }
+
+  function pintarDialogoCategorias() {
+    var ordenadas = categorias.slice().sort(function (a, b) { return a.orden - b.orden; });
+    $("cat-lista").innerHTML = ordenadas.map(filaCategoria).join("");
+  }
+
+  async function abrirCategorias() {
+    $("error-categorias").hidden = true;
+    pintarDialogoCategorias();
+    $("dialogo-categorias").showModal();
+  }
+
+  /** Tras cualquier cambio: refresca la lista local y todo lo que la muestra. */
+  async function refrescarCategorias() {
+    categorias = await pedirCategorias();
+    pintarDialogoCategorias();
+    pintarSelectCategorias();
+    pintar();
+  }
+
+  function errorCategorias(msg) {
+    $("error-categorias").textContent = msg;
+    $("error-categorias").hidden = false;
+  }
+
+  $("btn-categorias").addEventListener("click", abrirCategorias);
+  $("categorias-x").addEventListener("click", function () { $("dialogo-categorias").close(); });
+  $("categorias-listo").addEventListener("click", function () { $("dialogo-categorias").close(); });
+
+  $("cat-lista").addEventListener("click", async function (e) {
+    var ojo = e.target.closest("[data-cat-ojo]");
+    var subir = e.target.closest("[data-subir]");
+    var bajar = e.target.closest("[data-bajar]");
+    if (ojo) return alternarCategoria(Number(ojo.dataset.catOjo), ojo);
+    if (subir) return moverCategoria(Number(subir.dataset.subir), -1);
+    if (bajar) return moverCategoria(Number(bajar.dataset.bajar), 1);
+  });
+
+  $("cat-lista").addEventListener("change", function (e) {
+    var input = e.target.closest(".cat-nombre");
+    if (input) renombrarCategoria(Number(input.dataset.id), input.value.trim(), input);
+  });
+
+  async function alternarCategoria(id, boton) {
+    var c = categorias.filter(function (x) { return x.id === id; })[0];
+    if (!c || boton.disabled) return;
+    boton.disabled = true;
+    try {
+      var res = await fetch(window.SUPABASE_URL + "/rest/v1/categorias?id=eq." + id, {
+        method: "PATCH",
+        headers: Object.assign(await sesion.cabeceras(), { Prefer: "return=representation" }),
+        body: JSON.stringify({ activa: !c.activa }),
+      });
+      var datos = await res.json();
+      if (!res.ok || !datos.length) throw new Error();
+      await refrescarCategorias();
+    } catch (e) {
+      errorCategorias("No se pudo cambiar. ¿Tu usuario es administrador?");
+      boton.disabled = false;
+    }
+  }
+
+  async function renombrarCategoria(id, nombre, input) {
+    var c = categorias.filter(function (x) { return x.id === id; })[0];
+    if (!c || !nombre || nombre === c.nombre) { input.value = c ? c.nombre : input.value; return; }
+    try {
+      var res = await fetch(window.SUPABASE_URL + "/rest/v1/categorias?id=eq." + id, {
+        method: "PATCH",
+        headers: Object.assign(await sesion.cabeceras(), { Prefer: "return=representation" }),
+        body: JSON.stringify({ nombre: nombre }),
+      });
+      var datos = await res.json();
+      if (!res.ok || !datos.length) throw new Error(datos.message || "");
+      await refrescarCategorias();
+    } catch (e) {
+      errorCategorias(/duplicate|unique/i.test(e.message || "")
+        ? "Ya existe una categoría con ese nombre."
+        : "No se pudo renombrar.");
+      input.value = c.nombre;
+    }
+  }
+
+  /**
+   * Intercambia el "orden" con la vecina de al lado. Dos PATCH en vez de
+   * renumerar todas: son 10 categorias como mucho, y asi un fallo a medias
+   * como mucho deja dos filas cambiadas, nunca la lista entera desordenada.
+   */
+  async function moverCategoria(id, direccion) {
+    var ordenadas = categorias.slice().sort(function (a, b) { return a.orden - b.orden; });
+    var i = ordenadas.findIndex(function (c) { return c.id === id; });
+    var j = i + direccion;
+    if (i < 0 || j < 0 || j >= ordenadas.length) return;
+
+    var a = ordenadas[i], b = ordenadas[j];
+    try {
+      var cab = await sesion.cabeceras();
+      var r1 = await fetch(window.SUPABASE_URL + "/rest/v1/categorias?id=eq." + a.id, {
+        method: "PATCH", headers: cab, body: JSON.stringify({ orden: b.orden }),
+      });
+      var r2 = await fetch(window.SUPABASE_URL + "/rest/v1/categorias?id=eq." + b.id, {
+        method: "PATCH", headers: cab, body: JSON.stringify({ orden: a.orden }),
+      });
+      if (!r1.ok || !r2.ok) throw new Error();
+      await refrescarCategorias();
+    } catch (e) {
+      errorCategorias("No se pudo reordenar.");
+    }
+  }
+
+  $("form-cat-nueva").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    var campo = $("cat-nombre-nueva");
+    var nombre = campo.value.trim();
+    if (!nombre) return;
+
+    var maxOrden = categorias.reduce(function (m, c) { return Math.max(m, c.orden); }, 0);
+    try {
+      var res = await fetch(window.SUPABASE_URL + "/rest/v1/categorias", {
+        method: "POST",
+        headers: Object.assign(await sesion.cabeceras(), { Prefer: "return=representation" }),
+        body: JSON.stringify({ nombre: nombre, orden: maxOrden + 1 }),
+      });
+      var datos = await res.json();
+      if (!res.ok || !datos.length) throw new Error((datos && datos.message) || "");
+      campo.value = "";
+      await refrescarCategorias();
+    } catch (err) {
+      errorCategorias(/duplicate|unique/i.test(err.message || "")
+        ? "Ya existe una categoría con ese nombre."
+        : "No se pudo crear la categoría.");
+    }
+  });
 
   // --- editar ---
 
