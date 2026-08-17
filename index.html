@@ -42,14 +42,15 @@
 <main>
 
   <!-- El banner anterior era una imagen de 1000x1000 de la marca abandonada
-       (mockup verde, tipografia de comic) forzada a ancho completo: ocupaba
-       toda la primera pantalla con publicidad de otra marca. Este es un
-       encabezado construido con el propio sistema de diseño, sin imagen que
-       pueda volver a romperse ni quedarse desactualizada. -->
+       (mockup verde, tipografia de comic) forzada a ancho completo. Este es
+       el reemplazo: banner encargado en marca propia (terracota, eslogan y
+       pasos reales de pedido). Sigue siendo una imagen — si cambia un paso
+       del flujo o un dato, hay que regenerarla, no basta con editar texto. -->
   <section class="hero">
-    <p class="hero__marca">Tu Despensa</p>
-    <h1 class="hero__titulo">Todo lo que necesitas, en un click</h1>
-    <p class="hero__texto">Alimentos, cárnicos, granos y productos del hogar. Pide por WhatsApp y te lo llevamos hasta la puerta.</p>
+    <h1 class="hero__solo-texto">Todo lo que necesitas, en un click</h1>
+    <a class="banner-promo" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20hacer%20un%20pedido%20en%20TuDespensa25" aria-label="Pide ahora por WhatsApp">
+      <img class="banner-promo__img" src="images/banner-hero.jpg" alt="TuDespensa25 — Todo lo que necesitas, en un click. Elige tu municipio, busca tus productos, revisa tu pedido y pide por WhatsApp." width="900" height="1125">
+    </a>
     <p class="hero__cobertura" id="hero-cobertura">Entrega a domicilio en Artemisa</p>
   </section>
 

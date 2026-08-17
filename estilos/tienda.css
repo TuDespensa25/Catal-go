@@ -593,44 +593,39 @@ body.con-pie { padding-bottom: calc(150px + env(safe-area-inset-bottom)); }
 
 /* --- encabezado (hero) ------------------------------------------------ */
 
-/* Terracota solida, sin degradado: el propio sistema de diseno lo pide asi
-   ("No Gradients... mantener la estetica de mercado de barrio"). El acento
-   naranja de accion no aparece aqui: esta reservado para "toca para
-   comprar", y usarlo de fondo le quitaria ese significado. */
 .hero {
   margin: 0 0 var(--e-sm);
-  padding: var(--e-lg) var(--margen) var(--e-md);
-  background: var(--marca);
+  padding: var(--e-sm) var(--margen) var(--e-md);
   text-align: center;
 }
 
-.hero__marca {
-  margin: 0 0 4px;
-  font-family: var(--f-titulo);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--marca-suave);
+/* El h1 real para SEO/lectores de pantalla: el titulo del banner es texto
+   dibujado en la imagen, no seleccionable ni accesible por si solo. */
+.hero__solo-texto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
-.hero__titulo {
-  margin: 0;
-  font-family: var(--f-titulo);
-  font-size: clamp(1.6rem, 6vw, var(--t-display));
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
-  color: var(--fondo);
-  text-wrap: balance;
+.banner-promo {
+  display: block;
+  max-width: 480px;
+  margin: 0 auto;
+  border-radius: var(--radio-grande);
+  overflow: hidden;
+  box-shadow: var(--sombra-alta);
 }
 
-.hero__texto {
-  margin: var(--e-sm) auto 0;
-  max-width: 46ch;
-  color: var(--marca-suave);
-  font-size: var(--t-etiqueta);
-  line-height: 1.5;
+.banner-promo__img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 .hero__cobertura {
@@ -638,8 +633,8 @@ body.con-pie { padding-bottom: calc(150px + env(safe-area-inset-bottom)); }
   margin: var(--e-sm) 0 0;
   padding: 6px 14px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.14);
-  color: var(--fondo);
+  background: var(--marca-suave);
+  color: var(--marca);
   font-size: 12px;
   font-weight: 600;
 }
