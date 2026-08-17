@@ -263,23 +263,17 @@ svg { fill: currentColor; flex: none; }
 
 /* El "Agregar" era una barra que ocupaba el 14% de cada tarjeta: con 75
    productos en dos columnas, la pantalla se convertia en un muro naranja.
-   Como boton redondo junto al precio, el naranja vuelve a significar
+   Como boton redondo flotando en la foto, el naranja vuelve a significar
    "pulsa aqui" en vez de ser el color de fondo del catalogo. */
 .producto__pie { margin-top: var(--e-xs); }
-/* Deja libre la esquina donde flota el boton: sin esto, el equivalente en
-   pesos pasaria por debajo de el en los precios largos. */
-.producto__precios { padding-right: 44px; }
 
-/* El boton va en la esquina de la foto, no junto al precio. En una tarjeta de
-   150px, compartir fila dejaba al precio 82px y "USD 11.40" se partia en dos
-   lineas: justo el dato que el cliente mira primero. Asi el precio recupera
-   el ancho entero y el boton sigue a un dedo de distancia. */
-.producto { position: relative; }
+/* Flota en la esquina de la FOTO (que ya es position:relative), no de toda
+   la tarjeta: antes se posicionaba contra el alto de la tarjeta entera, asi
+   que en vez de caer en la foto se montaba encima del precio. */
 .producto__agregar {
   position: absolute;
   right: 8px;
-  top: calc(100% - 8px);
-  transform: translateY(-100%);
+  bottom: 8px;
   width: 40px;
   min-height: 40px;
   height: 40px;

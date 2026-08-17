@@ -43,9 +43,10 @@
           (hayDescuento
             ? '<span class="producto__descuento">-' + Math.round(p.descuento_pct) + '%</span>'
             : "") +
-        '</div>' +
-        '<button class="td-boton producto__agregar" data-id="' + p.id + '"' +
+          '</a>' +
+          '<button class="td-boton producto__agregar" data-id="' + p.id + '"' +
                ' aria-label="Añadir ' + escapar(p.nombre) + ' al carrito">+</button>' +
+        '</div>' +
         '<div class="producto__datos">' +
           '<span class="producto__categoria">' + escapar(nombreCorto(p.categorias && p.categorias.nombre)) + '</span>' +
           '<a class="producto__enlace" href="producto.html?id=' + p.id + '">' +
@@ -242,7 +243,10 @@
     pintar();
   });
 
-  $("rejilla").addEventListener("click", function (e) {
+  // En <main>, no en #rejilla: los carruseles de Combos/Ofertas/Recien
+  // llegados usan la misma tarjeta y el mismo boton, y se habian quedado
+  // sin este listener, asi que "Añadir" no hacia nada ahi.
+  document.querySelector("main").addEventListener("click", function (e) {
     var b = e.target.closest(".producto__agregar");
     if (!b) return;
     carrito.agregar(Number(b.dataset.id));
