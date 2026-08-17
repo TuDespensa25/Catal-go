@@ -270,23 +270,53 @@ svg { fill: currentColor; flex: none; }
 /* Flota en la esquina de la FOTO (que ya es position:relative), no de toda
    la tarjeta: antes se posicionaba contra el alto de la tarjeta entera, asi
    que en vez de caer en la foto se montaba encima del precio. */
-.producto__agregar {
+.producto__agregar,
+.producto__stepper {
   position: absolute;
   right: 8px;
   bottom: 8px;
-  width: 40px;
-  min-height: 40px;
   height: 40px;
-  padding: 0;
   border-radius: 999px;
-  font-size: 22px;
-  line-height: 1;
   box-shadow: var(--sombra-alta);
   z-index: 2;
 }
+.producto__agregar {
+  width: 40px;
+  padding: 0;
+  font-size: 22px;
+  line-height: 1;
+}
+
+/* El "+" suelto (como supermarket23) se vuelve contador -/n/+ en cuanto hay
+   1 o mas en el carrito: se puede bajar la cantidad sin salir a la tarjeta
+   del producto ni ir al carrito. */
+.producto__stepper {
+  display: flex;
+  align-items: center;
+  background: var(--accion);
+}
+.producto__paso {
+  width: 36px;
+  height: 40px;
+  flex: none;
+  border: 0;
+  background: transparent;
+  color: var(--sobre-accion);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+.producto__n {
+  min-width: 18px;
+  text-align: center;
+  font-size: var(--t-etiqueta);
+  font-weight: 700;
+  color: var(--sobre-accion);
+  font-variant-numeric: tabular-nums;
+}
+
 /* El precio ya no comparte fila: que no se parta nunca. */
 .producto__precio { white-space: nowrap; }
-.producto__agregar--hecho { background: var(--ahorro); color: #fff; }
 
 /* --- hoja de municipios -------------------------------------------- */
 

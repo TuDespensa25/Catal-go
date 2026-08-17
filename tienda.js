@@ -26,6 +26,29 @@
     return partes[partes.length - 1].trim();
   }
 
+  /** Cuanto hay ya en el carrito de este producto (0 si no esta). */
+  function cantidadDe(id) {
+    var l = carrito.lineas().filter(function (i) { return i.id === id; })[0];
+    return l ? l.cantidad : 0;
+  }
+
+  /* El "+" suelto (como en supermarket23) se convierte en un contador
+     -/n/+ en cuanto hay al menos 1 en el carrito, en vez de quedarse como
+     un boton que solo suma: asi se puede bajar la cantidad sin ir al
+     carrito. Se reusa data-mas/data-menos, igual que en pedido.js. */
+  function controlCarrito(p, cantidad) {
+    if (cantidad > 0) {
+      return '' +
+        '<div class="producto__stepper">' +
+          '<button class="producto__paso" data-menos="' + p.id + '" aria-label="Quitar uno de ' + escapar(p.nombre) + '">−</button>' +
+          '<span class="producto__n">' + cantidad + '</span>' +
+          '<button class="producto__paso producto__paso--mas" data-mas="' + p.id + '" aria-label="Añadir uno de ' + escapar(p.nombre) + '">+</button>' +
+        '</div>';
+    }
+    return '<button class="td-boton producto__agregar" data-mas="' + p.id + '"' +
+         ' aria-label="Añadir ' + escapar(p.nombre) + ' al carrito">+</button>';
+  }
+
   function tarjeta(p) {
     var final = precioFinal(p);
     var hayDescuento = Number(p.descuento_pct) > 0;
@@ -44,8 +67,7 @@
             ? '<span class="producto__descuento">-' + Math.round(p.descuento_pct) + '%</span>'
             : "") +
           '</a>' +
-          '<button class="td-boton producto__agregar" data-id="' + p.id + '"' +
-               ' aria-label="Añadir ' + escapar(p.nombre) + ' al carrito">+</button>' +
+          controlCarrito(p, cantidadDe(p.id)) +
         '</div>' +
         '<div class="producto__datos">' +
           '<span class="producto__categoria">' + escapar(nombreCorto(p.categorias && p.categorias.nombre)) + '</span>' +
@@ -247,18 +269,26 @@
   // llegados usan la misma tarjeta y el mismo boton, y se habian quedado
   // sin este listener, asi que "Añadir" no hacia nada ahi.
   document.querySelector("main").addEventListener("click", function (e) {
-    var b = e.target.closest(".producto__agregar");
+    var b = e.target.closest("[data-mas], [data-menos]");
     if (!b) return;
-    carrito.agregar(Number(b.dataset.id));
+    var id = Number(b.dataset.mas || b.dataset.menos);
+    var p = estado.productos.filter(function (x) { return x.id === id; })[0];
+    if (!p) return;
+    // agregar() para subir y fijar() para bajar: fijar() solo sabe cambiar
+    // lineas que ya existen, no crear la primera.
+    if (b.dataset.mas) carrito.agregar(id);
+    else carrito.fijar(id, cantidadDe(id) - 1);
     contador();
-    // Confirmacion breve en el propio boton: se ve sin apartar la vista
-    // de la tarjeta que se acaba de tocar.
-    b.textContent = "✓";
-    b.classList.add("producto__agregar--hecho");
-    setTimeout(function () {
-      b.textContent = "+";
-      b.classList.remove("producto__agregar--hecho");
-    }, 900);
+    // Repinta los controles de ese producto, no toda la tarjeta: cambia de
+    // boton suelto a contador (o al reves) sin recargar la foto ni mover el
+    // scroll. Son TODOS y no solo el pulsado porque el mismo producto sale a
+    // la vez en un carrusel y en la rejilla, y si no se quedan descuadrados.
+    var html = controlCarrito(p, cantidadDe(id));
+    var sel = '[data-mas="' + id + '"], [data-menos="' + id + '"]';
+    Array.prototype.forEach.call(document.querySelectorAll(sel), function (el) {
+      var control = el.closest(".producto__stepper, .producto__agregar");
+      if (control && control.parentElement) control.outerHTML = html;
+    });
   });
 
   $("btn-lugar").addEventListener("click", function () { $("hoja-lugar").showModal(); });
