@@ -11,17 +11,19 @@
 
 :root {
   /* --- marca ------------------------------------------------------ */
-  --marca:            #8c2f04;  /* terracota: cabecera, titulos, precios */
-  --marca-oscura:     #671f00;  /* hover y estados presionados */
-  --marca-suave:      #ffdbcf;  /* fondos de realce en tono marca */
+  /* Segunda paleta (2026-08-17): se saco el terracota apagado (#8c2f04) por
+     un rojo-naranja vivo. --marca en textos chicos (menos de 24px / 18,66px
+     en negrita) no llega a 4,5:1 sobre el fondo -solo a ~4,1:1-, asi que ahi
+     va --marca-oscura, no --marca. Para titulos, precios e iconos si sirve
+     directo: son texto grande o graficos, que piden 3:1. */
+  --marca:            #e8380d;  /* rojo-naranja vivo: cabecera, titulos, precios */
+  --marca-oscura:     #a82c0c;  /* hover, pulsado, y texto chico sobre --marca-suave/fondo */
+  --marca-suave:      #ffd9c2;  /* fondos de realce en tono marca */
 
   /* --- accion ----------------------------------------------------- */
-  --accion:           #d97230;  /* SOLO botones de comprar */
-  --accion-oscura:    #c3672b;
-  /* Texto OSCURO sobre el naranja, no blanco. El blanco daba 3,28:1 y el
-     minimo son 4,5. Oscurecer el naranja lo habria acercado demasiado al
-     terracota de la marca; con texto oscuro sube a 5,24:1 y el boton
-     conserva la vibracion que lo hace destacar. */
+  --accion:           #ffb020;  /* SOLO botones de comprar */
+  --accion-oscura:    #e6a000;
+  /* Texto OSCURO sobre el dorado: con blanco da 1,83:1, con oscuro 9,41:1. */
   --sobre-accion:     #231914;
 
   /* --- superficies ------------------------------------------------ */
@@ -38,7 +40,7 @@
   --borde-fuerte:     #8a7269;
 
   /* --- semanticos ------------------------------------------------- */
-  --ahorro:           #2f6b4f;  /* descuentos y ahorros */
+  --ahorro:           #15803d;  /* descuentos y ahorros: verde vivo que sigue pasando 4,5:1 en blanco */
   --ahorro-fondo:     #b1f0cd;
   --alerta:           #ba1a1a;  /* agotado, errores */
   --alerta-fondo:     #ffdad6;
@@ -158,7 +160,7 @@
 /* Secundario: sin relleno, para no competir con el de comprar. */
 .td-boton--suave {
   background: transparent;
-  color: var(--marca);
+  color: var(--marca-oscura);
   border: 1px solid var(--borde);
 }
 .td-boton--suave:hover { background: var(--tarjeta-suave); }

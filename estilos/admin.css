@@ -239,7 +239,7 @@
   padding: 10px var(--e-sm);
   border-radius: var(--radio);
   background: var(--marca-suave);
-  color: var(--marca);
+  color: var(--marca-oscura);
   font-size: var(--t-etiqueta);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
@@ -289,7 +289,7 @@
   border: 0;
   background: none;
   padding: 6px 0;
-  color: var(--marca);
+  color: var(--marca-oscura);
   font: inherit;
   font-size: 12px;
   text-decoration: underline;

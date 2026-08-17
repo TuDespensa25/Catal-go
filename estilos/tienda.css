@@ -145,7 +145,7 @@ svg { fill: currentColor; flex: none; }
   cursor: pointer;
 }
 .categoria svg { flex: none; opacity: 0.8; }
-.categoria[aria-pressed="true"] { background: var(--marca); color: #fff; }
+.categoria[aria-pressed="true"] { background: var(--marca-oscura); color: #fff; }
 .categoria[aria-pressed="true"] svg { opacity: 1; }
 
 /* --- seccion ------------------------------------------------------- */
@@ -439,7 +439,7 @@ body.con-pie { padding-bottom: calc(150px + env(safe-area-inset-bottom)); }
   height: 40px;
   border: 0;
   background: var(--tarjeta-suave);
-  color: var(--marca);
+  color: var(--marca-oscura);
   font: inherit;
   font-size: 20px;
   line-height: 1;
@@ -634,7 +634,7 @@ body.con-pie { padding-bottom: calc(150px + env(safe-area-inset-bottom)); }
   padding: 6px 14px;
   border-radius: 999px;
   background: var(--marca-suave);
-  color: var(--marca);
+  color: var(--marca-oscura);
   font-size: 12px;
   font-weight: 600;
 }
